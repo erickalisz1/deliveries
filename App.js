@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
-import MainList from './screens/MainList';
-import { StyleSheet, Text, View, FlatList, SafeAreaView, TouchableOpacity, Alert, Platform } from 'react-native';
-import firebase from 'firebase';
+import MainList from './screens/MainList';import firebase from 'firebase';
 import { AppLoading } from 'expo';
 import Deliveries from './Deliveries';
-import { DELIVERIES } from './dummy-data';
 
 
 const firebaseConfig = {
@@ -56,6 +53,7 @@ const renderList = () => {
 export default function App() {
 
   //COMMENT TO STOP QUERYING FIREBASE
+  //using AppLoading to not render list before the data is fetched from firebase 
   const [dataLoaded, setDataLoaded] = useState(false);
 
   if (!dataLoaded) {
@@ -68,42 +66,17 @@ export default function App() {
   }
 
 
-  const myArr = deliveriesList;
-  console.log("myArr");
+  // checking
+  console.log("list on App.js");
   
-  console.log(myArr);
+  console.log(deliveriesList);
   // console.log(DELIVERIES);
 
 
 
   return (
 
-    // <MainList firebaseList={deliveriesList} />
-
-    // <MainList />
-
-    <FlatList
-      keyExtractor={item => item.actualDay}
-      // style={styles.list}
-
-      // data={DELIVERIES}
-      data={myArr}
-
-      renderItem={( item ) =>
-        (
-
-          <Text>{ item.actualDay }</Text>
-          // <TouchableOpacity onPress={() => { openAlert(item.actualDay) }}>
-          //   <ListItem
-          //     date={item.actualDay}
-          //     deliveroo={item.deliveroo}
-          //     uber={item.uber}
-          //     hours={item.hours}
-          //   />
-          // </TouchableOpacity>
-        )}
-
-       />
+    <MainList firebaseList={deliveriesList} />
 
   );
 

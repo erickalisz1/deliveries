@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, FlatList, SafeAreaView, TouchableOpacity, Alert, Platform } from 'react-native';
 import { DELIVERIES } from '../dummy-data';
 import ListItem from '../components/ListItem';
-import  formatDate  from '../helper/helper';
+import formatDate from '../helper/helper';
 // import Deliveries from './Deliveries';
 
 const MainList = props => {
@@ -12,12 +12,9 @@ const MainList = props => {
     }
 
     let sortLabel = 'Days \\/';
+
     // console.log('assigning sort label at ' + new Date().getSeconds());
-    // console.log(props.firebaseList);
-    // const newArr = props.firebaseList;
-    // console.log(DELIVERIES);
-    // let myArr = Object.values(props.firebaseList);
-    // console.log(myArr);
+    console.log(props.firebaseList);
 
 
 
@@ -31,12 +28,18 @@ const MainList = props => {
                 <FlatList
                     style={styles.list}
 
+                    // DELIVERIES is a local array
+                    // sorted by date
                     data={DELIVERIES.sort((a, b) => { return new Date(b.actualDay) - new Date(a.actualDay) })}
-                    
-                    renderItem={ ({item})  =>
-                        ( 
-                            
-                        // <Text>{ item.item.actualDay }</Text>
+
+                    // data={props.firebaseList.sort((a, b) => { return new Date(b.actualDay) - new Date(a.actualDay) })}
+
+                    // data={DELIVERIES}
+
+                    renderItem={({ item }) =>
+                        (
+
+                            // <Text>{ item.item.actualDay }</Text>
                             <TouchableOpacity onPress={() => { openAlert(item.actualDay) }}>
                                 <ListItem
                                     date={item.actualDay}
