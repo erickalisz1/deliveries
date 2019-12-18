@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import MainList from './screens/MainList';import firebase from 'firebase';
+import MainList from './screens/MainList';
+import firebase from 'firebase';
 import { AppLoading } from 'expo';
 import Deliveries from './Deliveries';
+//import formatDate from './helper/helper';
 
 
 const firebaseConfig = {
@@ -18,9 +20,7 @@ firebase.initializeApp(firebaseConfig);
 
 //COMMENT TO STOP QUERYING FIREBASE
 
-let deliveriesList = [
-  new Deliveries('0', '2018-02-26', 36, 0, 1),
-];
+let deliveriesList = [];
 
 //SELECT * STATEMENT
 
@@ -30,20 +30,20 @@ const renderList = () => {
   return query.once('value').then(function (snapshot) {
     snapshot.forEach(function (childSnapshot) {
 
-      let delivery = new Deliveries();
+      const delivery = new Deliveries();
 
       let id = childSnapshot.key;
 
       delivery.dayNumber = id;
-      delivery.actualDay = childSnapshot.child('actualDay');
-      delivery.deliveroo = childSnapshot.child('deliveroo');
-      delivery.uber = childSnapshot.child('uber');
-      delivery.hours = childSnapshot.child('hours');
+      delivery.actualDay = childSnapshot.val().actualDay;
+      delivery.deliveroo = childSnapshot.val().deliveroo;
+      delivery.uber = childSnapshot.val().uber;
+      delivery.hours = childSnapshot.val().hours;
 
       deliveriesList.push(delivery);
       // console.log('ID: ' + delivery.dayNumber + ' ' + new Date().getMilliseconds() + 'ms');
     });
-
+    // console.log('finished building list at ' + new Date().getMilliseconds() + 'ms');
     // return deliveriesList;
   });
 };
@@ -65,24 +65,9 @@ export default function App() {
       onError={(err) => console.log(err)} />;
   }
 
-
-  // checking
-  console.log("list on App.js");
-  
-  console.log(deliveriesList);
-  // console.log(DELIVERIES);
-
-
-
   return (
-
     <MainList firebaseList={deliveriesList} />
-
   );
-
-
-
-
 
   //INSERT / UPDATE STATEMENT
   /*
