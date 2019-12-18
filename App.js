@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
+import { View } from 'react-native';
 import MainList from './screens/MainList';
 import firebase from 'firebase';
-import { AppLoading } from 'expo';
 import Deliveries from './Deliveries';
-//import formatDate from './helper/helper';
-
+import Loading from './components/Loading';
 
 const firebaseConfig = {
   apiKey: "AIzaSyBtFpyI8rFywqiHm3rnL2qbS3L4Dl_Y8sk",
@@ -15,58 +14,70 @@ const firebaseConfig = {
   messagingSenderId: "138527506874",
   appId: "1:138527506874:web:b77bf64674a2912ff1dd83"
 };
+
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
 //COMMENT TO STOP QUERYING FIREBASE
 
-let deliveriesList = [];
-
-//SELECT * STATEMENT
-
-const renderList = () => {
-  let query = firebase.database().ref('deliveries/').orderByKey();
-
-  return query.once('value').then(function (snapshot) {
-    snapshot.forEach(function (childSnapshot) {
-
-      const delivery = new Deliveries();
-
-      let id = childSnapshot.key;
-
-      delivery.dayNumber = id;
-      delivery.actualDay = childSnapshot.val().actualDay;
-      delivery.deliveroo = childSnapshot.val().deliveroo;
-      delivery.uber = childSnapshot.val().uber;
-      delivery.hours = childSnapshot.val().hours;
-
-      deliveriesList.push(delivery);
-      // console.log('ID: ' + delivery.dayNumber + ' ' + new Date().getMilliseconds() + 'ms');
-    });
-    // console.log('finished building list at ' + new Date().getMilliseconds() + 'ms');
-    // return deliveriesList;
-  });
-};
-
 //read somewhere that .once returns a collection of objects, gotta change that
 
 export default function App() {
 
-  //COMMENT TO STOP QUERYING FIREBASE
-  //using AppLoading to not render list before the data is fetched from firebase 
-  const [dataLoaded, setDataLoaded] = useState(false);
+  // const [dataLoaded, setDataLoaded] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [deliveriesList, setDeliveriesList] = useState([]);
 
-  if (!dataLoaded) {
-    console.log('started at ' + new Date().getMilliseconds() + 'ms');
-    console.log('finished at ' + new Date().getMilliseconds() + 'ms');
-    return <AppLoading
-      startAsync={renderList}
-      onFinish={() => { setDataLoaded(true) }}
-      onError={(err) => console.log(err)} />;
+  const renderList = () => {
+    let localList = [];
+
+    console.log('calling render function at ', new Date().getMilliseconds() + 'ms')
+
+    let query = firebase.database().ref('deliveries/').orderByKey();
+
+    //SELECT * STATEMENT
+    query.once('value').then(function (snapshot) {
+      snapshot.forEach(function (childSnapshot) {
+
+        const delivery = new Deliveries();
+
+        let id = childSnapshot.key;
+
+        delivery.dayNumber = id;
+        delivery.actualDay = childSnapshot.val().actualDay;
+        delivery.deliveroo = childSnapshot.val().deliveroo;
+        delivery.uber = childSnapshot.val().uber;
+        delivery.hours = childSnapshot.val().hours;
+        delivery.total = delivery.deliveroo + delivery.uber;
+
+        delivery.hours > 0 ? (delivery.per = delivery.total/delivery.hours) : (delivery.per = 0);
+
+        // console.log('Hours: '+ delivery.hours, 'Per: '+ delivery.per );
+
+        localList.push(delivery);
+
+      });
+
+      //finished building list
+      console.log('finished building list at ', new Date().getMilliseconds() + 'ms');
+    }).then(() => { listLoaded(localList); });
+  };
+
+
+  function listLoaded(loadedList) {
+    setIsLoading(false);
+    setDeliveriesList(loadedList);
   }
 
+  //conditional rendering
+  isLoading ? renderList() : '';
+
   return (
-    <MainList firebaseList={deliveriesList} />
+    <View style={{ flex: 1 }}>
+
+      {isLoading ? (<Loading />) : (<MainList firebaseList={deliveriesList} />)}
+
+    </View>
   );
 
   //INSERT / UPDATE STATEMENT

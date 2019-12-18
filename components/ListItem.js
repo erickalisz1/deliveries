@@ -1,7 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import formatDate from '../helper/helper';
-import Deliveries from '../Deliveries';
+import { formatDate } from '../helper/helper';
+// import Deliveries from '../Deliveries';
+import Colours from '../constants/colours';
 
 const ListItem = (props) => {
 
@@ -13,7 +14,7 @@ const ListItem = (props) => {
     let Uber = Number(JSON.stringify(props.ub));
     let Hours = Number(JSON.stringify(props.hours));
     let Total = Del + Uber;
-    let Per= 0;
+    let Per = 0;
     if (Hours > 0) {
         Per = Total / Hours;
     }
@@ -38,8 +39,7 @@ const ListItem = (props) => {
     Del = Del >= 100 ? Del.toPrecision(5) : Del.toPrecision(4);
     Uber = Uber >= 100 ? Uber.toPrecision(5) : Uber.toPrecision(4);
 
-    if (columnToSort === 'dayNumber') 
-    {//default sorting
+    if (columnToSort === 'dayNumber') {//default sorting
         if (Hours === 0 && Total < 1) {//not worked
             return (
                 <View style={styles.item}>
@@ -63,18 +63,15 @@ const ListItem = (props) => {
         );
     }
 
-    else if (columnToSort === 'deliveroo') 
-    {//sorting by deliveroo
-        if (Hours > 0 && Del > 0)
-        {
+    else if (columnToSort === 'deliveroo') {//sorting by deliveroo
+        if (Hours > 0 && Del > 0) {
             return (
                 <View style={styles.item}>
                     <Text style={styles.value}> {day} - Deliveroo: ${Del} - ${Per}/h</Text>
                 </View>
             );
         }
-        else if (Hours < 1 && Del > 0)
-        {
+        else if (Hours < 1 && Del > 0) {
             return (
                 <View style={styles.item}>
                     <Text style={styles.value}> {day} - Deliveroo: ${Del}</Text>
@@ -84,18 +81,15 @@ const ListItem = (props) => {
         else return null;
     }
 
-    else if (columnToSort === 'uber') 
-    {//sorting by uber
-        if (Hours > 0 && Uber > 0)
-        {
+    else if (columnToSort === 'uber') {//sorting by uber
+        if (Hours > 0 && Uber > 0) {
             return (
                 <View style={styles.item}>
                     <Text style={styles.value}> {day} - Uber: ${Uber} - ${Per}/h</Text>
                 </View>
             );
         }
-        else if (Hours < 1 && Uber > 0)
-        {
+        else if (Hours < 1 && Uber > 0) {
             return (
                 <View style={styles.item}>
                     <Text style={styles.value}> {day} - Uber: ${Uber}</Text>
@@ -104,6 +98,35 @@ const ListItem = (props) => {
         }
         else return null;
     }
+    else if (columnToSort === 'total') {//sorting by total
+        if (Hours > 0 && Total > 0) {
+            return (
+                <View style={styles.item}>
+                    <Text style={styles.value}> {day} - Total: ${Total} - ${Per}/h</Text>
+                </View>
+            );
+        }
+        else if (Hours < 1 && Total > 0) {
+            return (
+                <View style={styles.item}>
+                    <Text style={styles.value}> {day} - Total: ${Total}</Text>
+                </View>
+            );
+        }
+        else return null;
+    }
+    else if (columnToSort === 'per') {//sorting by per
+        if (Hours > 0 && Per > 0) {
+            return (
+                <View style={styles.item}>
+                    <Text style={styles.value}> {day} - Total: ${Total} - ${Per}/h</Text>
+                </View>
+            );
+        }
+        else return null;
+    }
+
+    else return <View><Text>something went wrong</Text></View>
 }
 
 const styles = StyleSheet.create({
@@ -112,10 +135,12 @@ const styles = StyleSheet.create({
         minWidth: '95%',
         padding: 10,
         borderBottomWidth: 1,
-        borderBottomColor: '#ccc',
+        borderBottomColor: Colours.white,
     },
     value: {
         fontSize: 16,
+        color: Colours.primaryText,
+        textAlign: 'left'
     }
 });
 
