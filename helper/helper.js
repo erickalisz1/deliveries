@@ -1,3 +1,12 @@
+export const firebaseConfig = {
+    apiKey: "AIzaSyBtFpyI8rFywqiHm3rnL2qbS3L4Dl_Y8sk",
+    authDomain: "deliveries-318f4.firebaseapp.com",
+    databaseURL: "https://deliveries-318f4.firebaseio.com",
+    projectId: "deliveries-318f4",
+    storageBucket: "deliveries-318f4.appspot.com",
+    messagingSenderId: "138527506874",
+    appId: "1:138527506874:web:b77bf64674a2912ff1dd83"
+  };
 
 export const setLabelText = (columnToSort, orientation) => {
 
@@ -110,3 +119,28 @@ export const setAlertMessage = (selectedDay) => {
     
     else return 'You haven\'t worked on this day';
 };
+const checkIfTodayExists = () => {//not working yet
+    const oneDay = 24 * 60 * 60 * 1000; // hours * minutes * seconds * milliseconds
+    const today = new Date;
+
+    // console.log(firebaseList[firebaseList.length - 1]);
+
+    const lastDayOnDB = new Date(firebaseList[0].actualDay);
+
+    let daysUntil = Math.round(Math.abs((today - lastDayOnDB) / oneDay));
+
+    Alert.alert('Days from last day on', daysUntil);
+
+    // while(daysUntil > 0)
+    // {//while the number of days until today is positive, add a week
+    //     for(let i = 0; i < 7; i++){
+    //         lastDayOnDB = new Date(firebaseList[firebaseList.length - 1].actualDay);
+
+    //         lastDayOnDB.setDate(lastDayOnDB.getDate() + 1);
+
+    //     }
+    //     console.log(daysUntil);
+    // }
+
+};
+// checkIfTodayExists();

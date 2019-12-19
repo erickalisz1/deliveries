@@ -5,5 +5,6 @@ export default {
     accent:'#ccc',
     dark:'#8f6b1a',
     white:'#fff',
-    cancel:'#f44'
+    cancel:'#f44',
+    selected:'#5fcfbf'
 };

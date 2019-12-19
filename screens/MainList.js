@@ -1,48 +1,79 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, FlatList, SafeAreaView, TouchableOpacity, Alert, Platform } from 'react-native';
-import PropTypes from "prop-types";
+import firebase from 'firebase';
 
+import Loading from '../components/Loading';
 import ListItem from '../components/ListItem';
 import Colours from '../constants/colours';
 import ColumnsModal from '../components/ColumnsModal';
 import { setLabelText, sortList, setDateString, setAlertMessage } from '../helper/helper';
 
-// import Deliveries from './Deliveries';
+import Deliveries from '../Deliveries';
 
 const MainList = props => {
 
-    const { firebaseList } = props;
+    //display settings
     const [orientation, setOrientation] = useState('Desc');
     const [columnToSort, setColumnToSort] = useState('dayNumber');
     const [displayModal, setDisplayModal] = useState(false);
 
-    // console.log('Main list Screen',firebaseList);
+    //fetch data from firebase states
+    const [isLoading, setIsLoading] = useState(true);
+    const [deliveriesList, setDeliveriesList] = useState([]);
 
-    const checkIfTodayExists = () => {//not working yet
-        const oneDay = 24 * 60 * 60 * 1000; // hours * minutes * seconds * milliseconds
-        const today = new Date;
+    const renderList = () => {
+        let localList = [];
 
-        // console.log(firebaseList[firebaseList.length - 1]);
+        console.log('calling render function at ', new Date().getMilliseconds() + 'ms')
 
-        const lastDayOnDB = new Date(firebaseList[0].actualDay);
+        let query = firebase.database().ref('deliveries/').orderByKey();
 
-        let daysUntil = Math.round(Math.abs((today - lastDayOnDB) / oneDay));
+        // SELECT * STATEMENT
+        query.once('value').then(function (snapshot) {
+            snapshot.forEach(function (childSnapshot) {
 
-        Alert.alert('Days from last day on', daysUntil);
+                const delivery = new Deliveries();
 
-        // while(daysUntil > 0)
-        // {//while the number of days until today is positive, add a week
-        //     for(let i = 0; i < 7; i++){
-        //         lastDayOnDB = new Date(firebaseList[firebaseList.length - 1].actualDay);
+                let id = childSnapshot.key;
 
-        //         lastDayOnDB.setDate(lastDayOnDB.getDate() + 1);
+                delivery.dayNumber = id;
+                delivery.actualDay = childSnapshot.val().actualDay;
+                delivery.deliveroo = childSnapshot.val().deliveroo;
+                delivery.uber = childSnapshot.val().uber;
+                delivery.hours = childSnapshot.val().hours;
+                delivery.total = delivery.deliveroo + delivery.uber;
 
-        //     }
-        //     console.log(daysUntil);
-        // }
+                delivery.hours > 0 ? (delivery.per = delivery.total / delivery.hours) : (delivery.per = 0);
 
+                // console.log('Hours: '+ delivery.hours, 'Per: '+ delivery.per );
+
+                localList.push(delivery);
+
+            });
+
+            //finished building list
+            console.log('finished building list at ', new Date().getMilliseconds() + 'ms');
+        }).then(() => { listLoaded(localList); });
     };
-    // checkIfTodayExists();
+
+    // conditional rendering
+    isLoading ? renderList() : '';
+
+    const listLoaded = (loadedList) => {
+        setIsLoading(false);
+        setDeliveriesList(loadedList);
+
+        
+    }
+
+    const updateDay = (dayToUpdate) => {
+        props.navigation.navigate({
+            routeName: 'Update',
+            params: {
+                day: dayToUpdate
+            },
+        })
+    };
 
     const updateOrientation = () => {
         if (orientation !== 'Asc') {
@@ -54,12 +85,12 @@ const MainList = props => {
     };
 
     const openAlert = (selectedDay) => {
-        
+
         Alert.alert(
             setDateString(selectedDay.actualDay), //title
             setAlertMessage(selectedDay), //main message
             [{ text: 'Dismiss', style: 'cancel' }]//buttons
-            );
+        );
     }
 
     const getModalResult = (selectedColumn) => {
@@ -69,39 +100,45 @@ const MainList = props => {
 
     return (
         <SafeAreaView style={styles.container}>
-            <ColumnsModal visible={displayModal} onClose={() => setDisplayModal(false)} selectColumn={getModalResult} />
-            <View>
-                <TouchableOpacity onPress={() => updateOrientation()} onLongPress={() => {/*updateColumn();*/ setDisplayModal(true) }}>
-                    <Text style={styles.sortLabel}> {setLabelText(columnToSort, orientation)} </Text>
-                </TouchableOpacity>
 
-                <FlatList
-                    style={styles.list}
+            {isLoading ? (<Loading />) : (
+                <View>
 
-                    data={sortList(firebaseList, columnToSort, orientation)}
+                    <ColumnsModal visible={displayModal} onClose={() => setDisplayModal(false)} selectColumn={getModalResult} />
 
-                    renderItem={(item) =>
-                        (
-                            <TouchableOpacity onPress={() => { openAlert(item.item); console.log(item.item) }}>
-                                <ListItem
-                                    id={item.item.dayNumber}
-                                    date={item.item.actualDay}
-                                    del={item.item.deliveroo}
-                                    ub={item.item.uber}
-                                    hours={item.item.hours}
-                                    columnToSort={columnToSort}
-                                />
-                            </TouchableOpacity>
-                        )}
+                    <TouchableOpacity
+                        onPress={() => updateOrientation()}
+                        onLongPress={() => {/*updateColumn();*/ setDisplayModal(true) }}>
 
-                    keyExtractor={item => JSON.stringify(item.dayNumber)} />
+                        <Text style={styles.sortLabel}> {setLabelText(columnToSort, orientation)} </Text>
 
-            </View>
+                    </TouchableOpacity>
+
+                    <FlatList
+                        style={styles.list}
+                        keyExtractor={item => JSON.stringify(item.dayNumber)}
+                        data={sortList(deliveriesList, columnToSort, orientation)}
+
+                        renderItem={(item) =>
+                            (
+                                <TouchableOpacity 
+                                onPress={() => { openAlert(item.item); console.log(item.item) }}
+                                onLongPress={() => updateDay(item.item)}>
+                                    <ListItem
+                                        id={item.item.dayNumber}
+                                        date={item.item.actualDay}
+                                        del={item.item.deliveroo}
+                                        ub={item.item.uber}
+                                        hours={item.item.hours}
+                                        columnToSort={columnToSort}
+                                    />
+                                </TouchableOpacity>
+                            )}
+                    />
+                </View>
+            )}
         </SafeAreaView>
-
     );
-
-
 };
 
 const styles = StyleSheet.create({
@@ -135,9 +172,5 @@ const styles = StyleSheet.create({
         color: Colours.primaryText
     }
 });
-
-MainList.propTypes = {
-    firebaseList: PropTypes.array.isRequired
-};
 
 export default MainList;
