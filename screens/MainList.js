@@ -20,6 +20,7 @@ const MainList = props => {
     //fetch data from firebase states
     const [isLoading, setIsLoading] = useState(true);
     const [deliveriesList, setDeliveriesList] = useState([]);
+    const [isRefreshing, setIsRefreshing] = useState(false);
 
     const renderList = () => {
         let localList = [];
@@ -56,13 +57,12 @@ const MainList = props => {
         }).then(() => { listLoaded(localList); });
     };
 
-    // conditional rendering
-    isLoading ? renderList() : '';
+    
 
     const listLoaded = (loadedList) => {
         setIsLoading(false);
         setDeliveriesList(loadedList);
-
+        setIsRefreshing(false);
         
     }
 
@@ -98,6 +98,14 @@ const MainList = props => {
         setDisplayModal(false);
     };
 
+    const handleRefresh = () => {
+        setIsRefreshing(true);
+        setIsLoading(true);
+    };
+
+    // conditional rendering
+    isLoading ? renderList() : '';
+
     return (
         <SafeAreaView style={styles.container}>
 
@@ -118,6 +126,8 @@ const MainList = props => {
                         style={styles.list}
                         keyExtractor={item => JSON.stringify(item.dayNumber)}
                         data={sortList(deliveriesList, columnToSort, orientation)}
+                        refreshing={isRefreshing}
+                        onRefresh={handleRefresh}
 
                         renderItem={(item) =>
                             (

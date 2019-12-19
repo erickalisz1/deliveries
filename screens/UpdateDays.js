@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, Button } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Button, Alert } from 'react-native';
 import firebase from 'firebase';
 
 import { formatDate } from '../helper/helper';
 import Colours from '../constants/colours';
+import DismissKeyboard from '../components/DismissKeyboard';
 
 const UpdateDays = (props) => {
-
-    // const [selectedDay, setSelectedDay] = useState('Select date to update');
-    const [dayToUpdate, setDayToUpdate] = useState();
 
     const [delValue, setDelValue] = useState('');
     const [uberValue, setUberValue] = useState('');
@@ -32,58 +30,117 @@ const UpdateDays = (props) => {
         setHoursValue(enteredValue);
     };
 
-    const updateDeliveroo = (day, value) => 
+    const updateDeliveroo = (value) => 
     {
+        day.deliveroo = Number(value);
+
         firebase.database().ref('deliveries/'+day.dayNumber).set(
             {
               actualDay: day.actualDay,
-              deliveroo: value,
+              deliveroo: day.deliveroo,
               hours: day.hours,
               uber: day.uber
-        
             }
-          ).then(() => {
+          ).then(() => 
+          {
+            
             console.log('Updated', day.actualDay);
+            Alert.alert('Updated', day.actualDay + '\nwas successfully updated');
+            setDelValue('');
+
+          }).catch((error) => {
+            console.log(error);
+          });
+    };
+
+    const updateUber = (value) => 
+    {
+        day.uber = Number(value);
+
+        firebase.database().ref('deliveries/'+day.dayNumber).set(
+            {
+              actualDay: day.actualDay,
+              deliveroo: day.deliveroo,
+              hours: day.hours,
+              uber: day.uber
+            }
+          ).then(() => 
+          {
+            
+            console.log('Updated', day.actualDay);
+            Alert.alert('Updated', day.actualDay + '\nwas successfully updated');
+            setUberValue('');
+
+          }).catch((error) => {
+            console.log(error);
+          });
+    };
+
+    const updateHours = (value) => 
+    {
+        day.hours = Number(value);
+
+        firebase.database().ref('deliveries/'+day.dayNumber).set(
+            {
+              actualDay: day.actualDay,
+              deliveroo: day.deliveroo,
+              hours: day.hours,
+              uber: day.uber
+            }
+          ).then(() => 
+          {
+            
+            console.log('Updated', day.actualDay);
+            Alert.alert('Updated', day.actualDay + '\nwas successfully updated');
+            setHoursValue('');
+
           }).catch((error) => {
             console.log(error);
           });
     };
 
     return (
-        <View style={styles.container}>
+        <DismissKeyboard>
 
-            <View style={styles.selectDay}>
-                <Text style={styles.dayLabel} >{date}</Text>
-            </View>
-            <View style={styles.inputs}>
-                <TextInput 
-                placeholder="Deliveroo"
-                placeholderTextColor="#888"
-                style={styles.input}
-                onChangeText={deliverooInput}
-                value={delValue}
-                keyboardType='decimal-pad' />
-                <TextInput 
-                placeholder="Uber"
-                placeholderTextColor="#888"
-                style={styles.input}
-                onChangeText={uberInput}
-                value={uberValue} />
-                <TextInput 
-                placeholder="Hours"
-                placeholderTextColor="#888"
-                style={styles.input}
-                onChangeText={hoursInput}
-                value={hoursValue} />
-            </View>
+            <View style={styles.container}>
+            
+                <Text style={styles.title} >Updating: </Text>
+                <View style={styles.selectDay}>
+                    <Text style={styles.dayLabel} >{date}</Text>
+                </View>
 
-            <View style={styles.inputs}>
-                <Button title='Update' onPress={()=> updateDeliveroo(day, delValue)} />
-                <Button title='Update' onPress={()=> updateUber(day, uberValue)} />
-                <Button title='Update' onPress={()=> updateHours(day, hoursValue)} />
-            </View>
+                <View style={styles.inputs}>
+                    <TextInput 
+                    placeholder="Deliveroo"
+                    placeholderTextColor="#888"
+                    style={styles.input}
+                    onChangeText={deliverooInput}
+                    value={delValue}
+                    keyboardType='decimal-pad' />
+                    <TextInput 
+                    placeholder="Uber"
+                    placeholderTextColor="#888"
+                    style={styles.input}
+                    onChangeText={uberInput}
+                    value={uberValue}
+                    keyboardType='decimal-pad'  />
+                    <TextInput 
+                    placeholder="Hours"
+                    placeholderTextColor="#888"
+                    style={styles.input}
+                    onChangeText={hoursInput}
+                    value={hoursValue} 
+                    keyboardType='decimal-pad' />
+                </View>
 
-        </View>
+                <View style={styles.inputs}>
+                    <Button title='Update' onPress={()=> updateDeliveroo(delValue)} />
+                    <Button title='Update' onPress={()=> updateUber(uberValue)} />
+                    <Button title='Update' onPress={()=> updateHours(hoursValue)} />
+                </View>
+                
+            </View>
+        </DismissKeyboard>
     );
 
 };
@@ -109,21 +166,25 @@ const styles = StyleSheet.create({
         color: Colours.primaryText,
         fontSize: 18,
     },
+    title: {
+        color: Colours.primaryText,
+        fontSize: 18,
+        margin:10
+    },
     inputs:{
         display:'flex',
         flexDirection:'row',
         padding:5,
-        margin:5
     },
     input: {
         flex:1,
-        borderColor: '#323232',
-        borderWidth: 1,
-        margin: 10,
-        padding: 10,
+        borderBottomColor: Colours.selected,
+        borderBottomWidth: 1,
+        margin:10,
+        padding: 5,
         textAlign: "center",
         fontSize: 20,
-        color: '#323232'
+        color: Colours.primaryText
     },
 });
 
