@@ -58,3 +58,55 @@ export const formatDate = (sDate) => {
     }
     return dd + '/' + mm + '/' + yyyy;
 };
+
+export const setDateString = (ActualDay) => {
+    let weekday = new Date(ActualDay).toDateString().substr(0, 3);//weekday
+
+    let day = formatDate(ActualDay);
+
+    return (weekday + ', ' + day);
+};
+
+export const setAlertMessage = (selectedDay) => {
+
+    let message = '';
+
+    let Del = selectedDay.deliveroo;
+    let Uber = selectedDay.uber;
+    let Total = selectedDay.total;
+    let Hours = selectedDay.hours;
+    let Per = selectedDay.per;
+
+    //adjusting precisions
+    Per = Per.toPrecision(4);
+    Total = Total >= 100 ? Total.toPrecision(5) : Total.toPrecision(4);
+    
+    if(Del > 0 && Uber > 0 && Hours > 0)
+    {//did both and know hours
+        return 'Deliveroo: $' + Del + '\n' +
+        'Uber: $' + Uber + '\n' +
+        'Total: $' + Total + '\n' +
+        'Within ' + Hours + 'h\n' +
+        '$' + Per + ' per hour';
+    }
+    else if (Del > 0 && Uber < 1)
+    {//didnt do uber
+        return 'Deliveroo: $' + Del + '\n' +
+        'Within ' + Hours + 'h\n' +
+        '$' + Per + ' per hour';
+    }
+    else if (Del < 1 && Uber > 0)
+    {//didnt do deliveroo
+        return 'Uber: $' + Uber + '\n' +
+        'Within ' + Hours + 'h\n' +
+        '$' + Per + ' per hour';
+    }
+    else if (Total > 0 && Hours < 1)
+    {//didnt record the hours
+        return 'Deliveroo: $' + Del + '\n' +
+        'Uber: $' + Uber + '\n' +
+        'Total: $' + Total;
+    }
+    
+    else return 'You haven\'t worked on this day';
+};

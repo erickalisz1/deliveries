@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, FlatList, SafeAreaView, TouchableOpacity, Alert, Platform } from 'react-native';
-import ListItem from '../components/ListItem';
-import {formatDate, setLabelText, sortList} from '../helper/helper';
 import PropTypes from "prop-types";
+
+import ListItem from '../components/ListItem';
 import Colours from '../constants/colours';
 import ColumnsModal from '../components/ColumnsModal';
+import { setLabelText, sortList, setDateString, setAlertMessage } from '../helper/helper';
 
 // import Deliveries from './Deliveries';
 
@@ -16,7 +17,7 @@ const MainList = props => {
     const [displayModal, setDisplayModal] = useState(false);
 
     // console.log('Main list Screen',firebaseList);
-    
+
     const checkIfTodayExists = () => {//not working yet
         const oneDay = 24 * 60 * 60 * 1000; // hours * minutes * seconds * milliseconds
         const today = new Date;
@@ -27,7 +28,7 @@ const MainList = props => {
 
         let daysUntil = Math.round(Math.abs((today - lastDayOnDB) / oneDay));
 
-        Alert.alert('Days from last day on',daysUntil);
+        Alert.alert('Days from last day on', daysUntil);
 
         // while(daysUntil > 0)
         // {//while the number of days until today is positive, add a week
@@ -35,54 +36,42 @@ const MainList = props => {
         //         lastDayOnDB = new Date(firebaseList[firebaseList.length - 1].actualDay);
 
         //         lastDayOnDB.setDate(lastDayOnDB.getDate() + 1);
-                
+
         //     }
         //     console.log(daysUntil);
         // }
-        
+
     };
     // checkIfTodayExists();
 
-    const updateOrientation = () => 
-    {
-        if(orientation !== 'Asc')
-        {
+    const updateOrientation = () => {
+        if (orientation !== 'Asc') {
             setOrientation('Asc');
         }
-        else if(orientation !== 'Desc')
-        {
+        else if (orientation !== 'Desc') {
             setOrientation('Desc');
         }
     };
 
-    
-
-    const updateColumn = () => {
-        Alert.alert('Select column to sort','Days, Deliveroo or Uber', [{text:'Days', style:'cancel', onPress:() => setColumnToSort('dayNumber') }, {text:'Deliveroo', style:'cancel', onPress:() => setColumnToSort('deliveroo') }, {text:'Uber', style:'cancel', onPress:() => setColumnToSort('uber') } ] )
-    };
-
-    const openAlert = (date) => {
-        Alert.alert('Selected date', date, [{ text: 'Yay!', style: 'cancel' }]);
+    const openAlert = (selectedDay) => {
+        
+        Alert.alert(
+            setDateString(selectedDay.actualDay), //title
+            setAlertMessage(selectedDay), //main message
+            [{ text: 'Dismiss', style: 'cancel' }]//buttons
+            );
     }
-
-    
-
-    const closeModal = () => {
-        setDisplayModal(false);
-    };
 
     const getModalResult = (selectedColumn) => {
         setColumnToSort(selectedColumn);
         setDisplayModal(false);
     };
 
-    // Alert.alert();
-    
     return (
         <SafeAreaView style={styles.container}>
-            <ColumnsModal visible={displayModal} onClose={closeModal} selectColumn={getModalResult}/>
+            <ColumnsModal visible={displayModal} onClose={() => setDisplayModal(false)} selectColumn={getModalResult} />
             <View>
-                <TouchableOpacity onPress={() => updateOrientation()} onLongPress={() => {/*updateColumn();*/ setDisplayModal(true)}}>
+                <TouchableOpacity onPress={() => updateOrientation()} onLongPress={() => {/*updateColumn();*/ setDisplayModal(true) }}>
                     <Text style={styles.sortLabel}> {setLabelText(columnToSort, orientation)} </Text>
                 </TouchableOpacity>
 
@@ -93,14 +82,14 @@ const MainList = props => {
 
                     renderItem={(item) =>
                         (
-                            <TouchableOpacity onPress={() => { openAlert(item.item[columnToSort]); console.log(item.item) }}>
+                            <TouchableOpacity onPress={() => { openAlert(item.item); console.log(item.item) }}>
                                 <ListItem
                                     id={item.item.dayNumber}
                                     date={item.item.actualDay}
                                     del={item.item.deliveroo}
                                     ub={item.item.uber}
-                                    hours={item.item.hours}                                    
-                                    columnToSort = {columnToSort}
+                                    hours={item.item.hours}
+                                    columnToSort={columnToSort}
                                 />
                             </TouchableOpacity>
                         )}
@@ -125,7 +114,7 @@ const styles = StyleSheet.create({
     text: {
         fontSize: 20,
         fontStyle: 'italic',
-        
+
     },
     item: {
         marginVertical: 1,

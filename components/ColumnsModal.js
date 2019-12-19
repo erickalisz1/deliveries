@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, Text, StyleSheet, Modal, TouchableOpacity, Platform } from 'react-native';
 import Colours from '../constants/colours';
 
@@ -28,9 +28,12 @@ const ColumnsModal = (props) => {
 
     return (
         <Modal transparent={true} visible={props.visible} animationType='slide'>
+
+            {/* splitting the screen in half for nicer effect */}
             <View style={{flex:1}} ></View>
+            
             <View style={styles.screen}>
-                <Text style={styles.value}>Select column to sort:</Text>
+                <Text style={styles.modalTitle}>Select column to sort:</Text>
                 {listOfOptions}
 
                 <TouchableOpacity style={styles.cancel} onPress={props.onClose}>
@@ -43,7 +46,6 @@ const ColumnsModal = (props) => {
         </Modal>
     );
 };
-//props. setColumnToSort(selected column)
 
 const styles = StyleSheet.create({
     screen: {
@@ -57,7 +59,7 @@ const styles = StyleSheet.create({
     },
     item: {
         marginVertical: 3,
-        width: '65%',
+        width: '45%',
         padding: 10,
         borderWidth: 2,
         borderRadius: 15,
@@ -68,18 +70,22 @@ const styles = StyleSheet.create({
         color: Colours.primaryText,
         textAlign: 'center'
     },
+    modalTitle: {
+        fontSize: 24,
+        color: Colours.primaryText,
+        textAlign: 'center',
+        marginBottom:5
+    },
     cancel: {
         marginVertical: 5,
         padding: 10,
-        borderWidth: 2,
         borderRadius: 15,
-        borderColor: Colours.cancel,
+        backgroundColor: Colours.cancel,
     },
     cancelText:{
         fontSize: 24,
         color: Colours.primaryText,
         textAlign: 'center',
-        color:Colours.cancel
     }
 });
 
