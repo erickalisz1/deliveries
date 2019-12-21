@@ -1,5 +1,4 @@
 import React from 'react';
-import { Platform, Text } from 'react-native';
 
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import { createAppContainer } from 'react-navigation';
@@ -8,7 +7,6 @@ import { Ionicons } from '@expo/vector-icons';
 
 import MainList from '../screens/MainList';
 import AddDays from '../screens/AddDays';
-import UpdateDays from '../screens/UpdateDays';
 import AppSettings from '../screens/AppSettings';
 import Colours from '../constants/colours';
 
@@ -26,14 +24,6 @@ const TabNavigator = createBottomTabNavigator({
         navigationOptions: {
             tabBarLabel: 'Add Days',
             tabBarIcon: <Ionicons name='ios-add-circle' size={25} color={Colours.accent} />,
-            tabBarColor: Colours.backgroundLight
-        }
-    },
-    Update: {
-        screen: UpdateDays,
-        navigationOptions: {
-            tabBarLabel: 'Update Day',
-            tabBarIcon: <Ionicons name='ios-refresh' size={25} color={Colours.accent} />,
             tabBarColor: Colours.backgroundLight
         }
     },

@@ -34,6 +34,7 @@ const ColumnsModal = (props) => {
             
             <View style={styles.screen}>
                 <Text style={styles.modalTitle}>Select column to sort:</Text>
+
                 {listOfOptions}
 
                 <TouchableOpacity style={styles.cancel} onPress={props.onClose}>
@@ -58,7 +59,7 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end'
     },
     item: {
-        marginVertical: 3,
+        marginVertical: 5,
         width: '45%',
         padding: 10,
         borderWidth: 2,
@@ -77,7 +78,7 @@ const styles = StyleSheet.create({
         marginBottom:5
     },
     cancel: {
-        marginVertical: 5,
+        marginVertical:25,
         padding: 10,
         borderRadius: 15,
         backgroundColor: Colours.cancel,

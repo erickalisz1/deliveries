@@ -9,13 +9,16 @@ import ColumnsModal from '../components/ColumnsModal';
 import { setLabelText, sortList, setDateString, setAlertMessage } from '../helper/helper';
 
 import Deliveries from '../Deliveries';
+import UpdateDays from './UpdateDays';
 
 const MainList = props => {
 
     //display settings
     const [orientation, setOrientation] = useState('Desc');
     const [columnToSort, setColumnToSort] = useState('dayNumber');
-    const [displayModal, setDisplayModal] = useState(false);
+    const [displayColumns, setDisplayColumns] = useState(false);
+    const [displayUpdate, setDisplayUpdate] = useState(false);
+    const [selectedDay, setSelectedDay] = useState(null);
 
     //fetch data from firebase states
     const [isLoading, setIsLoading] = useState(true);
@@ -67,12 +70,8 @@ const MainList = props => {
     }
 
     const updateDay = (dayToUpdate) => {
-        props.navigation.navigate({
-            routeName: 'Update',
-            params: {
-                day: dayToUpdate
-            },
-        })
+        setSelectedDay(dayToUpdate);
+        setDisplayUpdate(true);
     };
 
     const updateOrientation = () => {
@@ -95,7 +94,7 @@ const MainList = props => {
 
     const getModalResult = (selectedColumn) => {
         setColumnToSort(selectedColumn);
-        setDisplayModal(false);
+        setDisplayColumns(false);
     };
 
     const handleRefresh = () => {
@@ -112,11 +111,12 @@ const MainList = props => {
             {isLoading ? (<Loading />) : (
                 <View>
 
-                    <ColumnsModal visible={displayModal} onClose={() => setDisplayModal(false)} selectColumn={getModalResult} />
+                    <ColumnsModal visible={displayColumns} onClose={() => setDisplayColumns(false)} selectColumn={getModalResult} />
+                    <UpdateDays visible={displayUpdate} onClose={() => setDisplayUpdate(false)} dayToUpdate={selectedDay} />
 
                     <TouchableOpacity
                         onPress={() => updateOrientation()}
-                        onLongPress={() => {/*updateColumn();*/ setDisplayModal(true) }}>
+                        onLongPress={() => setDisplayColumns(true)}>
 
                         <Text style={styles.sortLabel}> {setLabelText(columnToSort, orientation)} </Text>
 
