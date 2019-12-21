@@ -38,8 +38,7 @@ const TabNavigator = createBottomTabNavigator({
 },
     {
         tabBarOptions: {
-            style: {
-                padding: 10,
+            style: {            
                 backgroundColor: Colours.backgroundLight,
                 overflow: 'hidden'
             },

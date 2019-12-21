@@ -47,8 +47,8 @@ const UpdateDays = (props) => {
             }
           ).then(() => 
           {
-            console.log('Updated', day.actualDay);
-            Alert.alert('Updated', day.actualDay + '\nwas successfully updated\nhours set to ' + day.deliveroo);
+            console.log('Updated', formatDate(day.actualDay));
+            Alert.alert('Updated', formatDate(day.actualDay) + '\nwas successfully updated\nDeliveroo set to ' + day.deliveroo);
             setDelValue('');
 
           }).catch((error) => {
@@ -77,8 +77,8 @@ const UpdateDays = (props) => {
             }
           ).then(() => 
           {
-            console.log('Updated', day.actualDay);
-            Alert.alert('Updated', day.actualDay + '\nwas successfully updated\nhours set to ' + day.uber);
+            console.log('Updated', formatDate(day.actualDay));
+            Alert.alert('Updated', formatDate(day.actualDay) + '\nwas successfully updated\nUber set to ' + day.uber);
             setUberValue('');
 
           }).catch((error) => {
@@ -107,8 +107,8 @@ const UpdateDays = (props) => {
             }
           ).then(() => 
           {
-            console.log('Updated', day.actualDay);
-            Alert.alert('Updated', day.actualDay + '\nwas successfully updated\nhours set to ' + day.hours );
+            console.log('Updated', formatDate(day.actualDay));
+            Alert.alert('Updated', formatDate(day.actualDay) + '\nwas successfully updated\nhours set to ' + day.hours );
             setHoursValue('');
 
           }).catch((error) => {

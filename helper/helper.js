@@ -6,7 +6,7 @@ export const firebaseConfig = {
     storageBucket: "deliveries-318f4.appspot.com",
     messagingSenderId: "138527506874",
     appId: "1:138527506874:web:b77bf64674a2912ff1dd83"
-  };
+};
 
 export const setLabelText = (columnToSort, orientation) => {
 
@@ -68,6 +68,27 @@ export const formatDate = (sDate) => {
     return dd + '/' + mm + '/' + yyyy;
 };
 
+export const nextDay = (sDate) => {
+
+    // Create new Date instance
+    let date = new Date(sDate);
+
+    date.setDate(date.getDate() + 1);
+
+    let dd = date.getDate();
+    let mm = date.getMonth() + 1; //January is 0!
+    let yyyy = date.getFullYear();
+
+    if (dd < 10) {
+      dd = '0' + dd;
+    }
+    if (mm < 10) {
+        mm = '0' + mm;
+    }
+
+    return yyyy + '-' + mm + '-' + dd;
+};
+
 export const setDateString = (ActualDay) => {
     let weekday = new Date(ActualDay).toDateString().substr(0, 3);//weekday
 
@@ -89,36 +110,35 @@ export const setAlertMessage = (selectedDay) => {
     //adjusting precisions
     Per = Per.toPrecision(4);
     Total = Total >= 100 ? Total.toPrecision(5) : Total.toPrecision(4);
-    
-    if(Del > 0 && Uber > 0 && Hours > 0)
-    {//did both and know hours
+
+    if (Del > 0 && Uber > 0 && Hours > 0) {//did both and know hours
         return 'Deliveroo: $' + Del + '\n' +
-        'Uber: $' + Uber + '\n' +
-        'Total: $' + Total + '\n' +
-        'Within ' + Hours + 'h\n' +
-        '$' + Per + ' per hour';
+            'Uber: $' + Uber + '\n' +
+            'Total: $' + Total + '\n' +
+            'Within ' + Hours + 'h\n' +
+            '$' + Per + ' per hour';
     }
-    else if (Del > 0 && Uber < 1)
-    {//didnt do uber
+    else if (Del > 0 && Uber < 1) {//didnt do uber
         return 'Deliveroo: $' + Del + '\n' +
-        'Within ' + Hours + 'h\n' +
-        '$' + Per + ' per hour';
+            'Within ' + Hours + 'h\n' +
+            '$' + Per + ' per hour';
     }
-    else if (Del < 1 && Uber > 0)
-    {//didnt do deliveroo
+    else if (Del < 1 && Uber > 0) {//didnt do deliveroo
         return 'Uber: $' + Uber + '\n' +
-        'Within ' + Hours + 'h\n' +
-        '$' + Per + ' per hour';
+            'Within ' + Hours + 'h\n' +
+            '$' + Per + ' per hour';
     }
-    else if (Total > 0 && Hours < 1)
-    {//didnt record the hours
+    else if (Total > 0 && Hours < 1) {//didnt record the hours
         return 'Deliveroo: $' + Del + '\n' +
-        'Uber: $' + Uber + '\n' +
-        'Total: $' + Total;
+            'Uber: $' + Uber + '\n' +
+            'Total: $' + Total;
     }
-    
+
     else return 'You haven\'t worked on this day';
 };
+
+
+
 const checkIfTodayExists = () => {//not working yet
     const oneDay = 24 * 60 * 60 * 1000; // hours * minutes * seconds * milliseconds
     const today = new Date;

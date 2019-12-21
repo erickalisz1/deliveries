@@ -60,8 +60,6 @@ const MainList = props => {
         }).then(() => { listLoaded(localList); });
     };
 
-    
-
     const listLoaded = (loadedList) => {
         setIsLoading(false);
         setDeliveriesList(loadedList);
