@@ -1,27 +1,13 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import Colours from '../constants/colours';
+import Container from './Container';
+import LargeText from './LargeText';
 
 const Loading = () => {
     return (
-        <View style={styles.container}>
-            <Text style={styles.text}>Loading Data...</Text>
-        </View>
+        <Container dark={true}>
+            <LargeText>Loading Data...</LargeText>
+        </Container>
     );
-
 };
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: Colours.background,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    text: {
-        fontSize: 36,
-        color:Colours.primaryText       
-    }
-});
 
 export default Loading;

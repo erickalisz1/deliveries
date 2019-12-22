@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, FlatList, SafeAreaView, TouchableOpacity, Alert, Platform } from 'react-native';
+import { StyleSheet, Text, View, FlatList, TouchableOpacity, Alert, Platform } from 'react-native';
 import firebase from 'firebase';
 
 import Loading from '../components/Loading';
@@ -9,9 +9,10 @@ import ColumnsModal from '../components/ColumnsModal';
 import { setLabelText, sortList, setDateString, setAlertMessage } from '../helper/helper';
 
 import Deliveries from '../Deliveries';
-import UpdateDays from './UpdateDays';
+import UpdateDays from '../components/UpdateDays';
+import Container from '../components/Container';
 
-const MainList = props => {
+const MainList = () => {
 
     //display settings
     const [orientation, setOrientation] = useState('Desc');
@@ -26,6 +27,7 @@ const MainList = props => {
     const [isRefreshing, setIsRefreshing] = useState(false);
 
     const renderList = () => {
+
         let localList = [];
 
         console.log('calling render function at ', new Date().getMilliseconds() + 'ms')
@@ -57,28 +59,32 @@ const MainList = props => {
 
             //finished building list
             console.log('finished building list at ', new Date().getMilliseconds() + 'ms');
-        }).then(() => { listLoaded(localList); });
+        }).then(() => { listLoaded(localList) });
     };
 
+    // handling refresh
     const listLoaded = (loadedList) => {
         setIsLoading(false);
         setDeliveriesList(loadedList);
         setIsRefreshing(false);
-        
     }
 
+    //handling update day
     const updateDay = (dayToUpdate) => {
-        setSelectedDay(dayToUpdate);
         setDisplayUpdate(true);
+        setSelectedDay(dayToUpdate);        
     };
 
-    const updateOrientation = () => {
-        if (orientation !== 'Asc') {
-            setOrientation('Asc');
-        }
-        else if (orientation !== 'Desc') {
-            setOrientation('Desc');
-        }
+    const updateOrientation = () => 
+    {//switching orientations
+        // if (orientation !== 'Asc') {
+        //     setOrientation('Asc');
+        // }
+        // else if (orientation !== 'Desc') {
+        //     setOrientation('Desc');
+        // }
+
+        orientation === 'Asc' ? setOrientation('Desc') : setOrientation('Asc') ;
     };
 
     const openAlert = (selectedDay) => {
@@ -100,11 +106,13 @@ const MainList = props => {
         setIsLoading(true);
     };
 
-    // conditional rendering
+    
     isLoading ? renderList() : '';
 
     return (
-        <SafeAreaView style={styles.container}>
+        <Container dark={true}>
+
+        {/* conditional rendering */}
 
             {isLoading ? (<Loading />) : (
                 <View>
@@ -121,57 +129,35 @@ const MainList = props => {
                     </TouchableOpacity>
 
                     <FlatList
-                        style={styles.list}
                         keyExtractor={item => JSON.stringify(item.dayNumber)}
                         data={sortList(deliveriesList, columnToSort, orientation)}
                         refreshing={isRefreshing}
                         onRefresh={handleRefresh}
 
                         renderItem={(item) =>
-                            (
-                                <TouchableOpacity 
+                        (
+                            <TouchableOpacity 
                                 onPress={() => { openAlert(item.item); console.log(item.item) }}
                                 onLongPress={() => updateDay(item.item)}>
-                                    <ListItem
-                                        id={item.item.dayNumber}
-                                        date={item.item.actualDay}
-                                        del={item.item.deliveroo}
-                                        ub={item.item.uber}
-                                        hours={item.item.hours}
-                                        columnToSort={columnToSort}
-                                    />
-                                </TouchableOpacity>
-                            )}
+
+                                <ListItem
+                                    id={item.item.dayNumber}
+                                    date={item.item.actualDay}
+                                    del={item.item.deliveroo}
+                                    ub={item.item.uber}
+                                    hours={item.item.hours}
+                                    columnToSort={columnToSort}
+                                />
+                            </TouchableOpacity>
+                        )}
                     />
                 </View>
             )}
-        </SafeAreaView>
+        </Container>
     );
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: Colours.background,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    text: {
-        fontSize: 20,
-        fontStyle: 'italic',
-
-    },
-    item: {
-        marginVertical: 1,
-        minWidth: '100%',
-        padding: 10,
-        borderBottomWidth: 1,
-        borderBottomColor: '#ccc'
-
-    },
-    value: {
-        fontSize: 16,
-    },
     sortLabel: {
         textAlign: 'center',
         fontSize: 20,

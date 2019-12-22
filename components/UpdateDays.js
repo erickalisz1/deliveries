@@ -4,8 +4,9 @@ import firebase from 'firebase';
 
 import { formatDate } from '../helper/helper';
 import Colours from '../constants/colours';
-import DismissKeyboard from '../components/DismissKeyboard';
-import Container from '../components/Container';
+import DismissKeyboard from './DismissKeyboard';
+import Container from './Container';
+import HoursModal from './HoursModal';
 
 const UpdateDays = (props) => {
 
@@ -13,9 +14,12 @@ const UpdateDays = (props) => {
   const [uberValue, setUberValue] = useState('');
   const [hoursValue, setHoursValue] = useState('');
 
+  const [displayHoursModal, setDisplayHoursModal] = useState(false);
+
   let day = props.dayToUpdate;
 
-  if(day){
+  if(day)
+  {
     let date = formatDate(day.actualDay);
 
     console.log('updating:', date);
@@ -122,18 +126,25 @@ const UpdateDays = (props) => {
         }
     };
 
+    const setHours = (hours, minutes) => {
+      setDisplayHoursModal(false);
+      setHoursValue(hours+'.'+minutes);
+    };
+
     return (
       
         <Modal transparent={true} visible={props.visible} animationType='slide'>
+
+          <HoursModal visible={displayHoursModal} setHours={setHours} />
           
         <View style={{flex:3}} ></View>
         <DismissKeyboard>
         <View style={styles.container} >
         
           
-          
           <Text style={styles.title} >Updating:</Text>
 
+          
           <View style={styles.selectDay}>
               <Text style={styles.dayLabel} >{date}</Text>
           </View>
@@ -181,7 +192,8 @@ const UpdateDays = (props) => {
                 onChangeText={hoursInput}
                 value={hoursValue} 
                 keyboardType='decimal-pad' 
-                // onFocus
+                onTouchStart={() => setDisplayHoursModal(true)}
+
                 />
 
                 <TouchableOpacity style={styles.updateBtn} onPress={()=> updateHours(hoursValue)}>
@@ -215,9 +227,6 @@ const UpdateDays = (props) => {
     );
   }
   else return null;
-
-  
-
 };
 
 const styles = StyleSheet.create({
@@ -291,20 +300,3 @@ cancelText:{
 });
 
 export default UpdateDays;
-
-//INSERT / UPDATE STATEMENT
-  /*
-    firebase.database().ref('deliveries/1').set(
-      {
-        actualDay: "15-09-2019",
-        deliveroo: "37.05",
-        hours: "2.25",
-        uber: "76"
-  
-      }
-    ).then(() => {
-      console.log('INSERTED !');
-    }).catch((error) => {
-      console.log(error);
-    });
-     */

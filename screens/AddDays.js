@@ -6,6 +6,8 @@ import Colours from '../constants/colours';
 import Deliveries from '../Deliveries';
 import { formatDate, nextDay } from '../helper/helper';
 import Loading from '../components/Loading';
+import Container from '../components/Container';
+import LargeText from '../components/LargeText';
 
 const AddDays = () => {
 
@@ -63,15 +65,15 @@ const AddDays = () => {
     lastDayOnDB === null ? getLastDayOnDB() : '';
 
     return (
-        <SafeAreaView style={styles.container}>
+        <Container dark={true}>
 
             {/* conditional rendering */}
             {lastDayOnDB === null ? (<Loading />)
                 :
                 (
                     <View>
-                        <Text style={styles.text}>Last Day on Database:</Text>
-                        <Text style={styles.text}>{new Date(lastDayOnDB.actualDay).toDateString()}</Text>
+                        <LargeText>Last Day on Database:</LargeText>
+                        <LargeText>{new Date(lastDayOnDB.actualDay).toDateString()}</LargeText>
                         <TouchableOpacity style={styles.addBtn} onPress={() => addDay(nextDay(date))}>
                             <View>
                                 <Text style={styles.addBtnText}>Add {new Date(nextDay(date)).toDateString()} </Text>
@@ -81,23 +83,12 @@ const AddDays = () => {
                 )}
 
 
-        </SafeAreaView>
+        </Container>
     );
 
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: Colours.background,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    text: {
-        fontSize: 36,
-        color: Colours.primaryText,
-        textAlign: 'center'
-    },
     addBtn: {
         margin: 10,
         padding: 10,

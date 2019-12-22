@@ -1,18 +1,22 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { SafeAreaView, StyleSheet } from 'react-native';
 import Colours from '../constants/colours';
 
 const Container = props => {
-    return <View style={styles.container}>{props.children}</View>
+
+    const styles = StyleSheet.create({
+        container:{
+            flex: 1,
+            backgroundColor: props.dark === true ? Colours.background : Colours.backgroundLight,
+            alignItems: 'center',
+            justifyContent: 'center',
+            borderRadius: props.rounded === true ? 50 : 0
+        }
+    });
+
+    return <SafeAreaView style={styles.container}>{props.children}</SafeAreaView>
 };
 
-const styles = StyleSheet.create({
-    container:{
-        flex: 1,
-        backgroundColor: Colours.backgroundLight,
-        alignItems: 'center',
-        justifyContent: 'center',
-    }
-});
+
 
 export default Container;
