@@ -3,38 +3,41 @@ import { View, Text, TextInput, Button, StyleSheet, Modal, Alert, TouchableOpaci
 
 import Colours from '../constants/colours';
 import DismissKeyboard from './DismissKeyboard';
+import Container from './Container';
 import DoneButton from './buttons/DoneButton';
 import CancelButton from './buttons/CancelButton';
 import LargeText from './LargeText';
 import { inputStyle } from '../helper/Styles';
 import ModalContainer from './ModalContainer';
 
-const HoursModal = props => {
+const DeliverooModal = props => {
 
-    const [enteredHours, setEnteredHours] = useState('');//empty string argument as default, function to change the text 
-    const [enteredMinutes, setEnteredMinutes] = useState('');
+    const [enteredFees, setEnteredFees] = useState('');//empty string argument as default, function to change the text 
+    const [enteredExtras, setEnteredExtras] = useState('');
 
-    const hoursHandler = (enteredText) => {
-        setEnteredHours(enteredText);
+    const feesHandler = (enteredText) => {
+        setEnteredFees(enteredText);
     };
 
-    const minutesHandler = (enteredText) => {
-        setEnteredMinutes(enteredText);
+    const extrasHandler = (enteredText) => {
+        setEnteredExtras(enteredText);
     };
 
-    const setHours = () => {
+    const setDel = () => {
 
-        if (enteredHours !== '' && enteredMinutes !== '') {//if the provided data is ok
-            let hours = Number(enteredHours);
-            let minutes = Number(enteredMinutes) / .6;
+        if (enteredFees !== '' && enteredExtras !== '') {//if the provided data is ok
 
-            minutes = minutes > 10 ? minutes.toPrecision(2) : minutes.toPrecision(1);
+            //the whole point of this calculator is to set this value
+            let fees = Number(enteredFees) * .95;
+            let extras = Number(enteredExtras);
+            let total = Number(fees + extras);
 
-            console.log(hours, minutes);
+            total = total > 100 ? total.toPrecision(5) : total.toPrecision(4);
 
-            props.setHours(hours, minutes);
-            setEnteredHours('');
-            setEnteredMinutes('');
+            props.setDel(total);
+
+            setEnteredFees('');
+            setEnteredExtras('');
         }
         else Alert.alert('Provide Data');
 
@@ -51,29 +54,29 @@ const HoursModal = props => {
 
                     <ModalContainer smaller={true} dark={true}>
 
-                        <LargeText modal={true} >Hours Converter</LargeText>
+                        <LargeText modal={true} >Deliveroo Calculator</LargeText>
 
                         <View style={styles.horizontalContainer}>
                             <View style={styles.column}>
                                 <TextInput
-                                    placeholder='Hours'
+                                    placeholder='Order Fees'
                                     placeholderTextColor={Colours.placeholder}
                                     style={inputStyle.input}
-                                    onChangeText={hoursHandler}
-                                    value={enteredHours}
+                                    onChangeText={feesHandler}
+                                    value={enteredFees}
                                     keyboardType='decimal-pad' />
 
-                                <TouchableOpacity onPress={() => { setHours() }}>
+                                <TouchableOpacity onPress={() => { setDel() }}>
                                     <DoneButton />
                                 </TouchableOpacity>
                             </View>
                             <View style={styles.column}>
                                 <TextInput
-                                    placeholder='Minutes'
+                                    placeholder='Tips or extras'
                                     placeholderTextColor={Colours.placeholder}
                                     style={inputStyle.input}
-                                    onChangeText={minutesHandler}
-                                    value={enteredMinutes}
+                                    onChangeText={extrasHandler}
+                                    value={enteredExtras}
                                     keyboardType='decimal-pad' />
 
                                 <TouchableOpacity onPress={props.onClose}>
@@ -107,4 +110,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default HoursModal;
+export default DeliverooModal;

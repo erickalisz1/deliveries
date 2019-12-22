@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
         marginHorizontal:30,
     },
     cancelText: {
-        fontSize: 24,
+        fontSize: 20,
         color: Colours.primaryText,
         textAlign: 'center',
     }

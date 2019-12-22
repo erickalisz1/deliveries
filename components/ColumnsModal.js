@@ -50,7 +50,7 @@ const ColumnsModal = (props) => {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 10,
+        flex: 11,
         padding: Platform.OS === 'ios' ? 25 : 10,
         backgroundColor: Colours.backgroundLight,
         display: 'flex',

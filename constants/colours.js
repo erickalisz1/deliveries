@@ -7,5 +7,6 @@ export default {
     white:'#fff',
     cancel:'#f44',
     success:'#0b0',
-    selected:'#5FCFBF'
+    selected:'#5fcfbf',
+    placeholder:'#888'
 };
