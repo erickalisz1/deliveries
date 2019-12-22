@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, Modal, TouchableOpacity, Platform } from 'react-native';
 import Colours from '../constants/colours';
+import CancelButton from './buttons/CancelButton';
 
 const ColumnsModal = (props) => {
 
@@ -16,7 +17,8 @@ const ColumnsModal = (props) => {
         props.selectColumn(selectedColumn);
     };
 
-    let listOfOptions = options.map((row, index) => {
+    let listOfOptions = options.map((row, index) => 
+    {//function to better display items
         return (
             <TouchableOpacity key={index} style={styles.item} onPress={() => sortColumn(row.value)}>
                 <View>
@@ -29,18 +31,16 @@ const ColumnsModal = (props) => {
     return (
         <Modal transparent={true} visible={props.visible} animationType='slide'>
 
-            {/* splitting the screen in half for nicer effect */}
-            <View style={{flex:1}} ></View>
+            {/* splitting the container in half for nicer effect */}
+            <View style={{flex:9}} ></View>
             
-            <View style={styles.screen}>
+            <View style={styles.container}>
                 <Text style={styles.modalTitle}>Select column to sort:</Text>
 
                 {listOfOptions}
 
-                <TouchableOpacity style={styles.cancel} onPress={props.onClose}>
-                    <View>
-                        <Text style={styles.cancelText}>Cancel</Text>
-                    </View>
+                <TouchableOpacity onPress={props.onClose}>
+                    <CancelButton />
                 </TouchableOpacity>
 
             </View>
@@ -49,8 +49,8 @@ const ColumnsModal = (props) => {
 };
 
 const styles = StyleSheet.create({
-    screen: {
-        flex: 1,
+    container: {
+        flex: 10,
         padding: Platform.OS === 'ios' ? 25 : 10,
         backgroundColor: Colours.backgroundLight,
         display: 'flex',

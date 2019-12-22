@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Modal, Alert } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, Modal, Alert, TouchableOpacity } from 'react-native';
 
 import Colours from '../constants/colours';
 import DismissKeyboard from './DismissKeyboard';
 import Container from './Container';
+import DoneButton from './buttons/DoneButton';
+import CancelButton from './buttons/CancelButton';
+import LargeText from './LargeText';
+import { inputStyle } from '../helper/Styles';
 
 const HoursModal = props => {
 
@@ -20,8 +24,7 @@ const HoursModal = props => {
 
     const setHours = () => {
 
-        if (enteredHours !== '' && enteredMinutes !== '') 
-        {//if the provided data is ok
+        if (enteredHours !== '' && enteredMinutes !== '') {//if the provided data is ok
             let hours = Number(enteredHours);
             let minutes = Number(enteredMinutes) / .6;
 
@@ -38,61 +41,69 @@ const HoursModal = props => {
     };
 
     return (
+
         <Modal transparent={true} visible={props.visible} animationType='slide' >
-            
-            <View style={{ flex: 1 }} ></View>
+
             <DismissKeyboard>
+                {/* needed to wrap this whole thing into another view so my keyboard dismiss worked */}
+                <View style={{ flex: 1 }} >
+                    <View style={{ flex: 12 }} ></View>
 
-                <Container rounded={true} dark={true}>
+                    <Container modal={true} smaller={true} dark={true}>
 
-                    <Text style={styles.title}>Hours Converter</Text>
+                        <LargeText modal={true} >Hours Converter</LargeText>
 
-                    <TextInput
-                        placeholder="Hours"
-                        placeholderTextColor={Colours.accent}
-                        style={styles.input}
-                        onChangeText={hoursHandler}
-                        value={enteredHours}
-                        keyboardType='decimal-pad' />
-                    <TextInput
-                        placeholder="Minutes"
-                        placeholderTextColor={Colours.accent}
-                        style={styles.input}
-                        onChangeText={minutesHandler}
-                        value={enteredMinutes}
-                        keyboardType='decimal-pad' />
+                        <View style={styles.horizontalContainer}>
+                            <View style={styles.column}>
+                                <TextInput
+                                    placeholder='Hours'
+                                    placeholderTextColor={Colours.accent}
+                                    style={inputStyle.input}
+                                    onChangeText={hoursHandler}
+                                    value={enteredHours}
+                                    keyboardType='decimal-pad' />
 
-                    <Button title="Ok" onPress={() => { setHours() }} />
-                </Container>
+                                <TouchableOpacity onPress={() => { setHours() }}>
+                                    <DoneButton />
+                                </TouchableOpacity>
+                            </View>
+                            <View style={styles.column}>
+                                <TextInput
+                                    placeholder='Minutes'
+                                    placeholderTextColor={Colours.accent}
+                                    style={inputStyle.input}
+                                    onChangeText={minutesHandler}
+                                    value={enteredMinutes}
+                                    keyboardType='decimal-pad' />
+
+                                <TouchableOpacity onPress={props.onClose}>
+                                    <CancelButton />
+                                </TouchableOpacity>
+                            </View>
+
+
+                        </View>
+
+                    </Container>
+
+                    <View style={{ flex: 12 }} ></View>
+                </View>
             </DismissKeyboard>
-            <View style={{ flex: 1 }} ></View>
-            
         </Modal>
     );
 };
 
 const styles = StyleSheet.create({
-    title: {
-        color: Colours.primaryText,
-        fontSize: 24,
-        margin: 20
-    },
-    input: {
-        borderBottomColor: Colours.selected,
-        borderBottomWidth: 1,
-        textAlign: "center",
-        fontSize: 20,
-        color: Colours.primaryText,
-        margin:10
-    },
-
-    buttons: {
+    horizontalContainer: {
+        display: 'flex',
         flexDirection: 'row',
-        justifyContent: 'space-around',
-        width: '60%',
+        maxWidth: '95%',
+        marginTop: 15,
     },
-    button: {
-        width: '40%'
+    column: {
+        display: 'flex',
+        flexDirection: 'column',
+        flex:1
     },
 });
 

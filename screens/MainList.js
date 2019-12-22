@@ -42,7 +42,7 @@ const MainList = () => {
 
                 let id = childSnapshot.key;
 
-                delivery.dayNumber = id;
+                delivery.dayNumber = Number(id);
                 delivery.actualDay = childSnapshot.val().actualDay;
                 delivery.deliveroo = childSnapshot.val().deliveroo;
                 delivery.uber = childSnapshot.val().uber;

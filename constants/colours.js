@@ -6,5 +6,6 @@ export default {
     dark:'#8f6b1a',
     white:'#fff',
     cancel:'#f44',
-    selected:'#5fcfbf'
+    success:'#0b0',
+    selected:'#5FCFBF'
 };
