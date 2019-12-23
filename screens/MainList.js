@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, FlatList, TouchableOpacity, Alert, Platform } from 'react-native';
 import firebase from 'firebase';
 
+//components
 import Loading from '../components/Loading';
 import ListItem from '../components/ListItem';
 import Colours from '../constants/colours';
 import ColumnsModal from '../components/ColumnsModal';
-import { setLabelText, sortList, setDateString, setAlertMessage } from '../helper/helper';
+// functions helper
+import { setLabelText, sortList, setDateString, setAlertMessage, checkIfTodayExists } from '../helper/helper';
 
 import Deliveries from '../Deliveries';
 import UpdateDays from '../components/UpdateDays';
@@ -30,7 +32,9 @@ const MainList = () => {
 
         let localList = [];
 
-        console.log('calling render function at ', new Date().getMilliseconds() + 'ms')
+        let start = new Date();
+
+        console.log('Fetching List...');
 
         let query = firebase.database().ref('deliveries/').orderByKey();
 
@@ -58,7 +62,9 @@ const MainList = () => {
             });
 
             //finished building list
-            console.log('finished building list at ', new Date().getMilliseconds() + 'ms');
+            let finish = new Date();
+            console.log((finish - start), 'ms to fetch list');
+            
         }).then(() => { listLoaded(localList) });
     };
 
@@ -66,24 +72,18 @@ const MainList = () => {
     const listLoaded = (loadedList) => {
         setIsLoading(false);
         setDeliveriesList(loadedList);
-        setIsRefreshing(false);
+        setIsRefreshing(false);  
+        checkIfTodayExists(loadedList);    
     }
 
     //handling update day
     const updateDay = (dayToUpdate) => {
         setDisplayUpdate(true);
-        setSelectedDay(dayToUpdate);        
+        setSelectedDay(dayToUpdate);  
     };
 
-    const updateOrientation = () => 
+    const toggleOrientation = () => 
     {//switching orientations
-        // if (orientation !== 'Asc') {
-        //     setOrientation('Asc');
-        // }
-        // else if (orientation !== 'Desc') {
-        //     setOrientation('Desc');
-        // }
-
         orientation === 'Asc' ? setOrientation('Desc') : setOrientation('Asc') ;
     };
 
@@ -105,7 +105,6 @@ const MainList = () => {
         setIsRefreshing(true);
         setIsLoading(true);
     };
-
     
     isLoading ? renderList() : '';
 
@@ -121,7 +120,7 @@ const MainList = () => {
                     <UpdateDays visible={displayUpdate} onClose={() => setDisplayUpdate(false)} dayToUpdate={selectedDay} />
 
                     <TouchableOpacity
-                        onPress={() => updateOrientation()}
+                        onPress={() => toggleOrientation()}
                         onLongPress={() => setDisplayColumns(true)}>
 
                         <Text style={styles.sortLabel}> {setLabelText(columnToSort, orientation)} </Text>

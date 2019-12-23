@@ -6,7 +6,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 
 import MainList from '../screens/MainList';
-import AddDays from '../screens/AddDays';
+import AppHelp from '../screens/AppHelp';
 import AppSettings from '../screens/AppSettings';
 import Colours from '../constants/colours';
 
@@ -19,11 +19,11 @@ const TabNavigator = createBottomTabNavigator({
             tabBarColor: Colours.backgroundLight,
         }
     },
-    Add: {
-        screen: AddDays,
+    Help: {
+        screen: AppHelp,
         navigationOptions: {
-            tabBarLabel: 'Add Days',
-            tabBarIcon: <Ionicons name='ios-add-circle' size={25} color={Colours.accent} />,
+            tabBarLabel: 'Help',
+            tabBarIcon: <Ionicons name='ios-help-circle-outline' size={25} color={Colours.accent} />,
             tabBarColor: Colours.backgroundLight
         }
     },

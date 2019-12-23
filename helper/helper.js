@@ -1,3 +1,6 @@
+import { Alert } from 'react-native';
+import firebase from 'firebase';
+
 export const firebaseConfig = {
     apiKey: "AIzaSyBtFpyI8rFywqiHm3rnL2qbS3L4Dl_Y8sk",
     authDomain: "deliveries-318f4.firebaseapp.com",
@@ -111,24 +114,28 @@ export const setAlertMessage = (selectedDay) => {
     Per = Per.toPrecision(4);
     Total = Total >= 100 ? Total.toPrecision(5) : Total.toPrecision(4);
 
-    if (Del > 0 && Uber > 0 && Hours > 0) {//did both and know hours
+    if (Del > 0 && Uber > 0 && Hours > 0) 
+    {//did both and know hours
         return 'Deliveroo: $' + Del + '\n' +
             'Uber: $' + Uber + '\n' +
             'Total: $' + Total + '\n' +
             'Within ' + Hours + 'h\n' +
             '$' + Per + ' per hour';
     }
-    else if (Del > 0 && Uber < 1) {//didnt do uber
+    else if (Del > 0 && Uber < 1) 
+    {//didnt do uber
         return 'Deliveroo: $' + Del + '\n' +
             'Within ' + Hours + 'h\n' +
             '$' + Per + ' per hour';
     }
-    else if (Del < 1 && Uber > 0) {//didnt do deliveroo
+    else if (Del < 1 && Uber > 0) 
+    {//didnt do deliveroo
         return 'Uber: $' + Uber + '\n' +
             'Within ' + Hours + 'h\n' +
             '$' + Per + ' per hour';
     }
-    else if (Total > 0 && Hours < 1) {//didnt record the hours
+    else if (Total > 0 && Hours < 1) 
+    {//didnt record the hours
         return 'Deliveroo: $' + Del + '\n' +
             'Uber: $' + Uber + '\n' +
             'Total: $' + Total;
@@ -139,28 +146,47 @@ export const setAlertMessage = (selectedDay) => {
 
 
 
-const checkIfTodayExists = () => {//not working yet
-    const oneDay = 24 * 60 * 60 * 1000; // hours * minutes * seconds * milliseconds
+export const checkIfTodayExists = (list) => {
+    
     const today = new Date;
+    let lastDateOnDB = new Date(list[0].actualDay);
 
-    // console.log(firebaseList[firebaseList.length - 1]);
+    let lastDayOnDB = list[0].dayNumber;
 
-    const lastDayOnDB = new Date(firebaseList[0].actualDay);
+    let daysUntil = today - lastDateOnDB;
 
-    let daysUntil = Math.round(Math.abs((today - lastDayOnDB) / oneDay));
+    while(daysUntil > 0)
+    {//while the last day on the DB is in the future
+        for(let i = 0; i < 7; i++)
+        {//add one week
 
-    Alert.alert('Days from last day on', daysUntil);
+            //incrementing both date and ID for them to be added
+            lastDateOnDB = nextDay(lastDateOnDB);
+            lastDayOnDB++;
 
-    // while(daysUntil > 0)
-    // {//while the number of days until today is positive, add a week
-    //     for(let i = 0; i < 7; i++){
-    //         lastDayOnDB = new Date(firebaseList[firebaseList.length - 1].actualDay);
+            addDay(lastDayOnDB, lastDateOnDB);
+        }
+        //performing calculation once again to see if we need to go again
+        daysUntil = today - lastDateOnDB;
 
-    //         lastDayOnDB.setDate(lastDayOnDB.getDate() + 1);
-
-    //     }
-    //     console.log(daysUntil);
-    // }
-
+        Alert.alert('Success','The following week has been added to the DB');
+    }
 };
-// checkIfTodayExists();
+
+const addDay = (dayNumber, actualDay) => {
+
+    firebase.database().ref('deliveries/' + dayNumber).set(
+        {
+            actualDay: actualDay,
+            deliveroo: 0,
+            hours: 0,
+            uber: 0
+        }
+    ).then(() => {
+        console.log('Added', formatDate(actualDay));
+
+    }).catch((error) => {
+        console.log(error);
+        Alert.alert('Error', error);
+    });
+};
