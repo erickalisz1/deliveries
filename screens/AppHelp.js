@@ -1,27 +1,72 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import Colours from '../constants/colours';
+import React, { useState } from 'react';
+import { FlatList, TouchableOpacity } from 'react-native';
+import LargeText from '../components/LargeText';
+import Container from '../components/Container';
+import HelpModal from '../components/HelpModal';
+import HelpItem from '../components/HelpItem';
 
 const AppHelp = () => {
+
+    const [displayHelpModal, setDisplayHelpModal] = useState(false);
+    const [itemSelected, setItemSelected] = useState(null);
+
+    let items = [
+        {
+            display:'Adding days to your list', 
+            description:'To add days to your list is vey simple:\nYou don\'t have to do it! Once you open the app, it will check if today exists and if it doesn\'t, the app will add the following week for you\n:-D'
+        },
+        {
+            display:'Updating days', 
+            description:'To update a day, simply tap and hold it on the main list and input the data related to the day you selected.'
+        },
+        {
+            display:'Calculating deliveroo earnings', 
+            description:'To know the exact amount you\'ve earned when working with deliveroo, simply tap the text box and input your order fees and the tips or extras you\'ve earned. The app will then calculate the exact amount you will earn.'
+        },
+        {
+            display:'Calculating hours worked',
+            description:'To properly calculate how much you have earned per hour, we need the total time to be decimal. To calculate it, simply tap the hours text box upon updating and provide the amount of hours and minutes you\'ve worked and the app will do the rest.'
+        },
+        {
+            display:'Chaging list sort', 
+            description:'To change how the main list is sorted, simply tap and hold the top label and select the value you wish to sort the list with.'
+        },
+        {
+            display:'Toggling list orientation', 
+            description:'To change the list orientation, simply tap the label at the top of the main list and the orientation will be toggled.'
+        },
+        {
+            display:'Dark mode', 
+            description:'To activate or deactivate dark mode, simply go to the Settings tab and switch it on or off.'
+        },
+    ];
+
     return (
-        <View style={styles.container}>
-            <Text style={styles.text}>App Help Screen</Text>
-        </View>
+        <Container dark={true}>
+
+            <HelpModal visible={displayHelpModal} onClose={() => setDisplayHelpModal(false)} item={itemSelected} />
+
+            <LargeText modal={true}>What would you like help with?</LargeText>
+            <FlatList 
+                keyExtractor={item => item.display}
+                data={items}
+                style={{maxWidth:'95%'}}
+
+                renderItem={(item) =>
+                (
+                    <TouchableOpacity 
+                        onPress={() => {setItemSelected(item.item); setDisplayHelpModal(true);}}>
+
+                        <HelpItem
+                            title={item.item.display}
+                        />
+                    </TouchableOpacity>
+                )}
+            />
+        </Container>
     );
 
 };
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: Colours.background,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    text: {
-        fontSize: 36,
-        color:Colours.primaryText       
-    }
-});
 
 export default AppHelp;

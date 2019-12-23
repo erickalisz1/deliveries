@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, Modal, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Modal, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 
 import { formatDate } from '../helper/helper';
 import { updateDeliveroo, updateUber, updateHours } from '../helper/updates'
@@ -12,6 +12,7 @@ import UpdateButton from './buttons/UpdateButton';
 import LargeText from './LargeText';
 import { inputStyle } from '../helper/Styles';
 import ModalContainer from './ModalContainer';
+import ModalSpace from './ModalSpace';
 
 const UpdateDays = (props) => {
 
@@ -50,7 +51,7 @@ const UpdateDays = (props) => {
 
     const setDel = (value) => {
       setDisplayDelModal(false);
-      setDelValue(value+'');
+      setDelValue(value + '');
     };
 
     return (
@@ -64,9 +65,7 @@ const UpdateDays = (props) => {
           {/* needed to wrap this whole thing into another view so my keyboard dismiss worked */}
           <View style={{ flex: 1 }} >
 
-{/* TODO: make this view 9 a touchable without feedback so we can close it when touching outside modal */}
-
-            <View style={{ flex: 9 }} ></View>
+            <ModalSpace onClose={props.onClose} flex={9} />
 
             <ModalContainer dark={false} >
 
@@ -89,8 +88,8 @@ const UpdateDays = (props) => {
                     style={inputStyle.input}
                     onChangeText={deliverooInput}
                     value={delValue}
-                    keyboardType='decimal-pad'                     
-                    onTouchStart={() => setDisplayDelModal(true)}/>
+                    keyboardType='decimal-pad'
+                    onTouchStart={() => setDisplayDelModal(true)} />
 
                   {/* moved the update statements to another file for cleaner code */}
 
@@ -135,7 +134,7 @@ const UpdateDays = (props) => {
               </View>
 
 
-              <TouchableOpacity onPress={props.onClose} style={{marginTop:10}}>
+              <TouchableOpacity onPress={props.onClose} style={{ marginTop: 10 }}>
                 <DoneButton />
               </TouchableOpacity>
 
@@ -143,7 +142,8 @@ const UpdateDays = (props) => {
 
             </ModalContainer>
 
-            <View style={{ flex: 9 }} ></View>
+            <ModalSpace onClose={props.onClose} flex={9} />
+
           </View>
         </DismissKeyboard>
       </Modal>
@@ -160,18 +160,18 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     borderWidth: 2,
     borderColor: Colours.accent,
-    marginLeft:5
+    marginLeft: 5
   },
   dayLabel: {
     color: Colours.primaryText,
     fontSize: 20,
-    textAlign:'center'
+    textAlign: 'center'
   },
   row: {
     display: 'flex',
     flexDirection: 'row',
     marginTop: 20,
-    justifyContent:'space-between'
+    justifyContent: 'space-between'
   },
   column: {
     display: 'flex',

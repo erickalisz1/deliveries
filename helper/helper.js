@@ -146,31 +146,43 @@ export const setAlertMessage = (selectedDay) => {
 
 
 
-export const checkIfTodayExists = (list) => {
+export const checkIfTodayExists = (list, refreshing) => {
     
-    const today = new Date;
-    let lastDateOnDB = new Date(list[0].actualDay);
+    if(refreshing)
+    {
+        //refreshing is a boolean to see if the app is being refreshed. if it is, don't execute this block; 
+        //it must only execute upon first opening the app
 
-    let lastDayOnDB = list[0].dayNumber;
-
-    let daysUntil = today - lastDateOnDB;
-
-    while(daysUntil > 0)
-    {//while the last day on the DB is in the future
-        for(let i = 0; i < 7; i++)
-        {//add one week
-
-            //incrementing both date and ID for them to be added
-            lastDateOnDB = nextDay(lastDateOnDB);
-            lastDayOnDB++;
-
-            addDay(lastDayOnDB, lastDateOnDB);
+        const today = new Date;
+        let lastDateOnDB = new Date(list[0].actualDay);
+    
+        let lastDayOnDB = list[0].dayNumber;
+    
+        let daysUntil = today - lastDateOnDB;
+        let count = 0;
+    
+        while(daysUntil > 0)
+        {//while the last day on the DB is in the future
+            for(let i = 0; i < 7; i++)
+            {//add one week
+    
+                //incrementing both date and ID for them to be added
+                lastDateOnDB = nextDay(lastDateOnDB);
+                lastDayOnDB++;
+    
+                count++;
+                addDay(lastDayOnDB, lastDateOnDB);
+            }
+            //performing calculation once again to see if we need to go again
+            daysUntil = today - lastDateOnDB;
+            
         }
-        //performing calculation once again to see if we need to go again
-        daysUntil = today - lastDateOnDB;
-
-        Alert.alert('Success','The following week has been added to the DB');
+        count === 0 ? (Alert.alert('Your app is up to date!')) : (Alert.alert('Success','The following week has been added to the DB'));
+    
+        //returning false to set the state on the main list and ensure that this doesn't execute again
+        return false;
     }
+    
 };
 
 const addDay = (dayNumber, actualDay) => {

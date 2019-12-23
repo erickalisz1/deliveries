@@ -2,10 +2,15 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import Colours from '../../constants/colours';
 
-const DoneButton = () => {
+const DoneButton = (props) => {
+
+    let text;
+    props.text ? (text = props.text) : (text = 'Done')
+    
+
     return (
         <View style={styles.done}>
-            <Text style={styles.doneText}>Done</Text>
+            <Text style={styles.doneText}>{text}</Text>
         </View>
     );
 };

@@ -22,6 +22,7 @@ const MainList = () => {
     const [displayColumns, setDisplayColumns] = useState(false);
     const [displayUpdate, setDisplayUpdate] = useState(false);
     const [selectedDay, setSelectedDay] = useState(null);
+    const [isOpeningApp, setIsOpeningApp] = useState(true);
 
     //fetch data from firebase states
     const [isLoading, setIsLoading] = useState(true);
@@ -63,8 +64,8 @@ const MainList = () => {
 
             //finished building list
             let finish = new Date();
-            console.log((finish - start), 'ms to fetch list');
-            
+            console.log((finish - start) + 'ms to fetch list');
+
         }).then(() => { listLoaded(localList) });
     };
 
@@ -73,7 +74,7 @@ const MainList = () => {
         setIsLoading(false);
         setDeliveriesList(loadedList);
         setIsRefreshing(false);  
-        checkIfTodayExists(loadedList);    
+        setIsOpeningApp(checkIfTodayExists(loadedList, isOpeningApp));    
     }
 
     //handling update day

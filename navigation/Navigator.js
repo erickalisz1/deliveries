@@ -42,7 +42,7 @@ const TabNavigator = createBottomTabNavigator({
                 backgroundColor: Colours.backgroundLight,
                 overflow: 'hidden'
             },
-            activeTintColor: Colours.selected
+            activeTintColor: Colours.success
         }
     });
 

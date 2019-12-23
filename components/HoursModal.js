@@ -8,6 +8,7 @@ import CancelButton from './buttons/CancelButton';
 import LargeText from './LargeText';
 import { inputStyle } from '../helper/Styles';
 import ModalContainer from './ModalContainer';
+import ModalSpace from './ModalSpace';
 
 const HoursModal = props => {
 
@@ -24,7 +25,9 @@ const HoursModal = props => {
 
     const setHours = () => {
 
-        if (enteredHours !== '' && enteredMinutes !== '') {//if the provided data is ok
+        enteredMinutes === '' ? setEnteredMinutes(0) : '';
+
+        if (enteredHours !== '') {//if the provided data is ok
             let hours = Number(enteredHours);
             let minutes = Number(enteredMinutes) / .6;
 
@@ -47,7 +50,7 @@ const HoursModal = props => {
             <DismissKeyboard>
                 {/* needed to wrap this whole thing into another view so my keyboard dismiss worked */}
                 <View style={{ flex: 1 }} >
-                    <View style={{ flex: 12 }} ></View>
+                <ModalSpace onClose={props.onClose} flex={12} />
 
                     <ModalContainer smaller={true} dark={true}>
 
@@ -86,7 +89,7 @@ const HoursModal = props => {
 
                     </ModalContainer>
 
-                    <View style={{ flex: 12 }} ></View>
+                    <ModalSpace onClose={props.onClose} flex={12} />
                 </View>
             </DismissKeyboard>
         </Modal>

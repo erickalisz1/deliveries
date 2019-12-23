@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
         minWidth: '95%',
         padding: 10,
         borderBottomWidth: 1,
-        borderBottomColor: Colours.white,
+        borderBottomColor: Colours.accent,
     },
     value: {
         fontSize: 16,

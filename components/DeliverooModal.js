@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Modal, Alert, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, Modal, Alert, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 
 import Colours from '../constants/colours';
 import DismissKeyboard from './DismissKeyboard';
@@ -9,6 +9,7 @@ import CancelButton from './buttons/CancelButton';
 import LargeText from './LargeText';
 import { inputStyle } from '../helper/Styles';
 import ModalContainer from './ModalContainer';
+import ModalSpace from './ModalSpace';
 
 const DeliverooModal = props => {
 
@@ -25,7 +26,9 @@ const DeliverooModal = props => {
 
     const setDel = () => {
 
-        if (enteredFees !== '' && enteredExtras !== '') {//if the provided data is ok
+        enteredExtras === '' ? setEnteredExtras(0) : '';
+
+        if (enteredFees !== '') {//if the provided data is ok
 
             //the whole point of this calculator is to set this value
             let fees = Number(enteredFees) * .95;
@@ -50,7 +53,8 @@ const DeliverooModal = props => {
             <DismissKeyboard>
                 {/* needed to wrap this whole thing into another view so my keyboard dismiss worked */}
                 <View style={{ flex: 1 }} >
-                    <View style={{ flex: 12 }} ></View>
+
+                    <ModalSpace onClose={props.onClose} flex={12} />
 
                     <ModalContainer smaller={true} dark={true}>
 
@@ -89,7 +93,8 @@ const DeliverooModal = props => {
 
                     </ModalContainer>
 
-                    <View style={{ flex: 12 }} ></View>
+                    <ModalSpace onClose={props.onClose} flex={12} />
+
                 </View>
             </DismissKeyboard>
         </Modal>
@@ -106,7 +111,7 @@ const styles = StyleSheet.create({
     column: {
         display: 'flex',
         flexDirection: 'column',
-        flex:1
+        flex: 1
     },
 });
 
