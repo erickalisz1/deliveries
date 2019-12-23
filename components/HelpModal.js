@@ -16,7 +16,7 @@ const HelpModal = (props) => {
             <Modal transparent={true} visible={props.visible} animationType='slide'>
     
     
-                <ModalSpace onClose={props.onClose} flex={9} />
+                <ModalSpace onClose={props.onClose} flex={props.item.flex} />
     
                 <ModalContainer dark={false} >
     
@@ -29,13 +29,13 @@ const HelpModal = (props) => {
                     </View>
     
     
-                    <TouchableOpacity onPress={props.onClose}>
+                    <TouchableOpacity onPress={props.onClose} style={styles.row}>
                         <DoneButton text='Got it' />
                     </TouchableOpacity>
     
                 </ModalContainer>
     
-                <ModalSpace onClose={props.onClose} flex={9} />
+                <ModalSpace onClose={props.onClose} flex={props.item.flex} />
             </Modal>
     
     
@@ -46,10 +46,8 @@ const HelpModal = (props) => {
 
 const styles = StyleSheet.create({
     row: {
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        paddingHorizontal:15
+        paddingHorizontal:15,
+        margin:0
     },
     description:{
         color:Colours.primaryText,

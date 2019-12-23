@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, Modal, TouchableOpacity, Platform } from 'react-native';
 import Colours from '../constants/colours';
 import CancelButton from './buttons/CancelButton';
+import ModalSpace from './ModalSpace';
 
 const ColumnsModal = (props) => {
 
@@ -31,8 +32,7 @@ const ColumnsModal = (props) => {
     return (
         <Modal transparent={true} visible={props.visible} animationType='slide'>
 
-            {/* splitting the container in half for nicer effect */}
-            <View style={{flex:9}} ></View>
+            <ModalSpace onClose={props.onClose} flex={Platform.OS === 'ios' ? 8 : 6} />
             
             <View style={styles.container}>
                 <Text style={styles.modalTitle}>Select column to sort:</Text>
@@ -50,7 +50,7 @@ const ColumnsModal = (props) => {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 11,
+        flex: 10,
         padding: Platform.OS === 'ios' ? 25 : 10,
         backgroundColor: Colours.backgroundLight,
         display: 'flex',
@@ -77,17 +77,6 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginBottom:5
     },
-    cancel: {
-        marginVertical:25,
-        padding: 10,
-        borderRadius: 15,
-        backgroundColor: Colours.cancel,
-    },
-    cancelText:{
-        fontSize: 24,
-        color: Colours.primaryText,
-        textAlign: 'center',
-    }
 });
 
 export default ColumnsModal;

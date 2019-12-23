@@ -1,5 +1,5 @@
 import React from 'react';
-import { SafeAreaView, StyleSheet } from 'react-native';
+import { SafeAreaView, StyleSheet, Platform } from 'react-native';
 import Colours from '../constants/colours';
 
 const ModalContainer = props => {
@@ -13,7 +13,8 @@ const ModalContainer = props => {
             borderRadius:50,
             borderWidth:  1,
             borderColor: Colours.primaryText,
-            marginHorizontal: props.smaller === true ? 35 : 20            
+            marginHorizontal: props.smaller === true ? 35 : 20,
+            minHeight: Platform.OS === 'android' ? 150 : 0
         }
     });
 

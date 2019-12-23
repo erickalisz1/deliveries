@@ -42,8 +42,6 @@ const UpdateDays = (props) => {
       setHoursValue(enteredValue);
     };
 
-
-
     const setHours = (hours, minutes) => {
       setDisplayHoursModal(false);
       setHoursValue(hours + '.' + minutes);
@@ -65,7 +63,7 @@ const UpdateDays = (props) => {
           {/* needed to wrap this whole thing into another view so my keyboard dismiss worked */}
           <View style={{ flex: 1 }} >
 
-            <ModalSpace onClose={props.onClose} flex={9} />
+            <ModalSpace onClose={props.onClose} flex={8} />
 
             <ModalContainer dark={false} >
 
@@ -107,7 +105,7 @@ const UpdateDays = (props) => {
                     value={uberValue}
                     keyboardType='decimal-pad' />
 
-                  <TouchableOpacity onPress={() => setUberValue(updateUber(day, uberValue))}>
+                  <TouchableOpacity onPress={() => {console.log('uber:',uberValue); setUberValue(updateUber(day, uberValue))}}>
                     <UpdateButton />
                   </TouchableOpacity>
                 </View>
@@ -142,7 +140,7 @@ const UpdateDays = (props) => {
 
             </ModalContainer>
 
-            <ModalSpace onClose={props.onClose} flex={9} />
+            <ModalSpace onClose={props.onClose} flex={8} />
 
           </View>
         </DismissKeyboard>
@@ -171,6 +169,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     marginTop: 20,
+    alignItems:'center',
     justifyContent: 'space-between'
   },
   column: {

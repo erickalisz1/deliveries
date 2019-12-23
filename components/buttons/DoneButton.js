@@ -17,7 +17,7 @@ const DoneButton = (props) => {
 
 const styles = StyleSheet.create({
     done: {
-        marginVertical: 25,
+        marginTop: 25,
         padding: 10,
         borderRadius: 15,
         backgroundColor: Colours.success,

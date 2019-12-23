@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
       },
       updateBtnText: {
         fontSize: 20,
-        color: Colours.accent,
+        color: Colours.black,
         textAlign: 'center',
       },
 

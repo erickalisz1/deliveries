@@ -4,7 +4,7 @@ import { formatDate } from './helper';
 
 export const updateDeliveroo = (day,value) => {
 
-    if (JSON.stringify(value).length > 0) {//if theres data
+    if (value.length >= 1) {//if theres data
       day.deliveroo = Number(value);
 
       firebase.database().ref('deliveries/' + day.dayNumber).set(
@@ -16,7 +16,7 @@ export const updateDeliveroo = (day,value) => {
         }
       ).then(() => {
         console.log('Updated', formatDate(day.actualDay));
-        Alert.alert('Updated', formatDate(day.actualDay) + 'was successfully updated\nDeliveroo set to ' + day.deliveroo);
+        Alert.alert('Updated '+ formatDate(day.actualDay), 'Deliveroo set to ' + day.deliveroo);
 
       }).catch((error) => {
         console.log(error);
@@ -31,7 +31,7 @@ export const updateDeliveroo = (day,value) => {
   };
 
  export const updateUber = (day, value) => {
-    if (JSON.stringify(value).length > 0) {//if theres data
+    if (value.length >= 1) {//if theres data
       day.uber = Number(value);
 
       firebase.database().ref('deliveries/' + day.dayNumber).set(
@@ -43,8 +43,7 @@ export const updateDeliveroo = (day,value) => {
         }
       ).then(() => {
         console.log('Updated', formatDate(day.actualDay));
-        Alert.alert('Updated', formatDate(day.actualDay) + 'was successfully updated\nUber set to ' + day.uber);
-        
+        Alert.alert('Updated '+ formatDate(day.actualDay), 'Uber set to ' + day.uber);
 
       }).catch((error) => {
         console.log(error);
@@ -59,7 +58,7 @@ export const updateDeliveroo = (day,value) => {
   };
 
  export const updateHours = (day, value) => {
-    if (JSON.stringify(value).length > 0) {//if theres data
+    if (value.length >= 1) {//if theres data
       day.hours = Number(value);
 
       firebase.database().ref('deliveries/' + day.dayNumber).set(
@@ -71,7 +70,7 @@ export const updateDeliveroo = (day,value) => {
         }
       ).then(() => {
         console.log('Updated', formatDate(day.actualDay));
-        Alert.alert('Updated', formatDate(day.actualDay) + 'was successfully updated\nhours set to ' + day.hours);
+        Alert.alert('Updated '+ formatDate(day.actualDay), 'Hours set to ' + day.hours);
 
       }).catch((error) => {
         console.log(error);
