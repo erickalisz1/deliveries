@@ -1,8 +1,8 @@
 import React from 'react';
 import { View, Text, StyleSheet, Modal, TouchableOpacity, Platform } from 'react-native';
-import Colours from '../constants/colours';
-import ModalSpace from './ModalSpace';
-import MyButton from './MyButton';
+import Colours from '../../assets/constants/colours';
+import ModalSpace from '../modals/ModalSpace';
+import MyButton from '../MyButton';
 
 const ColumnsModal = (props) => {
 

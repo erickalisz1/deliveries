@@ -2,7 +2,7 @@ import React from 'react';
 import firebase from 'firebase';
 
 import TabNavigator from './navigation/Navigator';
-import { firebaseConfig } from './helper/helper';
+import { firebaseConfig } from './assets/helper/helper';
 
 // // Initialize Firebase
 firebase.initializeApp(firebaseConfig);

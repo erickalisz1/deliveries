@@ -5,13 +5,13 @@ import firebase from 'firebase';
 //components
 import Loading from '../components/Loading';
 import ListItem from '../components/ListItem';
-import Colours from '../constants/colours';
-import ColumnsModal from '../components/ColumnsModal';
+import Colours from '../assets/constants/colours';
+import ColumnsModal from '../components/modals/ColumnsModal';
 // functions helper
-import { setLabelText, sortList, setDateString, setAlertMessage, checkIfTodayExists } from '../helper/helper';
+import { setLabelText, sortList, setDateString, setAlertMessage, checkIfTodayExists } from '../assets/helper/helper';
 
 import Deliveries from '../Deliveries';
-import UpdateDays from '../components/UpdateDays';
+import UpdateDays from '../components/modals/UpdateDays';
 import Container from '../components/Container';
 
 const MainList = () => {

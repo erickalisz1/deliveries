@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-import Colours from '../constants/colours';
+import Colours from '../assets/constants/colours';
 
 const HelpItem = (props) => {
 

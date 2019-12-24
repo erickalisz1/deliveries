@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { formatDate } from '../helper/helper';
+import { formatDate } from '../assets/helper/helper';
 // import Deliveries from '../Deliveries';
-import Colours from '../constants/colours';
+import Colours from '../assets/constants/colours';
 
 const ListItem = (props) => {
 

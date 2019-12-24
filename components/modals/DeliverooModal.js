@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Modal, Alert, TouchableOpacity, Platform } from 'react-native';
+import { View, TextInput, StyleSheet, Modal, Alert, TouchableOpacity, Platform } from 'react-native';
 
-import Colours from '../constants/colours';
-import DismissKeyboard from './DismissKeyboard';
-import Container from './Container';
-import LargeText from './LargeText';
-import { inputStyle } from '../helper/Styles';
+import Colours from '../../assets/constants/colours';
+import DismissKeyboard from '../DismissKeyboard';
+import LargeText from '../LargeText';
+import { inputStyle } from '../../assets/helper/Styles';
 import ModalContainer from './ModalContainer';
 import ModalSpace from './ModalSpace';
-import MyButton from './MyButton';
+import MyButton from '../MyButton';
 
 const DeliverooModal = props => {
 

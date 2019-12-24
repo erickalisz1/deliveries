@@ -1,6 +1,5 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import Colours from '../constants/colours';
 import Container from '../components/Container';
 import LargeText from '../components/LargeText';
 

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { FlatList, TouchableOpacity, Platform } from 'react-native';
 import LargeText from '../components/LargeText';
 import Container from '../components/Container';
-import HelpModal from '../components/HelpModal';
+import HelpModal from '../components//modals/HelpModal';
 import HelpItem from '../components/HelpItem';
 
 const AppHelp = () => {

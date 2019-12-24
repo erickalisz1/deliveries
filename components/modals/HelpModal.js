@@ -1,11 +1,11 @@
 import React from 'react';
 import { StyleSheet, Text, View, Modal, TouchableOpacity } from 'react-native';
 
-import Colours from '../constants/colours';
-import LargeText from './LargeText';
+import Colours from '../../assets/constants/colours';
+import LargeText from '../LargeText';
 import ModalContainer from './ModalContainer';
 import ModalSpace from './ModalSpace';
-import MyButton from './MyButton';
+import MyButton from '../MyButton';
 
 const HelpModal = (props) => {
 

@@ -8,7 +8,7 @@ import { Ionicons } from '@expo/vector-icons';
 import MainList from '../screens/MainList';
 import AppHelp from '../screens/AppHelp';
 import AppSettings from '../screens/AppSettings';
-import Colours from '../constants/colours';
+import Colours from '../assets/constants/colours';
 
 const TabNavigator = createBottomTabNavigator({
     Main: {

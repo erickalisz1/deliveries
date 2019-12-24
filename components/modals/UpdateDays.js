@@ -1,17 +1,16 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, Modal, TouchableOpacity, Platform } from 'react-native';
 
-import { formatDate } from '../helper/helper';
-import { updateDeliveroo, updateUber, updateHours } from '../helper/updates'
-import Colours from '../constants/colours';
-import DismissKeyboard from './DismissKeyboard';
+import { formatDate } from '../../assets/helper/helper';
+import { updateDeliveroo, updateUber, updateHours } from '../../assets/helper/updates'
+import Colours from '../../assets/constants/colours';
+import DismissKeyboard from '../DismissKeyboard';
 import HoursModal from './HoursModal';
-import DeliverooModal from '../components/DeliverooModal';
-import LargeText from './LargeText';
-import { inputStyle } from '../helper/Styles';
+import DeliverooModal from '../modals/DeliverooModal';
+import { inputStyle } from '../../assets/helper/Styles';
 import ModalContainer from './ModalContainer';
 import ModalSpace from './ModalSpace';
-import MyButton from './MyButton';
+import MyButton from '../MyButton';
 
 const UpdateDays = (props) => {
 
