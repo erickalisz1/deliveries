@@ -1,5 +1,5 @@
 import React from 'react';
-import { SafeAreaView, StyleSheet, Platform } from 'react-native';
+import { View, StyleSheet, Platform } from 'react-native';
 import Colours from '../constants/colours';
 
 const ModalContainer = props => {
@@ -11,17 +11,17 @@ const ModalContainer = props => {
             alignItems: 'center',
             justifyContent: 'center',
             borderRadius:50,
-            borderWidth:  1,
+            borderWidth:  2,
             borderColor: Colours.primaryText,
             marginHorizontal: props.smaller === true ? 35 : 20,
-            minHeight: Platform.OS === 'android' ? 150 : 0
+            minHeight: Platform.OS === 'android' ? 150 : 0,
         }
     });
 
     return (
-        <SafeAreaView style={styles.container}>
+        <View style={styles.container}>
                 {props.children}
-        </SafeAreaView>);
+        </View>);
 };
 
 

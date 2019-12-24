@@ -11,7 +11,7 @@ export default {
     placeholder: '#888'
 };
 
-const a =
+const dark =
 {
     background: '#fff',
     backgroundLight: '#ebebeb',

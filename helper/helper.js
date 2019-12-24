@@ -177,7 +177,7 @@ export const checkIfTodayExists = (list, refreshing) => {
             daysUntil = today - lastDateOnDB;
             
         }
-        count === 0 ? (Alert.alert('Your app is up to date!')) : (Alert.alert('Success','The following week has been added to the DB'));
+        count === 0 ? ('') : (Alert.alert('Success','The following week has been added to the DB'));
     
         //returning false to set the state on the main list and ensure that this doesn't execute again
         return false;

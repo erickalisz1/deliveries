@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Modal, Alert, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, Platform, StyleSheet, Modal, Alert, TouchableOpacity } from 'react-native';
 
 import Colours from '../constants/colours';
 import DismissKeyboard from './DismissKeyboard';
-import DoneButton from './buttons/DoneButton';
-import CancelButton from './buttons/CancelButton';
 import LargeText from './LargeText';
 import { inputStyle } from '../helper/Styles';
 import ModalContainer from './ModalContainer';
 import ModalSpace from './ModalSpace';
+import MyButton from './MyButton';
 
 const HoursModal = props => {
 
@@ -50,7 +49,7 @@ const HoursModal = props => {
             <DismissKeyboard>
                 {/* needed to wrap this whole thing into another view so my keyboard dismiss worked */}
                 <View style={{ flex: 1 }} >
-                <ModalSpace onClose={props.onClose} flex={12} />
+                    <ModalSpace onClose={props.onClose} flex={Platform.OS === 'ios' ? 13 : 18} />
 
                     <ModalContainer smaller={true} dark={true}>
 
@@ -67,7 +66,7 @@ const HoursModal = props => {
                                     keyboardType='decimal-pad' />
 
                                 <TouchableOpacity onPress={() => { setHours() }}>
-                                    <DoneButton />
+                                    <MyButton text='Done' colour={Colours.success} textColour={Colours.primaryText} />
                                 </TouchableOpacity>
                             </View>
                             <View style={styles.column}>
@@ -80,7 +79,7 @@ const HoursModal = props => {
                                     keyboardType='decimal-pad' />
 
                                 <TouchableOpacity onPress={props.onClose}>
-                                    <CancelButton />
+                                    <MyButton text='Cancel' colour={Colours.cancel} textColour={Colours.primaryText} />
                                 </TouchableOpacity>
                             </View>
 
@@ -89,7 +88,7 @@ const HoursModal = props => {
 
                     </ModalContainer>
 
-                    <ModalSpace onClose={props.onClose} flex={12} />
+                    <ModalSpace onClose={props.onClose} flex={Platform.OS === 'ios' ? 13 : 18} />
                 </View>
             </DismissKeyboard>
         </Modal>
@@ -106,7 +105,8 @@ const styles = StyleSheet.create({
     column: {
         display: 'flex',
         flexDirection: 'column',
-        flex:1
+        flex: 1,
+        marginHorizontal:20
     },
 });
 

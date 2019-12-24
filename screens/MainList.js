@@ -64,7 +64,7 @@ const MainList = () => {
 
             //finished building list
             let finish = new Date();
-            console.log((finish - start) + 'ms to fetch list');
+            console.log((finish - start) + 'ms to fetch list on', Platform.OS);
 
         }).then(() => { listLoaded(localList) });
     };

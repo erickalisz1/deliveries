@@ -4,14 +4,12 @@ import Colours from '../constants/colours';
 
 export const inputStyle = StyleSheet.create({
     input:{
-        flex:1,
         borderBottomColor: Colours.selected,
         borderBottomWidth: 1,
-        marginHorizontal: 8,
+        marginHorizontal: 5,
         padding: 5,
         textAlign: "center",
-        fontSize: 20,
+        fontSize: 17,
         color: Colours.primaryText,
-        minHeight: 35
     }
   });

@@ -1,8 +1,8 @@
 import React from 'react';
 import { View, Text, StyleSheet, Modal, TouchableOpacity, Platform } from 'react-native';
 import Colours from '../constants/colours';
-import CancelButton from './buttons/CancelButton';
 import ModalSpace from './ModalSpace';
+import MyButton from './MyButton';
 
 const ColumnsModal = (props) => {
 
@@ -32,15 +32,15 @@ const ColumnsModal = (props) => {
     return (
         <Modal transparent={true} visible={props.visible} animationType='slide'>
 
-            <ModalSpace onClose={props.onClose} flex={Platform.OS === 'ios' ? 8 : 6} />
+            <ModalSpace onClose={props.onClose} flex={Platform.OS === 'ios' ? 9 : 6} />
             
             <View style={styles.container}>
-                <Text style={styles.modalTitle}>Select column to sort:</Text>
+                <Text style={styles.modalTitle}>Select value to sort:</Text>
 
                 {listOfOptions}
 
-                <TouchableOpacity onPress={props.onClose}>
-                    <CancelButton />
+                <TouchableOpacity onPress={props.onClose} style={{marginBottom:20}}>
+                    <MyButton text='Cancel' colour={Colours.cancel} textColour={Colours.primaryText} />
                 </TouchableOpacity>
 
             </View>
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
         fontSize: 24,
         color: Colours.primaryText,
         textAlign: 'center',
-        marginBottom:5
+        marginBottom:15
     },
 });
 

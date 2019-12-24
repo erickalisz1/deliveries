@@ -2,11 +2,10 @@ import React from 'react';
 import { StyleSheet, Text, View, Modal, TouchableOpacity } from 'react-native';
 
 import Colours from '../constants/colours';
-import DoneButton from './buttons/DoneButton';
-import UpdateButton from './buttons/UpdateButton';
 import LargeText from './LargeText';
 import ModalContainer from './ModalContainer';
 import ModalSpace from './ModalSpace';
+import MyButton from './MyButton';
 
 const HelpModal = (props) => {
 
@@ -30,7 +29,7 @@ const HelpModal = (props) => {
     
     
                     <TouchableOpacity onPress={props.onClose} style={styles.row}>
-                        <DoneButton text='Got it' />
+                    <MyButton text='Got it' colour={Colours.success} textColour={Colours.primaryText} />
                     </TouchableOpacity>
     
                 </ModalContainer>
@@ -46,7 +45,7 @@ const HelpModal = (props) => {
 
 const styles = StyleSheet.create({
     row: {
-        paddingHorizontal:15,
+        paddingHorizontal:25,
         margin:0
     },
     description:{

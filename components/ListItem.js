@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
         borderBottomColor: Colours.accent,
     },
     value: {
-        fontSize: 16,
+        fontSize: 15,
         color: Colours.primaryText,
         textAlign: 'left'
     }

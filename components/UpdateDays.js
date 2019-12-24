@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, Modal, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Modal, TouchableOpacity, Platform } from 'react-native';
 
 import { formatDate } from '../helper/helper';
 import { updateDeliveroo, updateUber, updateHours } from '../helper/updates'
@@ -7,12 +7,11 @@ import Colours from '../constants/colours';
 import DismissKeyboard from './DismissKeyboard';
 import HoursModal from './HoursModal';
 import DeliverooModal from '../components/DeliverooModal';
-import DoneButton from './buttons/DoneButton';
-import UpdateButton from './buttons/UpdateButton';
 import LargeText from './LargeText';
 import { inputStyle } from '../helper/Styles';
 import ModalContainer from './ModalContainer';
 import ModalSpace from './ModalSpace';
+import MyButton from './MyButton';
 
 const UpdateDays = (props) => {
 
@@ -63,14 +62,11 @@ const UpdateDays = (props) => {
           {/* needed to wrap this whole thing into another view so my keyboard dismiss worked */}
           <View style={{ flex: 1 }} >
 
-            <ModalSpace onClose={props.onClose} flex={8} />
+            <ModalSpace onClose={props.onClose} flex={Platform.OS === 'ios' ? 11 : 15} />
 
-            <ModalContainer dark={false} >
+            <ModalContainer dark={false} smaller={false}>
 
               <View style={styles.row}>
-
-                <LargeText modal={true} >Updating:</LargeText>
-
 
                 <View style={styles.selectDay}>
                   <Text style={styles.dayLabel} >{date}</Text>
@@ -92,7 +88,7 @@ const UpdateDays = (props) => {
                   {/* moved the update statements to another file for cleaner code */}
 
                   <TouchableOpacity onPress={() => setDelValue(updateDeliveroo(day, delValue))}>
-                    <UpdateButton />
+                    <MyButton text='Update' colour={Colours.selected} textColour={Colours.black} />
                   </TouchableOpacity>
                 </View>
 
@@ -105,8 +101,8 @@ const UpdateDays = (props) => {
                     value={uberValue}
                     keyboardType='decimal-pad' />
 
-                  <TouchableOpacity onPress={() => {console.log('uber:',uberValue); setUberValue(updateUber(day, uberValue))}}>
-                    <UpdateButton />
+                  <TouchableOpacity onPress={() => { console.log('uber:', uberValue); setUberValue(updateUber(day, uberValue)) }}>
+                    <MyButton text='Update' colour={Colours.selected} textColour={Colours.black} />
                   </TouchableOpacity>
                 </View>
 
@@ -123,7 +119,7 @@ const UpdateDays = (props) => {
                   />
 
                   <TouchableOpacity onPress={() => setHoursValue(updateHours(day, hoursValue))}>
-                    <UpdateButton />
+                    <MyButton text='Update' colour={Colours.selected} textColour={Colours.black} />
                   </TouchableOpacity>
                 </View>
 
@@ -131,16 +127,9 @@ const UpdateDays = (props) => {
 
               </View>
 
-
-              <TouchableOpacity onPress={props.onClose} style={{ marginTop: 10 }}>
-                <DoneButton />
-              </TouchableOpacity>
-
-
-
             </ModalContainer>
 
-            <ModalSpace onClose={props.onClose} flex={8} />
+            <ModalSpace onClose={props.onClose} flex={Platform.OS === 'ios' ? 11 : 15} />
 
           </View>
         </DismissKeyboard>
@@ -158,7 +147,6 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     borderWidth: 2,
     borderColor: Colours.accent,
-    marginLeft: 5
   },
   dayLabel: {
     color: Colours.primaryText,
@@ -168,13 +156,14 @@ const styles = StyleSheet.create({
   row: {
     display: 'flex',
     flexDirection: 'row',
-    marginTop: 20,
-    alignItems:'center',
-    justifyContent: 'space-between'
+    alignItems: 'center',
+    justifyContent: 'center',
+    margin:15
   },
   column: {
     display: 'flex',
     flexDirection: 'column',
+    flex:1,
     marginHorizontal: 5
   },
 });
