@@ -1,10 +1,11 @@
 import React from 'react';
 import firebase from 'firebase';
 
+//my imports
 import TabNavigator from './navigation/Navigator';
 import { firebaseConfig } from './assets/helper/helper';
 
-// // Initialize Firebase
+// Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
 //COMMENT TO STOP QUERYING FIREBASE
@@ -14,25 +15,8 @@ firebase.initializeApp(firebaseConfig);
 export default function App() {
 
   return (
-    <TabNavigator />
+      <TabNavigator />
   );
-
-  //INSERT / UPDATE STATEMENT
-  /*
-    firebase.database().ref('deliveries/1').set(
-      {
-        ActualDay: "15-09-2019",
-        deliveroo: "37.05",
-        hoursWorked: "2.25",
-       uber: "76"
-  
-      }
-    ).then(() => {
-      console.log('INSERTED !');
-    }).catch((error) => {
-      console.log(error);
-    });
-     */
 
   //vars declared outside of code are defined as global scoped
   // let scope is more narrow, which is why is more preferred now with ES6

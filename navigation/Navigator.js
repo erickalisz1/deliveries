@@ -7,8 +7,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 import MainList from '../screens/MainList';
 import AppHelp from '../screens/AppHelp';
-import AppSettings from '../screens/AppSettings';
-import Colours from '../assets/constants/colours';
+import Colours from '../assets/constants/darkTheme';
 
 const TabNavigator = createBottomTabNavigator({
     Main: {
@@ -25,14 +24,6 @@ const TabNavigator = createBottomTabNavigator({
             tabBarLabel: 'Help',
             tabBarIcon: <Ionicons name='ios-help-circle-outline' size={25} color={Colours.accent} />,
             tabBarColor: Colours.backgroundLight
-        }
-    },
-    Settings: {
-        screen: AppSettings,
-        navigationOptions: {
-            tabBarLabel: 'Settings',
-            tabBarIcon: <Ionicons name='ios-settings' size={25} color={Colours.accent} />,
-            tabBarColor: Colours.cancel
         }
     },
 },

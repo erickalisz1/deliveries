@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, Modal, TouchableOpacity } from 'react-native';
 
-import Colours from '../../assets/constants/colours';
+import Colours from '../../assets/constants/darkTheme';
 import LargeText from '../LargeText';
 import ModalContainer from './ModalContainer';
 import ModalSpace from './ModalSpace';

@@ -1,6 +1,6 @@
 import React from 'react';
 import { SafeAreaView, StyleSheet } from 'react-native';
-import Colours from '../assets/constants/colours';
+import Colours from '../assets/constants/darkTheme';
 
 const Container = props => {
 

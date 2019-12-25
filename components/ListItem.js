@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { formatDate } from '../assets/helper/helper';
 // import Deliveries from '../Deliveries';
-import Colours from '../assets/constants/colours';
+import Colours from '../assets/constants/darkTheme';
 
 const ListItem = (props) => {
 
@@ -37,7 +37,16 @@ const ListItem = (props) => {
     //setting appropriate precision
     Total = Total >= 100 ? Total.toPrecision(5) : Total.toPrecision(4);
     Del = Del >= 100 ? Del.toPrecision(5) : Del.toPrecision(4);
-    Uber = Uber >= 100 ? Uber.toPrecision(5) : Uber.toPrecision(4);
+    
+    if(Uber < 10){
+        Uber = Uber.toPrecision(3);
+    }
+    else if(Uber < 100){
+        Uber = Uber.toPrecision(4);
+    }
+    else if(Uber > 100){
+        Uber = Uber.toPrecision(5);
+    }
 
     if (columnToSort === 'dayNumber') {//default sorting
         if (Hours === 0 && Total < 1) {//not worked

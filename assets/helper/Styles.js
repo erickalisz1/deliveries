@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import Colours from '../constants/colours';
+import Colours from '../constants/darkTheme';
 
 export const inputStyle = StyleSheet.create({
     input:{

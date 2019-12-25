@@ -5,7 +5,7 @@ import firebase from 'firebase';
 //components
 import Loading from '../components/Loading';
 import ListItem from '../components/ListItem';
-import Colours from '../assets/constants/colours';
+import Colours from '../assets/constants/darkTheme';
 import ColumnsModal from '../components/modals/ColumnsModal';
 // functions helper
 import { setLabelText, sortList, setDateString, setAlertMessage, checkIfTodayExists } from '../assets/helper/helper';
