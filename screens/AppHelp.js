@@ -14,7 +14,7 @@ const AppHelp = () => {
 
     let displayItems = helpItems.map((row, index) => {//function to better display items
         return (
-            <TouchableOpacity style={{ maxWidth: '90%' }} key={index} onPress={() => { setItemSelected(row); setDisplayHelpModal(true); }}>
+            <TouchableOpacity style={{ width: '90%' }} key={index} onPress={() => { setItemSelected(row); setDisplayHelpModal(true); }}>
                 <HelpItem
                     title={row.display}
                 />
