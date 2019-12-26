@@ -14,7 +14,7 @@ import Deliveries from '../Deliveries';
 import UpdateDays from '../components/modals/UpdateDays';
 import Container from '../components/Container';
 
-const MainList = () => {
+const MainList = (props) => {
 
     //display settings
     const [orientation, setOrientation] = useState('Desc');
@@ -34,6 +34,8 @@ const MainList = () => {
         let localList = [];
 
         let start = new Date();
+        let daysCount = 1;//started on tuesday
+        let week = 0;
 
         console.log('Fetching List...');
 
@@ -56,9 +58,16 @@ const MainList = () => {
 
                 delivery.hours > 0 ? (delivery.per = delivery.total / delivery.hours) : (delivery.per = 0);
 
-                // console.log('Hours: '+ delivery.hours, 'Per: '+ delivery.per );
+                delivery.week = week;
 
                 localList.push(delivery);
+
+                //logic to define weeks based on days
+                daysCount+= 1;
+                if(daysCount === 7){
+                    daysCount = 0;
+                    week+= 1;
+                }
 
             });
 
@@ -74,7 +83,7 @@ const MainList = () => {
         setIsLoading(false);
         setDeliveriesList(loadedList);
         setIsRefreshing(false);  
-        setIsOpeningApp(checkIfTodayExists(loadedList, isOpeningApp));    
+        setIsOpeningApp(checkIfTodayExists(loadedList, isOpeningApp));
     }
 
     //handling update day
@@ -88,11 +97,11 @@ const MainList = () => {
         orientation === 'Asc' ? setOrientation('Desc') : setOrientation('Asc') ;
     };
 
-    const openAlert = (selectedDay) => {
+    const openAlert = (selectedDay, list) => {
 
         Alert.alert(
             setDateString(selectedDay.actualDay), //title
-            setAlertMessage(selectedDay), //main message
+            setAlertMessage(selectedDay, list), //main message
             [{ text: 'Dismiss', style: 'cancel' }]//buttons
         );
     }
@@ -137,15 +146,11 @@ const MainList = () => {
                         renderItem={(item) =>
                         (
                             <TouchableOpacity 
-                                onPress={() => { openAlert(item.item); console.log(item.item) }}
+                                onPress={() => { openAlert(item.item, deliveriesList); /*console.log(item.item)*/ }}
                                 onLongPress={() => updateDay(item.item)}>
 
                                 <ListItem
-                                    id={item.item.dayNumber}
-                                    date={item.item.actualDay}
-                                    del={item.item.deliveroo}
-                                    ub={item.item.uber}
-                                    hours={item.item.hours}
+                                    selectedDay={item.item}
                                     columnToSort={columnToSort}
                                 />
                             </TouchableOpacity>

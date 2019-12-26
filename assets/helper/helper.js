@@ -63,7 +63,7 @@ export const formatDate = (sDate) => {
     let yyyy = today.getFullYear();
 
     if (dd < 10) {
-      dd = '0' + dd;
+        dd = '0' + dd;
     }
     if (mm < 10) {
         mm = '0' + mm;
@@ -83,7 +83,7 @@ export const nextDay = (sDate) => {
     let yyyy = date.getFullYear();
 
     if (dd < 10) {
-      dd = '0' + dd;
+        dd = '0' + dd;
     }
     if (mm < 10) {
         mm = '0' + mm;
@@ -100,8 +100,46 @@ export const setDateString = (ActualDay) => {
     return (weekday + ', ' + day);
 };
 
-export const setAlertMessage = (selectedDay) => {
+export const setAlertMessage = (selectedDay, list) => {
 
+    let message = '\n';
+
+    //      -- Weekly arguments --
+    let week = selectedDay.week;
+
+    //filtering the list to show only the days in this week
+    let listOfDaysInWeek = list.filter(day => day.week === week);
+
+    let deliverooSum = 0;
+    let uberSum = 0;
+    let hoursSum = 0;
+
+    let daysWithDel = 0;
+    let daysWithUber = 0;
+    let daysWithHours =0;
+    //also need to check if the week has accurate data, e.g if the number of days with hours is the same as the days worked
+    listOfDaysInWeek.forEach(day => {
+        
+        daysWithDel = day.deliveroo === 0 ? daysWithDel : daysWithDel+=1 ;//if its zero, dont increase the count
+        daysWithUber = day.uber === 0 ? daysWithUber : daysWithUber+=1 ;
+        daysWithHours = day.hours === 0 ? daysWithHours : daysWithHours+=1 ;
+
+        deliverooSum += day.deliveroo;
+        uberSum += day.uber;
+        hoursSum += day.hours;
+    });
+
+    let weekWithAccurateData = true;
+    //checking if it has accurate data by evaluating if the number of days with all 3 values is the same
+    if(daysWithHours !== daysWithDel && daysWithHours !== daysWithUber){
+        weekWithAccurateData = false;
+    }
+    else weekWithAccurateData = true;
+
+    let weekTotal = deliverooSum + uberSum;
+    let weekPer = hoursSum > 0 ? weekTotal / hoursSum : 0;//to avoid dividing by zero, set it to zero if hours is zero
+
+    //      -- Daily arguments --
 
     let Del = selectedDay.deliveroo;
     let Uber = selectedDay.uber;
@@ -109,77 +147,156 @@ export const setAlertMessage = (selectedDay) => {
     let Hours = selectedDay.hours;
     let Per = selectedDay.per;
 
+
     //adjusting precisions
-    Per = Per.toPrecision(4);
+    Per = Per > 10 ? Per.toPrecision(4) : Per.toPrecision(3);
     Total = Total >= 100 ? Total.toPrecision(5) : Total.toPrecision(4);
 
-    if (Del > 0 && Uber > 0 && Hours > 0) 
-    {//did both and know hours
-        return 'Deliveroo: $' + Del + '\n' +
+    if(Uber < 10){
+        Uber = Uber.toPrecision(3);
+    }
+    else if(Uber < 100){
+        Uber = Uber.toPrecision(4);
+    }
+    else if(Uber > 100){
+        Uber = Uber.toPrecision(5);
+    }
+
+    weekPer = weekPer > 10 ? weekPer.toPrecision(4) : weekPer.toPrecision(3);//always ranges between 0 and 100
+    hoursSum
+
+    if(uberSum < 10){
+        uberSum = uberSum.toPrecision(3);
+    }
+    else if(uberSum < 100){
+        uberSum = uberSum.toPrecision(4);
+    }
+    else if(uberSum < 1000){
+        uberSum = uberSum.toPrecision(5);
+    }
+    else if(uberSum > 1000){
+        uberSum = uberSum.toPrecision(6);
+    }
+
+    if(deliverooSum < 10){
+        deliverooSum = deliverooSum.toPrecision(3);
+    }
+    else if(deliverooSum < 100){
+        deliverooSum = deliverooSum.toPrecision(4);
+    }
+    else if(deliverooSum < 1000){
+        deliverooSum = deliverooSum.toPrecision(5);
+    }
+    else if(deliverooSum > 1000){
+        deliverooSum = deliverooSum.toPrecision(6);
+    }
+
+    if(weekTotal < 10){
+        weekTotal = weekTotal.toPrecision(3);
+    }
+    else if(weekTotal < 100){
+        weekTotal = weekTotal.toPrecision(4);
+    }
+    else if(weekTotal < 1000){
+        weekTotal = weekTotal.toPrecision(5);
+    }
+    else if(weekTotal > 1000){
+        weekTotal = weekTotal.toPrecision(6);
+    }
+
+    
+
+    //setting daily info
+
+    if (Del > 0 && Uber > 0 && Hours > 0) {//did both and know hours
+
+        message += 'Deliveroo: $' + Del + '\n' +
             'Uber: $' + Uber + '\n' +
             'Total: $' + Total + '\n' +
             'Within ' + Hours + 'h\n' +
             '$' + Per + ' per hour';
     }
-    else if (Del > 0 && Uber < 1) 
-    {//didnt do uber
-        return 'Deliveroo: $' + Del + '\n' +
+    else if (Del > 0 && Uber < 1) {//didnt do uber
+
+        message += 'Deliveroo: $' + Del + '\n' +
             'Within ' + Hours + 'h\n' +
             '$' + Per + ' per hour';
     }
-    else if (Del < 1 && Uber > 0) 
-    {//didnt do deliveroo
-        return 'Uber: $' + Uber + '\n' +
+    else if (Del < 1 && Uber > 0) {//didnt do deliveroo
+
+        message += 'Uber: $' + Uber + '\n' +
             'Within ' + Hours + 'h\n' +
             '$' + Per + ' per hour';
     }
-    else if (Total > 0 && Hours < 1) 
-    {//didnt record the hours
-        return 'Deliveroo: $' + Del + '\n' +
+    else if (Total > 0 && Hours < 1) {//didnt record the hours
+
+        message += 'Deliveroo: $' + Del + '\n' +
             'Uber: $' + Uber + '\n' +
             'Total: $' + Total;
     }
 
-    else return 'You haven\'t worked on this day';
+    else message += 'You haven\'t worked on this day';
+
+    message += '\n\nOn This week:\n';
+
+    //setting weekly Info
+    if (weekTotal > 0 && !weekWithAccurateData){// week with inaccurate data
+        message += 'Deliveroo: $' + deliverooSum + '\n' +
+            'Uber: $' + uberSum + '\n' +
+            'Total: $' + weekTotal;
+
+            console.log('week with inaccurate data');
+    }
+    else if (weekTotal > 0 & weekPer > 0) {//worked and know hours
+
+        message +=
+            'Deliveroo: $' + deliverooSum + '\n' +
+            'Uber: $' + uberSum + '\n' +
+            'Total: $' + weekTotal + '\n' +
+            'Within ' + hoursSum + 'h\n' +
+            '$' + weekPer + ' per hour'
+    }
+
+    
+    else message += 'You haven\'t worked';
+
+    return message;
 };
 
 export const checkIfTodayExists = (list, refreshing) => {
-    
-    if(refreshing)
-    {
+
+    if (refreshing) {
         //refreshing is a boolean to see if the app is being refreshed. if it is, don't execute this block; 
         //it must only execute upon first opening the app
 
         const today = new Date;
         let lastDateOnDB = new Date(list[0].actualDay);
-    
+
         let lastDayOnDB = list[0].dayNumber;
-    
+
         let daysUntil = today - lastDateOnDB;
         let count = 0;
-    
-        while(daysUntil > 0)
-        {//while the last day on the DB is in the future
-            for(let i = 0; i < 7; i++)
-            {//add one week
-    
+
+        while (daysUntil > 0) {//while the last day on the DB is in the future
+            for (let i = 0; i < 7; i++) {//add one week
+
                 //incrementing both date and ID for them to be added
                 lastDateOnDB = nextDay(lastDateOnDB);
                 lastDayOnDB++;
-    
+
                 count++;
                 addDay(lastDayOnDB, lastDateOnDB);
             }
             //performing calculation once again to see if we need to go again
             daysUntil = today - lastDateOnDB;
-            
+
         }
-        count === 0 ? ('') : (Alert.alert('Success','The following week has been added to the DB'));
-    
+        count === 0 ? ('') : (Alert.alert('Success', 'The following week has been added to the DB'));
+
         //returning false to set the state on the main list and ensure that this doesn't execute again
         return false;
     }
-    
+
 };
 
 const addDay = (dayNumber, actualDay) => {
@@ -202,33 +319,33 @@ const addDay = (dayNumber, actualDay) => {
 
 export const helpItems = [
     {//defining title, description and modal size
-        display:'Adding days to your list', 
-        description:'To add days to your list is vey simple:\nYou don\'t have to do it! Once you open the app, it will check if today exists and if it doesn\'t, the app will add the following week for you\n:-D',
-        flex:Platform.OS === 'ios' ? 9 : 18
+        display: 'Adding days to your list',
+        description: 'To add days to your list is vey simple:\nYou don\'t have to do it! Once you open the app, it will check if today exists and if it doesn\'t, the app will add the following week for you\n:-D',
+        flex: Platform.OS === 'ios' ? 9 : 18
     },
     {
-        display:'Updating days', 
-        description:'To update a day, simply tap and hold it on the main list and input the data related to the day you selected.',
-        flex:Platform.OS === 'ios' ? 11 : 22
+        display: 'Updating days',
+        description: 'To update a day, simply tap and hold it on the main list and input the data related to the day you selected.',
+        flex: Platform.OS === 'ios' ? 11 : 22
     },
     {
-        display:'Calculating deliveroo earnings', 
-        description:'To know the exact amount you\'ve earned when working with deliveroo, simply tap the text box and input your order fees and the tips or extras you\'ve earned. The app will then calculate the exact amount you will earn.',
-        flex:Platform.OS === 'ios' ? 8 : 13
+        display: 'Calculating deliveroo earnings',
+        description: 'To know the exact amount you\'ve earned when working with deliveroo, simply tap the text box and input your order fees and the tips or extras you\'ve earned. The app will then calculate the exact amount you will earn.',
+        flex: Platform.OS === 'ios' ? 8 : 13
     },
     {
-        display:'Calculating hours worked',
-        description:'To properly calculate how much you have earned per hour, we need the total time to be decimal. To calculate it, simply tap the hours text box upon updating and provide the amount of hours and minutes you\'ve worked and the app will do the rest.',
-        flex:Platform.OS === 'ios' ? 9 : 13
+        display: 'Calculating hours worked',
+        description: 'To properly calculate how much you have earned per hour, we need the total time to be decimal. To calculate it, simply tap the hours text box upon updating and provide the amount of hours and minutes you\'ve worked and the app will do the rest.',
+        flex: Platform.OS === 'ios' ? 9 : 13
     },
     {
-        display:'Changing list sort', 
-        description:'To change how the main list is sorted, simply tap and hold the top label and select the value you wish to sort the list with.',
-        flex:Platform.OS === 'ios' ? 11 : 24
+        display: 'Changing list sort',
+        description: 'To change how the main list is sorted, simply tap and hold the top label and select the value you wish to sort the list with.',
+        flex: Platform.OS === 'ios' ? 11 : 24
     },
     {
-        display:'Toggling list orientation', 
-        description:'To change the list orientation, simply tap the label at the top of the main list and the orientation will be toggled.',
-        flex:Platform.OS === 'ios' ? 12 : 20
+        display: 'Toggling list orientation',
+        description: 'To change the list orientation, simply tap the label at the top of the main list and the orientation will be toggled.',
+        flex: Platform.OS === 'ios' ? 12 : 20
     },
 ];

@@ -6,23 +6,14 @@ import Colours from '../assets/constants/darkTheme';
 
 const ListItem = (props) => {
 
-    const { columnToSort } = props;
+    const { columnToSort, selectedDay } = props;
 
-    let ActualDay = props.date;
-    //transforming the objects into strings and then numbers
-    let Del = Number(JSON.stringify(props.del));
-    let Uber = Number(JSON.stringify(props.ub));
-    let Hours = Number(JSON.stringify(props.hours));
-    let Total = Del + Uber;
-    let Per = 0;
-    if (Hours > 0) {
-        Per = Total / Hours;
-    }
-
-    //creating deliveries object
-    // let delivery = new Deliveries(props.id, , , , );
-
-    // console.log(Hours);
+    let ActualDay = selectedDay.actualDay;
+    let Del = selectedDay.deliveroo;
+    let Uber = selectedDay.uber;
+    let Hours = selectedDay.hours;
+    let Total = selectedDay.total;
+    let Per = selectedDay.per;
 
     let weekday = new Date(ActualDay).toDateString().substr(0, 3);//weekday
 
@@ -32,10 +23,12 @@ const ListItem = (props) => {
 
     let fullDate = weekday + ', ' + day;
 
-    Per = Per.toPrecision(4);
+    
 
     //setting appropriate precision
     Total = Total >= 100 ? Total.toPrecision(5) : Total.toPrecision(4);
+    Per = Per > 10 ? Per.toPrecision(4) : Per.toPrecision(3);
+
     Del = Del >= 100 ? Del.toPrecision(5) : Del.toPrecision(4);
     
     if(Uber < 10){
