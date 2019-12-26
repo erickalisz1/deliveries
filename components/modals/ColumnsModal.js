@@ -6,7 +6,13 @@ import MyButton from '../MyButton';
 
 const ColumnsModal = (props) => {
 
-    let options = [//needed to have the lower case name as well because of the property name (might fix later by changing the class attributes to upper case)
+    let options = props.week === true ? [//needed to have the lower case name as well because of the property name (might fix later by changing the class attributes to upper case)
+        {display:'Weeks', value:'week'}, 
+        {display:'Deliveroo', value:'deliveroo'}, 
+        {display:'Uber', value:'uber'}, 
+        {display:'Total', value:'total'}, 
+        {display:'Per', value:'per'}
+    ] : [
         {display:'Days', value:'dayNumber'}, 
         {display:'Deliveroo', value:'deliveroo'}, 
         {display:'Uber', value:'uber'}, 

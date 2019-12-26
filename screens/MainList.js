@@ -8,26 +8,32 @@ import ListItem from '../components/ListItem';
 import Colours from '../assets/constants/darkTheme';
 import ColumnsModal from '../components/modals/ColumnsModal';
 // functions helper
-import { setLabelText, sortList, setDateString, setAlertMessage, checkIfTodayExists } from '../assets/helper/helper';
+import { setLabelText, sortList, checkIfTodayExists } from '../assets/helper/helper';
 
-import Deliveries from '../Deliveries';
+import Deliveries from '../assets/models/Deliveries';
 import UpdateDays from '../components/modals/UpdateDays';
 import Container from '../components/Container';
+import { myStyles } from '../assets/helper/Styles';
+import DetailModal from '../components/modals/DetailModal';
 
 const MainList = (props) => {
 
-    //display settings
+    //display settings states
+    //default list display
     const [orientation, setOrientation] = useState('Desc');
     const [columnToSort, setColumnToSort] = useState('dayNumber');
+    //modals
     const [displayColumns, setDisplayColumns] = useState(false);
     const [displayUpdate, setDisplayUpdate] = useState(false);
+    const [displayDetail, setDisplayDetail] = useState(false);
+    //update
     const [selectedDay, setSelectedDay] = useState(null);
-    const [isOpeningApp, setIsOpeningApp] = useState(true);
 
     //fetch data from firebase states
     const [isLoading, setIsLoading] = useState(true);
     const [deliveriesList, setDeliveriesList] = useState([]);
     const [isRefreshing, setIsRefreshing] = useState(false);
+    const [isOpeningApp, setIsOpeningApp] = useState(true);
 
     const renderList = () => {
 
@@ -68,7 +74,6 @@ const MainList = (props) => {
                     daysCount = 0;
                     week+= 1;
                 }
-
             });
 
             //finished building list
@@ -84,6 +89,7 @@ const MainList = (props) => {
         setDeliveriesList(loadedList);
         setIsRefreshing(false);  
         setIsOpeningApp(checkIfTodayExists(loadedList, isOpeningApp));
+
     }
 
     //handling update day
@@ -97,14 +103,14 @@ const MainList = (props) => {
         orientation === 'Asc' ? setOrientation('Desc') : setOrientation('Asc') ;
     };
 
-    const openAlert = (selectedDay, list) => {
+    // const openAlert = (selectedDay, list) => {
 
-        Alert.alert(
-            setDateString(selectedDay.actualDay), //title
-            setAlertMessage(selectedDay, list), //main message
-            [{ text: 'Dismiss', style: 'cancel' }]//buttons
-        );
-    }
+    //     Alert.alert(
+    //         setDateString(selectedDay.actualDay), //title
+    //         setAlertMessage(selectedDay, list), //main message
+    //         [{ text: 'Dismiss', style: 'cancel' }]//buttons
+    //     );
+    // }
 
     const getModalResult = (selectedColumn) => {
         setColumnToSort(selectedColumn);
@@ -128,12 +134,13 @@ const MainList = (props) => {
 
                     <ColumnsModal visible={displayColumns} onClose={() => setDisplayColumns(false)} selectColumn={getModalResult} />
                     <UpdateDays visible={displayUpdate} onClose={() => setDisplayUpdate(false)} dayToUpdate={selectedDay} />
+                    <DetailModal visible={displayDetail} onClose={() => setDisplayDetail(false)} day={selectedDay} list={deliveriesList} />
 
                     <TouchableOpacity
                         onPress={() => toggleOrientation()}
                         onLongPress={() => setDisplayColumns(true)}>
 
-                        <Text style={styles.sortLabel}> {setLabelText(columnToSort, orientation)} </Text>
+                        <Text style={myStyles.sortLabel}> {setLabelText(columnToSort, orientation)} </Text>
 
                     </TouchableOpacity>
 
@@ -146,7 +153,7 @@ const MainList = (props) => {
                         renderItem={(item) =>
                         (
                             <TouchableOpacity 
-                                onPress={() => { openAlert(item.item, deliveriesList); /*console.log(item.item)*/ }}
+                                onPress={() => { setSelectedDay(item.item); setDisplayDetail(true); /* openAlert(item.item, deliveriesList); console.log(item.item)*/ }}
                                 onLongPress={() => updateDay(item.item)}>
 
                                 <ListItem
@@ -162,14 +169,5 @@ const MainList = (props) => {
     );
 };
 
-const styles = StyleSheet.create({
-    sortLabel: {
-        textAlign: 'center',
-        fontSize: 20,
-        marginTop: Platform.OS === 'ios' ? 15 : 35,
-        marginBottom: 15,
-        color: Colours.primaryText
-    }
-});
 
 export default MainList;

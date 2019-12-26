@@ -1,8 +1,8 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 import Colours from '../constants/darkTheme';
 
-export const inputStyle = StyleSheet.create({
+export const myStyles = StyleSheet.create({
     input:{
         borderBottomColor: Colours.selected,
         borderBottomWidth: 1,
@@ -11,5 +11,12 @@ export const inputStyle = StyleSheet.create({
         textAlign: "center",
         fontSize: 17,
         color: Colours.primaryText,
+    },
+    sortLabel: {
+        textAlign: 'center',
+        fontSize: 20,
+        marginTop: Platform.OS === 'ios' ? 15 : 35,
+        marginBottom: 15,
+        color: Colours.primaryText
     }
   });

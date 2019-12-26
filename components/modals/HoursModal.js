@@ -4,7 +4,7 @@ import { View, TextInput, Platform, StyleSheet, Modal, Alert, TouchableOpacity }
 import Colours from '../../assets/constants/darkTheme';
 import DismissKeyboard from '../DismissKeyboard';
 import LargeText from '../LargeText';
-import { inputStyle } from '../../assets/helper/Styles';
+import { myStyles } from '../../assets/helper/Styles';
 import ModalContainer from './ModalContainer';
 import ModalSpace from './ModalSpace';
 import MyButton from '../MyButton';
@@ -60,7 +60,7 @@ const HoursModal = props => {
                                 <TextInput
                                     placeholder='Hours'
                                     placeholderTextColor={Colours.placeholder}
-                                    style={inputStyle.input}
+                                    style={myStyles.input}
                                     onChangeText={hoursHandler}
                                     value={enteredHours}
                                     keyboardType='decimal-pad' />
@@ -73,7 +73,7 @@ const HoursModal = props => {
                                 <TextInput
                                     placeholder='Minutes'
                                     placeholderTextColor={Colours.placeholder}
-                                    style={inputStyle.input}
+                                    style={myStyles.input}
                                     onChangeText={minutesHandler}
                                     value={enteredMinutes}
                                     keyboardType='decimal-pad' />

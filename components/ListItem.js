@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { formatDate } from '../assets/helper/helper';
+import { formatDate, SetPrecision } from '../assets/helper/helper';
 // import Deliveries from '../Deliveries';
 import Colours from '../assets/constants/darkTheme';
 
@@ -9,37 +9,16 @@ const ListItem = (props) => {
     const { columnToSort, selectedDay } = props;
 
     let ActualDay = selectedDay.actualDay;
-    let Del = selectedDay.deliveroo;
-    let Uber = selectedDay.uber;
-    let Hours = selectedDay.hours;
-    let Total = selectedDay.total;
-    let Per = selectedDay.per;
+    let Del = SetPrecision(selectedDay.deliveroo);
+    let Uber = SetPrecision(selectedDay.uber);
+    let Hours = SetPrecision(selectedDay.hours);
+    let Total = SetPrecision(selectedDay.total);
+    let Per = SetPrecision(selectedDay.per);
 
-    let weekday = new Date(ActualDay).toDateString().substr(0, 3);//weekday
+    let weekday = new Date(ActualDay).toDateString().substr(0, 3);// 'Mon'
+    let day = formatDate(ActualDay);
 
-    //new Date(Object.values(date.actualDay)).toDateString().substr(0, 3);//weekday
-
-    let day = formatDate(ActualDay);//formatDate(date.actualDay);
-
-    let fullDate = weekday + ', ' + day;
-
-    
-
-    //setting appropriate precision
-    Total = Total >= 100 ? Total.toPrecision(5) : Total.toPrecision(4);
-    Per = Per > 10 ? Per.toPrecision(4) : Per.toPrecision(3);
-
-    Del = Del >= 100 ? Del.toPrecision(5) : Del.toPrecision(4);
-    
-    if(Uber < 10){
-        Uber = Uber.toPrecision(3);
-    }
-    else if(Uber < 100){
-        Uber = Uber.toPrecision(4);
-    }
-    else if(Uber > 100){
-        Uber = Uber.toPrecision(5);
-    }
+    let fullDate = weekday + ', ' + day;// 'Mon, 23/09/2018'
 
     if (columnToSort === 'dayNumber') {//default sorting
         if (Hours === 0 && Total < 1) {//not worked

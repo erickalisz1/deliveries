@@ -7,7 +7,7 @@ import Colours from '../../assets/constants/darkTheme';
 import DismissKeyboard from '../DismissKeyboard';
 import HoursModal from './HoursModal';
 import DeliverooModal from '../modals/DeliverooModal';
-import { inputStyle } from '../../assets/helper/Styles';
+import { myStyles } from '../../assets/helper/Styles';
 import ModalContainer from './ModalContainer';
 import ModalSpace from './ModalSpace';
 import MyButton from '../MyButton';
@@ -78,7 +78,7 @@ const UpdateDays = (props) => {
                   <TextInput
                     placeholder="Deliveroo"
                     placeholderTextColor={Colours.placeholder}
-                    style={inputStyle.input}
+                    style={myStyles.input}
                     onChangeText={deliverooInput}
                     value={delValue}
                     keyboardType='decimal-pad'
@@ -95,7 +95,7 @@ const UpdateDays = (props) => {
                   <TextInput
                     placeholder="Uber"
                     placeholderTextColor={Colours.placeholder}
-                    style={inputStyle.input}
+                    style={myStyles.input}
                     onChangeText={uberInput}
                     value={uberValue}
                     keyboardType='decimal-pad' />
@@ -109,7 +109,7 @@ const UpdateDays = (props) => {
                   <TextInput
                     placeholder="Hours"
                     placeholderTextColor={Colours.placeholder}
-                    style={inputStyle.input}
+                    style={myStyles.input}
                     onChangeText={hoursInput}
                     value={hoursValue}
                     keyboardType='decimal-pad'

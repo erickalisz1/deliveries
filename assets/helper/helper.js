@@ -18,6 +18,9 @@ export const setLabelText = (columnToSort, orientation) => {
     if (columnToSort === 'dayNumber') {
         text += 'Days';
     }
+    else if (columnToSort === 'week') {
+        text += 'Weeks';
+    }
     else if (columnToSort === 'deliveroo') {
         text += 'Deliveroo';
     }
@@ -53,6 +56,7 @@ export const sortList = (list, columnToSort, orientation) => {
     }
 };
 
+
 export const formatDate = (sDate) => {
 
     let today = new Date(sDate);
@@ -70,6 +74,8 @@ export const formatDate = (sDate) => {
     }
     return dd + '/' + mm + '/' + yyyy;
 };
+
+export const setWeekString = (start, end) => {return formatDate(start).substr(0, 5) + ' - ' + formatDate(end)};
 
 export const nextDay = (sDate) => {
 
@@ -100,9 +106,9 @@ export const setDateString = (ActualDay) => {
     return (weekday + ', ' + day);
 };
 
-export const setAlertMessage = (selectedDay, list) => {
+export const setDailyMessage = (selectedDay, list) => {
 
-    let message = '\n';
+    let message = '';
 
     //      -- Weekly arguments --
     let week = selectedDay.week;
@@ -116,13 +122,13 @@ export const setAlertMessage = (selectedDay, list) => {
 
     let daysWithDel = 0;
     let daysWithUber = 0;
-    let daysWithHours =0;
+    let daysWithHours = 0;
     //also need to check if the week has accurate data, e.g if the number of days with hours is the same as the days worked
     listOfDaysInWeek.forEach(day => {
-        
-        daysWithDel = day.deliveroo === 0 ? daysWithDel : daysWithDel+=1 ;//if its zero, dont increase the count
-        daysWithUber = day.uber === 0 ? daysWithUber : daysWithUber+=1 ;
-        daysWithHours = day.hours === 0 ? daysWithHours : daysWithHours+=1 ;
+
+        daysWithDel = day.deliveroo === 0 ? daysWithDel : daysWithDel += 1;//if its zero, dont increase the count
+        daysWithUber = day.uber === 0 ? daysWithUber : daysWithUber += 1;
+        daysWithHours = day.hours === 0 ? daysWithHours : daysWithHours += 1;
 
         deliverooSum += day.deliveroo;
         uberSum += day.uber;
@@ -131,80 +137,25 @@ export const setAlertMessage = (selectedDay, list) => {
 
     let weekWithAccurateData = true;
     //checking if it has accurate data by evaluating if the number of days with all 3 values is the same
-    if(daysWithHours !== daysWithDel && daysWithHours !== daysWithUber){
+    if (daysWithHours !== daysWithDel && daysWithHours !== daysWithUber) {
         weekWithAccurateData = false;
     }
     else weekWithAccurateData = true;
 
-    let weekTotal = deliverooSum + uberSum;
-    let weekPer = hoursSum > 0 ? weekTotal / hoursSum : 0;//to avoid dividing by zero, set it to zero if hours is zero
+    let weekTotal = SetPrecision(deliverooSum + uberSum);
+    let weekPer = hoursSum > 0 ? SetPrecision(weekTotal / hoursSum) : 0;//to avoid dividing by zero, set it to zero if hours is zero
+
+    deliverooSum = SetPrecision(deliverooSum);
+    uberSum = SetPrecision(uberSum);
+    hoursSum = SetPrecision(hoursSum);
 
     //      -- Daily arguments --
 
-    let Del = selectedDay.deliveroo;
-    let Uber = selectedDay.uber;
-    let Total = selectedDay.total;
-    let Hours = selectedDay.hours;
-    let Per = selectedDay.per;
-
-
-    //adjusting precisions
-    Per = Per > 10 ? Per.toPrecision(4) : Per.toPrecision(3);
-    Total = Total >= 100 ? Total.toPrecision(5) : Total.toPrecision(4);
-
-    if(Uber < 10){
-        Uber = Uber.toPrecision(3);
-    }
-    else if(Uber < 100){
-        Uber = Uber.toPrecision(4);
-    }
-    else if(Uber > 100){
-        Uber = Uber.toPrecision(5);
-    }
-
-    weekPer = weekPer > 10 ? weekPer.toPrecision(4) : weekPer.toPrecision(3);//always ranges between 0 and 100
-    hoursSum
-
-    if(uberSum < 10){
-        uberSum = uberSum.toPrecision(3);
-    }
-    else if(uberSum < 100){
-        uberSum = uberSum.toPrecision(4);
-    }
-    else if(uberSum < 1000){
-        uberSum = uberSum.toPrecision(5);
-    }
-    else if(uberSum > 1000){
-        uberSum = uberSum.toPrecision(6);
-    }
-
-    if(deliverooSum < 10){
-        deliverooSum = deliverooSum.toPrecision(3);
-    }
-    else if(deliverooSum < 100){
-        deliverooSum = deliverooSum.toPrecision(4);
-    }
-    else if(deliverooSum < 1000){
-        deliverooSum = deliverooSum.toPrecision(5);
-    }
-    else if(deliverooSum > 1000){
-        deliverooSum = deliverooSum.toPrecision(6);
-    }
-
-    if(weekTotal < 10){
-        weekTotal = weekTotal.toPrecision(3);
-    }
-    else if(weekTotal < 100){
-        weekTotal = weekTotal.toPrecision(4);
-    }
-    else if(weekTotal < 1000){
-        weekTotal = weekTotal.toPrecision(5);
-    }
-    else if(weekTotal > 1000){
-        weekTotal = weekTotal.toPrecision(6);
-    }
-
-    
+    let Del = SetPrecision(selectedDay.deliveroo);
+    let Uber = SetPrecision(selectedDay.uber);
+    let Total = SetPrecision(selectedDay.total);
+    let Hours = SetPrecision(selectedDay.hours);
+    let Per = SetPrecision(selectedDay.per);
 
     //setting daily info
 
@@ -240,12 +191,12 @@ export const setAlertMessage = (selectedDay, list) => {
     message += '\n\nOn This week:\n';
 
     //setting weekly Info
-    if (weekTotal > 0 && !weekWithAccurateData){// week with inaccurate data
+    if (weekTotal > 0 && !weekWithAccurateData) {// week with inaccurate data
         message += 'Deliveroo: $' + deliverooSum + '\n' +
             'Uber: $' + uberSum + '\n' +
             'Total: $' + weekTotal;
 
-            console.log('week with inaccurate data');
+        console.log('week with inaccurate data');
     }
     else if (weekTotal > 0 & weekPer > 0) {//worked and know hours
 
@@ -257,8 +208,37 @@ export const setAlertMessage = (selectedDay, list) => {
             '$' + weekPer + ' per hour'
     }
 
-    
+
     else message += 'You haven\'t worked';
+
+    return message;
+};
+
+export const setWeeklyMessage = (selectedWeek) => {
+
+    let message = '';
+
+    //setting weekly Info
+    if (selectedWeek.total > 0 && !selectedWeek.accurate) {// week with inaccurate data
+
+        message +=
+            'Deliveroo: $' + selectedWeek.deliveroo + '\n' +
+            'Uber: $' + selectedWeek.uber + '\n' +
+            'Total: $' + selectedWeek.total;
+
+        console.log('week with inaccurate data');
+    }
+    else if (selectedWeek.total > 0 & selectedWeek.per > 0) {//worked and know hours
+
+        message +=
+            'Deliveroo: $' + selectedWeek.deliveroo + '\n' +
+            'Uber: $' + selectedWeek.uber + '\n' +
+            'Total: $' + selectedWeek.total + '\n' +
+            'Within ' + selectedWeek.hours + 'h\n' +
+            '$' + selectedWeek.per + ' per hour'
+    }
+
+    else message += 'You haven\'t worked on this week';
 
     return message;
 };
@@ -298,6 +278,8 @@ export const checkIfTodayExists = (list, refreshing) => {
     }
 
 };
+
+
 
 const addDay = (dayNumber, actualDay) => {
 
@@ -349,3 +331,27 @@ export const helpItems = [
         flex: Platform.OS === 'ios' ? 12 : 20
     },
 ];
+
+export const SetPrecision = (value) => {
+
+    value = Number(value);
+
+    if (value > 0 && value < 10) {
+        value = value.toPrecision(3);
+    }
+    else if (value < 100) {
+        value = value.toPrecision(4);
+    }
+    else if (value < 1000) {
+        value = value.toPrecision(5);
+    }
+    else if (value > 1000) {
+        value = value.toPrecision(6);
+    }
+    return Number(value);
+};
+
+export const stringDel = (Del) => ' - $' + Del;
+export const stringUber = (Uber) => ' - $' + Uber;
+export const stringTotal = (Total) => ' - $' + Total;
+export const stringPer = (Per) => ' - $' + Per + '/h';

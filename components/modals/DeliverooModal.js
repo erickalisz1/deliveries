@@ -4,7 +4,7 @@ import { View, TextInput, StyleSheet, Modal, Alert, TouchableOpacity, Platform }
 import Colours from '../../assets/constants/darkTheme';
 import DismissKeyboard from '../DismissKeyboard';
 import LargeText from '../LargeText';
-import { inputStyle } from '../../assets/helper/Styles';
+import { myStyles } from '../../assets/helper/Styles';
 import ModalContainer from './ModalContainer';
 import ModalSpace from './ModalSpace';
 import MyButton from '../MyButton';
@@ -25,8 +25,7 @@ const DeliverooModal = props => {
     const setDel = () => {
 
         enteredExtras === '' ? setEnteredExtras(0) : '';
-
-        if (enteredFees !== '') {//if the provided data is ok
+        enteredFees === '' ? setEnteredFees(0) : '';
 
             //the whole point of this calculator is to set this value
             let fees = Number(enteredFees) * .95;
@@ -39,9 +38,7 @@ const DeliverooModal = props => {
 
             setEnteredFees('');
             setEnteredExtras('');
-        }
-        else Alert.alert('Provide Data');
-
+        
     };
 
     return (
@@ -63,7 +60,7 @@ const DeliverooModal = props => {
                                 <TextInput
                                     placeholder='Order Fees'
                                     placeholderTextColor={Colours.placeholder}
-                                    style={inputStyle.input}
+                                    style={myStyles.input}
                                     onChangeText={feesHandler}
                                     value={enteredFees}
                                     keyboardType='decimal-pad' />
@@ -76,7 +73,7 @@ const DeliverooModal = props => {
                                 <TextInput
                                     placeholder='Tips or extras'
                                     placeholderTextColor={Colours.placeholder}
-                                    style={inputStyle.input}
+                                    style={myStyles.input}
                                     onChangeText={extrasHandler}
                                     value={enteredExtras}
                                     keyboardType='decimal-pad' />

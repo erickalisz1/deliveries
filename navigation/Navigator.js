@@ -8,6 +8,7 @@ import { Ionicons } from '@expo/vector-icons';
 import MainList from '../screens/MainList';
 import AppHelp from '../screens/AppHelp';
 import Colours from '../assets/constants/darkTheme';
+import WeeksList from '../screens/WeeksList';
 
 const TabNavigator = createBottomTabNavigator({
     Main: {
@@ -17,6 +18,14 @@ const TabNavigator = createBottomTabNavigator({
             tabBarIcon: <Ionicons name='ios-list' size={25} color={Colours.accent} />,
             tabBarColor: Colours.backgroundLight,
         }
+    },
+    Weeks: {
+        screen: WeeksList,
+        navigationOptions: {
+            tabBarLabel: 'Weeks List',
+            tabBarIcon: <Ionicons name='ios-calendar' size={25} color={Colours.accent} />,
+            tabBarColor: Colours.backgroundLight,
+        },
     },
     Help: {
         screen: AppHelp,
