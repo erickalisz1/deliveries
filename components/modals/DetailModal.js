@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Modal, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Modal, TouchableOpacity, Platform } from 'react-native';
 
 import Colours from '../../assets/constants/darkTheme';
 import LargeText from '../LargeText';
@@ -25,7 +25,9 @@ const DetailModal = (props) => {
         let count = (details.match(/\n/g) || []).length;
 
         //the more lines I have, the less space I will need outside my ModalContainer
-        let space = 14 - count;
+        let space = 11 - count;
+
+        space = Platform.OS = 'ios' ? space : space += 3;
 
         return (
 
@@ -33,7 +35,7 @@ const DetailModal = (props) => {
 
                 <ModalSpace onClose={props.onClose} flex={space} />
 
-                <ModalContainer dark={true} >
+                <ModalContainer>
 
                     <View style={styles.row}>
                         <LargeText modal={true}>{weekString}</LargeText>
@@ -68,8 +70,10 @@ const DetailModal = (props) => {
         let count = (details.match(/\n/g) || []).length;
 
         //the more lines I have, the less space I will need outside my ModalContainer
-        let space = 15 - count;
+        let space = 13 - count;
 
+        //fixing space
+        space = space === 2 ? space = 4 : space ;
 
         return (
 

@@ -38,7 +38,7 @@ const ColumnsModal = (props) => {
     return (
         <Modal transparent={true} visible={props.visible} animationType='slide'>
 
-            <ModalSpace onClose={props.onClose} flex={Platform.OS === 'ios' ? 9 : 6} />
+            <ModalSpace onClose={props.onClose} flex={Platform.OS === 'ios' ? 8.5 : 6} />
             
             <View style={styles.container}>
                 <Text style={styles.modalTitle}>Select value to sort:</Text>
