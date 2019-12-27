@@ -153,7 +153,7 @@ const MainList = (props) => {
                         renderItem={(item) =>
                         (
                             <TouchableOpacity 
-                                onPress={() => { setSelectedDay(item.item); setDisplayDetail(true); /* openAlert(item.item, deliveriesList); console.log(item.item)*/ }}
+                                onPress={() => { setSelectedDay(item.item); setDisplayDetail(true); }}
                                 onLongPress={() => updateDay(item.item)}>
 
                                 <ListItem

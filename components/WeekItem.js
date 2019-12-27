@@ -76,8 +76,6 @@ const WeekItem = (props) => {
         </View>
     );
     
-
-
 }
 
 const styles = StyleSheet.create({

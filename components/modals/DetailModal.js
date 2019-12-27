@@ -27,7 +27,9 @@ const DetailModal = (props) => {
         //the more lines I have, the less space I will need outside my ModalContainer
         let space = 11 - count;
 
-        space = Platform.OS = 'ios' ? space : space += 3;
+        space = Platform.OS === 'ios' ? space : space += 5;
+
+
 
         return (
 

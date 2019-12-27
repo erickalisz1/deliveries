@@ -47,11 +47,9 @@ export const setLabelText = (columnToSort, orientation) => {
 
 export const sortList = (list, columnToSort, orientation) => {
     if (orientation === 'Asc') {
-        console.log('returning ascending', columnToSort);
         return list.sort((b, a) => { return (b[columnToSort]) - (a[columnToSort]) });
     }
     else if (orientation === 'Desc') {
-        console.log('returning descending', columnToSort);
         return list.sort((a, b) => { return (b[columnToSort]) - (a[columnToSort]) });
     }
 };
@@ -159,7 +157,13 @@ export const setDailyMessage = (selectedDay, list) => {
 
     //setting daily info
 
-    if (Del > 0 && Uber > 0 && Hours > 0) {//did both and know hours
+    if (Total > 0 && Hours < 1) {//didnt record the hours
+
+        message += 'Deliveroo: $' + Del + '\n' +
+            'Uber: $' + Uber + '\n' +
+            'Total: $' + Total;
+    }
+    else if (Del > 0 && Uber > 0 && Hours > 0) {//did both and know hours
 
         message += 'Deliveroo: $' + Del + '\n' +
             'Uber: $' + Uber + '\n' +
@@ -178,12 +182,6 @@ export const setDailyMessage = (selectedDay, list) => {
         message += 'Uber: $' + Uber + '\n' +
             'Within ' + Hours + 'h\n' +
             '$' + Per + ' per hour';
-    }
-    else if (Total > 0 && Hours < 1) {//didnt record the hours
-
-        message += 'Deliveroo: $' + Del + '\n' +
-            'Uber: $' + Uber + '\n' +
-            'Total: $' + Total;
     }
 
     else message += 'You haven\'t worked on this day';
@@ -303,7 +301,7 @@ export const helpItems = [
     {//defining title, description and modal size
         display: 'Adding days to your list',
         description: 'To add days to your list is vey simple:\nYou don\'t have to do it! Once you open the app, it will check if today exists and if it doesn\'t, the app will add the following week for you\n:-D',
-        flex: Platform.OS === 'ios' ? 9 : 18
+        flex: Platform.OS === 'ios' ? 9 : 16
     },
     {
         display: 'Updating days',
@@ -318,7 +316,7 @@ export const helpItems = [
     {
         display: 'Calculating hours worked',
         description: 'To properly calculate how much you have earned per hour, we need the total time to be decimal. To calculate it, simply tap the hours text box upon updating and provide the amount of hours and minutes you\'ve worked and the app will do the rest.',
-        flex: Platform.OS === 'ios' ? 9 : 13
+        flex: Platform.OS === 'ios' ? 8 : 13
     },
     {
         display: 'Changing list sort',
@@ -355,3 +353,8 @@ export const stringDel = (Del) => ' - $' + Del;
 export const stringUber = (Uber) => ' - $' + Uber;
 export const stringTotal = (Total) => ' - $' + Total;
 export const stringPer = (Per) => ' - $' + Per + '/h';
+
+//console debugging
+  // firebase.database().ref('deliveries/333').once('value', (data) => {
+  //   console.log(data.child('actualDay'));
+  // });
