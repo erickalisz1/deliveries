@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, TouchableWithoutFeedback, Platform, Dimensions } from 'react-native';
-// import {  } from "lodash";
 
 const ModalSpace = props => {
 

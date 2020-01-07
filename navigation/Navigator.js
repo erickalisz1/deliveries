@@ -4,7 +4,6 @@ import { createBottomTabNavigator } from 'react-navigation-tabs';
 import { createAppContainer } from 'react-navigation';
 import { Ionicons } from '@expo/vector-icons';
 
-
 import MainList from '../screens/MainList';
 import AppHelp from '../screens/AppHelp';
 import Colours from '../assets/constants/darkTheme';

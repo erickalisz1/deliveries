@@ -68,7 +68,7 @@ const UpdateDays = (props) => {
               <View style={styles.row}>
 
                 <View style={styles.selectDay}>
-                  <Text style={styles.dayLabel} >{date}</Text>
+                  <Text style={myStyles.modalDescriptionLarge} >{date}</Text>
                 </View>
               </View>
 
@@ -146,11 +146,6 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     borderWidth: 2,
     borderColor: Colours.accent,
-  },
-  dayLabel: {
-    color: Colours.primaryText,
-    fontSize: 20,
-    textAlign: 'center'
   },
   row: {
     display: 'flex',
