@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TextInput, StyleSheet, Modal, Alert, TouchableOpacity, Platform } from 'react-native';
+import { View, TextInput, Modal, TouchableOpacity, Platform } from 'react-native';
 
 import Colours from '../../assets/constants/darkTheme';
 import DismissKeyboard from '../DismissKeyboard';
@@ -57,8 +57,8 @@ const DeliverooModal = props => {
 
                         <LargeText modal={true} >Deliveroo Calculator</LargeText>
 
-                        <View style={styles.horizontalContainer}>
-                            <View style={styles.column}>
+                        <View style={myStyles.modalContainer}>
+                            <View style={myStyles.modalColumn}>
                                 <TextInput
                                     placeholder='Fees'
                                     placeholderTextColor={Colours.placeholder}
@@ -71,7 +71,7 @@ const DeliverooModal = props => {
                                     <MyButton text='Done' colour={Colours.success} textColour={Colours.primaryText} />
                                 </TouchableOpacity>
                             </View>
-                            <View style={styles.column}>
+                            <View style={myStyles.modalColumn}>
                                 <TextInput
                                     placeholder='Tips'
                                     placeholderTextColor={Colours.placeholder}
@@ -98,18 +98,5 @@ const DeliverooModal = props => {
     );
 };
 
-const styles = StyleSheet.create({
-    horizontalContainer: {
-        display: 'flex',
-        flexDirection: 'row',
-        marginTop: 15,
-    },
-    column: {
-        display: 'flex',
-        flexDirection: 'column',
-        flex: 1,
-        marginHorizontal:20
-    },
-});
 
 export default DeliverooModal;

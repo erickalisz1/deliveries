@@ -1,15 +1,17 @@
 import React from 'react';
-import { StyleSheet, Text, View, Modal, TouchableOpacity } from 'react-native';
+import { Text, View, Modal, TouchableOpacity } from 'react-native';
 
 import Colours from '../../assets/constants/darkTheme';
 import LargeText from '../LargeText';
 import ModalContainer from './ModalContainer';
 import ModalSpace from './ModalSpace';
 import MyButton from '../MyButton';
+import { myStyles } from '../../assets/helper/Styles';
 
 const HelpModal = (props) => {
 
     if(props.item){
+        console.log(props.item.flex);
         return (
 
             <Modal transparent={true} visible={props.visible} animationType='slide'>
@@ -19,16 +21,16 @@ const HelpModal = (props) => {
     
                 <ModalContainer dark={false} >
     
-                    <View style={styles.row}>
+                    <View style={myStyles.modalRow}>
                         <LargeText modal={true}>{props.item.display}</LargeText>
                     </View>
     
-                    <View style={styles.row}>
-                        <Text style={styles.description}>{props.item.description}</Text>
+                    <View style={myStyles.modalRow}>
+                        <Text style={myStyles.modalDescription}>{props.item.description}</Text>
                     </View>
     
     
-                    <TouchableOpacity onPress={props.onClose} style={styles.row}>
+                    <TouchableOpacity onPress={props.onClose} style={myStyles.modalRow}>
                     <MyButton text='Got it' colour={Colours.success} textColour={Colours.primaryText} />
                     </TouchableOpacity>
     
@@ -42,17 +44,5 @@ const HelpModal = (props) => {
     }
     else return null;
 };
-
-const styles = StyleSheet.create({
-    row: {
-        paddingHorizontal:25,
-        margin:0
-    },
-    description:{
-        color:Colours.primaryText,
-        fontSize:16,
-        textAlign:'center'
-    }
-});
 
 export default HelpModal;

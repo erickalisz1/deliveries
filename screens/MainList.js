@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, FlatList, TouchableOpacity, Alert, Platform } from 'react-native';
+import { Text, View, FlatList, TouchableOpacity, Platform } from 'react-native';
 import firebase from 'firebase';
 
 //components
 import Loading from '../components/Loading';
 import ListItem from '../components/ListItem';
-import Colours from '../assets/constants/darkTheme';
 import ColumnsModal from '../components/modals/ColumnsModal';
 // functions helper
 import { setLabelText, sortList, checkIfTodayExists } from '../assets/helper/helper';

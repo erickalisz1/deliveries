@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import firebase from 'firebase';
-import { View, FlatList, Text, Platform, TouchableOpacity, Alert } from 'react-native';
+import { View, FlatList, Text, Platform, TouchableOpacity } from 'react-native';
 
 import Container from '../components/Container';
 import WeekItem from '../components/WeekItem';
@@ -94,7 +94,7 @@ const WeeksList = () => {
                     daysWithHours = 0;
                     daysWithDel = 0;
                     daysWithUber = 0;
-                    
+
                     delSum = 0;
                     ubSum = 0;
                     hoursSum = 0;
@@ -135,7 +135,8 @@ const WeeksList = () => {
 
     return (
         <Container dark={true}>
-            {isLoading ? (<Loading />) : (
+            {/* conditional rendering */}
+            {isLoading ? (<Loading/>) : (
                 <View>
 
                     <ColumnsModal visible={displayColumns} onClose={() => setDisplayColumns(false)} selectColumn={getModalResult} week={true} />
@@ -154,21 +155,19 @@ const WeeksList = () => {
                         data={sortList(deliveriesList, columnToSort, orientation)}
                         refreshing={isRefreshing}
                         onRefresh={handleRefresh}
-                        style={{maxWidth:'95%'}}
+                        style={{ maxWidth: '95%' }}
 
                         renderItem={(item) =>
-                            (
-                                <TouchableOpacity
-                                    onPress={() => { setSelectedWeek(item.item); setDisplayDetail(true); }}>
+                        (
+                            <TouchableOpacity
+                                onPress={() => { setSelectedWeek(item.item); setDisplayDetail(true); }}>
 
-                                    <WeekItem
-                                        selectedWeek={item.item}
-                                        column={columnToSort}
-                                    />
-
-
-                                </TouchableOpacity>
-                            )}
+                                <WeekItem
+                                    selectedWeek={item.item}
+                                    column={columnToSort}
+                                />
+                            </TouchableOpacity>
+                        )}
                     />
                 </View>
             )}

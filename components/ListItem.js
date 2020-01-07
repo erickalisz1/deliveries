@@ -1,8 +1,7 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 import { formatDate, SetPrecision } from '../assets/helper/helper';
-// import Deliveries from '../Deliveries';
-import Colours from '../assets/constants/darkTheme';
+import { myStyles } from '../assets/helper/Styles';
 
 const ListItem = (props) => {
 
@@ -20,109 +19,67 @@ const ListItem = (props) => {
 
     let fullDate = weekday + ', ' + day;// 'Mon, 23/09/2018'
 
+    let text = '';
+
     if (columnToSort === 'dayNumber') {//default sorting
         if (Hours === 0 && Total < 1) {//not worked
-            return (
-                <View style={styles.item}>
-                    <Text style={styles.value}> {fullDate} - N/W </Text>
-                </View>
-            );
+
+            text = fullDate + ' - N/W'
         }
 
         else if (Hours === 0 && Total > 0) {//worked but don't know the hours
-            return (
-                <View style={styles.item}>
-                    <Text style={styles.value}> {day} - ${Total} </Text>
-                </View>
-            );
+            text = day + ' - $' + Total;
         }
 
-        else return (
-            <View style={styles.item}>
-                <Text style={styles.value}> {day} - ${Total} - {Hours}h - ${Per}/h</Text>
-            </View>
-        );
+        else {
+            text = day + ' - $' + Total + ' - ' + Hours + 'h - $' + Per + '/h';
+        }
     }
 
     else if (columnToSort === 'deliveroo') {//sorting by deliveroo
         if (Hours > 0 && Del > 0) {
-            return (
-                <View style={styles.item}>
-                    <Text style={styles.value}> {day} - Deliveroo: ${Del} - ${Per}/h</Text>
-                </View>
-            );
+            text = day + ' - Deliveroo: $' + Del + ' - $' + Per + '/h';
         }
         else if (Hours < 1 && Del > 0) {
-            return (
-                <View style={styles.item}>
-                    <Text style={styles.value}> {day} - Deliveroo: ${Del}</Text>
-                </View>
-            );
+            text = day + ' - Deliveroo: $' + Del;
         }
-        else return null;
+        else text = '-1';
     }
 
     else if (columnToSort === 'uber') {//sorting by uber
         if (Hours > 0 && Uber > 0) {
-            return (
-                <View style={styles.item}>
-                    <Text style={styles.value}> {day} - Uber: ${Uber} - ${Per}/h</Text>
-                </View>
-            );
+            text = day + ' - Uber: $' + Uber + ' - $' + Per + '/h';
         }
         else if (Hours < 1 && Uber > 0) {
-            return (
-                <View style={styles.item}>
-                    <Text style={styles.value}> {day} - Uber: ${Uber}</Text>
-                </View>
-            );
+            text = day + ' - Uber: $' + Uber;
         }
-        else return null;
+        else text = '-1';
     }
     else if (columnToSort === 'total') {//sorting by total
         if (Hours > 0 && Total > 0) {
-            return (
-                <View style={styles.item}>
-                    <Text style={styles.value}> {day} - Total: ${Total} - ${Per}/h</Text>
-                </View>
-            );
+            text = day + ' - Total: $' + Total + ' - $' + Per + '/h';
         }
         else if (Hours < 1 && Total > 0) {
-            return (
-                <View style={styles.item}>
-                    <Text style={styles.value}> {day} - Total: ${Total}</Text>
-                </View>
-            );
+            text = day + ' - Total: $' + Total;
         }
-        else return null;
+        else text = '-1';
     }
     else if (columnToSort === 'per') {//sorting by per
         if (Hours > 0 && Per > 0) {
-            return (
-                <View style={styles.item}>
-                    <Text style={styles.value}> {day} - Total: ${Total} - ${Per}/h</Text>
-                </View>
-            );
+            text = day + ' - Total: $' + Total + ' - $' + Per + '/h';
         }
-        else return null;
+        else text = '-1';
     }
 
-    else return <View><Text>something went wrong</Text></View>
+    else text = '-1';
+
+    return text === '-1' ? (null) : (
+        <View style={myStyles.listItem}>
+            <Text style={myStyles.listItemValue}>{text}</Text>
+        </View>
+    );
+    //todo make these srtrngs as in weekItem
 }
 
-const styles = StyleSheet.create({
-    item: {
-        marginVertical: 1,
-        minWidth: '95%',
-        padding: 10,
-        borderBottomWidth: 1,
-        borderBottomColor: Colours.accent,
-    },
-    value: {
-        fontSize: 15,
-        color: Colours.primaryText,
-        textAlign: 'left'
-    }
-});
 
 export default ListItem;

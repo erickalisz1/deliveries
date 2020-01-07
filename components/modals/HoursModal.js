@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TextInput, Platform, StyleSheet, Modal, Alert, TouchableOpacity } from 'react-native';
+import { View, TextInput, Platform, Modal, Alert, TouchableOpacity } from 'react-native';
 
 import Colours from '../../assets/constants/darkTheme';
 import DismissKeyboard from '../DismissKeyboard';
@@ -55,8 +55,8 @@ const HoursModal = props => {
 
                         <LargeText modal={true} >Hours Converter</LargeText>
 
-                        <View style={styles.horizontalContainer}>
-                            <View style={styles.column}>
+                        <View style={myStyles.modalContainer}>
+                            <View style={myStyles.modalColumn}>
                                 <TextInput
                                     placeholder='Hours'
                                     placeholderTextColor={Colours.placeholder}
@@ -69,7 +69,7 @@ const HoursModal = props => {
                                     <MyButton text='Done' colour={Colours.success} textColour={Colours.primaryText} />
                                 </TouchableOpacity>
                             </View>
-                            <View style={styles.column}>
+                            <View style={myStyles.modalColumn}>
                                 <TextInput
                                     placeholder='Minutes'
                                     placeholderTextColor={Colours.placeholder}
@@ -94,20 +94,5 @@ const HoursModal = props => {
         </Modal>
     );
 };
-
-const styles = StyleSheet.create({
-    horizontalContainer: {
-        display: 'flex',
-        flexDirection: 'row',
-        maxWidth: '93%',
-        marginTop: 15,
-    },
-    column: {
-        display: 'flex',
-        flexDirection: 'column',
-        flex: 1,
-        marginHorizontal:20
-    },
-});
 
 export default HoursModal;
