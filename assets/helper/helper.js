@@ -73,7 +73,7 @@ export const formatDate = (sDate) => {
     return dd + '/' + mm + '/' + yyyy;
 };
 
-export const setWeekString = (start, end) => {return formatDate(start).substr(0, 5) + ' - ' + formatDate(end)};
+export const setWeekString = (start, end) => { return formatDate(start).substr(0, 5) + ' - ' + formatDate(end) };
 
 export const nextDay = (sDate) => {
 
@@ -196,6 +196,12 @@ export const setDailyMessage = (selectedDay, list) => {
 
         console.log('week with inaccurate data');
     }
+    else if (weekTotal > 0 && hoursSum < 1) {// worked but don't know the hours
+
+        message += 'Deliveroo: $' + deliverooSum + '\n' +
+            'Uber: $' + uberSum + '\n' +
+            'Total: $' + weekTotal;
+    }
     else if (weekTotal > 0 & weekPer > 0) {//worked and know hours
 
         message +=
@@ -218,6 +224,15 @@ export const setWeeklyMessage = (selectedWeek) => {
 
     //setting weekly Info
     if (selectedWeek.total > 0 && !selectedWeek.accurate) {// week with inaccurate data
+
+        message +=
+            'Deliveroo: $' + selectedWeek.deliveroo + '\n' +
+            'Uber: $' + selectedWeek.uber + '\n' +
+            'Total: $' + selectedWeek.total;
+
+        console.log('week with inaccurate data');
+    }
+    else if (selectedWeek.total > 0 && selectedWeek.hours < 1) {// worked but don't know the hours
 
         message +=
             'Deliveroo: $' + selectedWeek.deliveroo + '\n' +

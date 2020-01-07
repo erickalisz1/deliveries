@@ -103,15 +103,6 @@ const MainList = (props) => {
         orientation === 'Asc' ? setOrientation('Desc') : setOrientation('Asc') ;
     };
 
-    // const openAlert = (selectedDay, list) => {
-
-    //     Alert.alert(
-    //         setDateString(selectedDay.actualDay), //title
-    //         setAlertMessage(selectedDay, list), //main message
-    //         [{ text: 'Dismiss', style: 'cancel' }]//buttons
-    //     );
-    // }
-
     const getModalResult = (selectedColumn) => {
         setColumnToSort(selectedColumn);
         setDisplayColumns(false);

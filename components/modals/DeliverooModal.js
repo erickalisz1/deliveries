@@ -24,11 +24,13 @@ const DeliverooModal = props => {
 
     const setDel = () => {
 
+        let feeRate = new Date() > new Date('2019-12-15') ? .96 : .95;//they changed the fee this december
+
         enteredExtras === '' ? setEnteredExtras(0) : '';
         enteredFees === '' ? setEnteredFees(0) : '';
 
             //the whole point of this calculator is to set this value
-            let fees = Number(enteredFees) * .95;
+            let fees = Number(enteredFees) *  feeRate;
             let extras = Number(enteredExtras);
             let total = Number(fees + extras);
 
@@ -58,7 +60,7 @@ const DeliverooModal = props => {
                         <View style={styles.horizontalContainer}>
                             <View style={styles.column}>
                                 <TextInput
-                                    placeholder='Order Fees'
+                                    placeholder='Fees'
                                     placeholderTextColor={Colours.placeholder}
                                     style={myStyles.input}
                                     onChangeText={feesHandler}
@@ -71,7 +73,7 @@ const DeliverooModal = props => {
                             </View>
                             <View style={styles.column}>
                                 <TextInput
-                                    placeholder='Tips or extras'
+                                    placeholder='Tips'
                                     placeholderTextColor={Colours.placeholder}
                                     style={myStyles.input}
                                     onChangeText={extrasHandler}

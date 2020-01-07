@@ -26,7 +26,7 @@ const UpdateDays = (props) => {
   if (day) {
     let date = formatDate(day.actualDay);
 
-    console.log('updating:', date);
+    console.log('selected:', date);
 
     const deliverooInput = (enteredValue) => {
       setDelValue(enteredValue);

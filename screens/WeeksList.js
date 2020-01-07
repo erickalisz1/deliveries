@@ -66,12 +66,7 @@ const WeeksList = () => {
                     weekStart = childSnapshot.val().actualDay;
                 }
 
-
-
                 daysCount += 1;
-
-
-
 
                 if (daysCount === 7) {//end of week reached
                     daysCount = 0;
@@ -106,8 +101,6 @@ const WeeksList = () => {
                     //increment week number
                     weekNumber += 1;
                 }
-
-
             });
 
             //finished building list
@@ -124,18 +117,16 @@ const WeeksList = () => {
         setDeliveriesList(loadedList);
     }
 
-
-
     const toggleOrientation = () => {//switching orientations
         orientation === 'Asc' ? setOrientation('Desc') : setOrientation('Asc');
     };
 
-    const getModalResult = (selectedColumn) => {
+    const getModalResult = (selectedColumn) => {//handle selected value from columns modal
         setColumnToSort(selectedColumn);
         setDisplayColumns(false);
     };
 
-    const handleRefresh = () => {
+    const handleRefresh = () => {//refresh list
         setIsRefreshing(true);
         setIsLoading(true);
     };
