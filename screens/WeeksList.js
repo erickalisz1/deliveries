@@ -10,6 +10,7 @@ import ColumnsModal from '../components/modals/ColumnsModal';
 import { setLabelText, sortList, SetPrecision } from '../assets/helper/helper';
 import { myStyles } from '../assets/helper/Styles';
 import DetailModal from '../components/modals/DetailModal';
+import SortingButton from '../components/SortingButton';
 
 const WeeksList = () => {
 
@@ -142,13 +143,17 @@ const WeeksList = () => {
                     <ColumnsModal visible={displayColumns} onClose={() => setDisplayColumns(false)} selectColumn={getModalResult} week={true} />
                     <DetailModal visible={displayDetail} onClose={() => setDisplayDetail(false)} week={selectedWeek} />
 
-                    <TouchableOpacity
-                        onPress={() => toggleOrientation()}
-                        onLongPress={() => setDisplayColumns(true)}>
+                    <View style={myStyles.topContainer}>
 
-                        <Text style={myStyles.sortLabel}> {setLabelText(columnToSort, orientation)} </Text>
+                        <TouchableOpacity onPress={() => setDisplayColumns(true)}>
+                            <SortingButton text={setLabelText(columnToSort, orientation, 'column')} />
+                        </TouchableOpacity>
 
-                    </TouchableOpacity>
+                        <TouchableOpacity onPress={() => toggleOrientation()}>
+                            <SortingButton text={setLabelText(columnToSort, orientation, 'orientation')} />
+                        </TouchableOpacity>
+
+                    </View>
 
                     <FlatList
                         keyExtractor={item => JSON.stringify(item.week)}

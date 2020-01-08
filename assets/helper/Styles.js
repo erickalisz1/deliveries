@@ -11,14 +11,22 @@ export const myStyles = StyleSheet.create({
         textAlign: "center",
         fontSize: 17,
         color: Colours.primaryText,
+        minWidth:60
     },
     //main list
     sortLabel: {
         textAlign: 'center',
         fontSize: 20,
+        marginHorizontal:10,
+        color: Colours.primaryText
+    },
+    topContainer:{
+        display:'flex',
+        flexDirection:'row',
+        justifyContent:'space-between',
+        alignItems:'center',
         marginTop: Platform.OS === 'ios' ? 15 : 35,
         marginBottom: 15,
-        color: Colours.primaryText
     },
     //lists
     listItem: {

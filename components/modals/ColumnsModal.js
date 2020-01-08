@@ -46,7 +46,7 @@ const ColumnsModal = (props) => {
                 {listOfOptions}
 
                 <TouchableOpacity onPress={props.onClose} style={{marginBottom:20}}>
-                    <MyButton text='Cancel' colour={Colours.cancel} textColour={Colours.primaryText} />
+                    <MyButton text='Cancel' colour={Colours.cancel} textColour={Colours.white} />
                 </TouchableOpacity>
 
             </View>

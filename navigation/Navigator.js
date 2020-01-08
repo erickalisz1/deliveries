@@ -8,8 +8,17 @@ import MainList from '../screens/MainList';
 import AppHelp from '../screens/AppHelp';
 import Colours from '../assets/constants/darkTheme';
 import WeeksList from '../screens/WeeksList';
+import Dashboard from '../screens/Dashboard';
 
 const TabNavigator = createBottomTabNavigator({
+    Dashboard: {
+        screen: Dashboard,
+        navigationOptions: {
+            tabBarLabel: 'Dashboard',
+            tabBarIcon: <Ionicons name='ios-clipboard' size={25} color={Colours.accent} />,
+            tabBarColor: Colours.backgroundLight,
+        }
+    },
     Main: {
         screen: MainList,
         navigationOptions: {

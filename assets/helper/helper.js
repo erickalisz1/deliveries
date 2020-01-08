@@ -11,41 +11,53 @@ export const firebaseConfig = {
     appId: "1:138527506874:web:b77bf64674a2912ff1dd83"
 };
 
-export const setLabelText = (columnToSort, orientation) => {
+export const setLabelText = (columnToSort, orientation, type) => {
 
     let text = '';
 
-    if (columnToSort === 'dayNumber') {
-        text += 'Days';
+    if (type === 'column') {
+
+        if (columnToSort === 'dayNumber') {
+            text += 'Days';
+        }
+        else if (columnToSort === 'week') {
+            text += 'Weeks';
+        }
+        else if (columnToSort === 'deliveroo') {
+            text += 'Deliveroo';
+        }
+        else if (columnToSort === 'uber') {
+            text += 'Uber';
+        }
+        else if (columnToSort === 'total') {
+            text += 'Total';
+        }
+        else if (columnToSort === 'per') {
+            text += 'Per Hour';
+        }
+
+        else text = 'something went wrong';
+
+        return text;
     }
-    else if (columnToSort === 'week') {
-        text += 'Weeks';
-    }
-    else if (columnToSort === 'deliveroo') {
-        text += 'Deliveroo';
-    }
-    else if (columnToSort === 'uber') {
-        text += 'Uber';
-    }
-    else if (columnToSort === 'total') {
-        text += 'Total';
-    }
-    else if (columnToSort === 'per') {
-        text += 'Per Hour';
+    else {
+
+        if (orientation === 'Asc') {
+            text += 'Ascending';
+        }
+        else if (orientation === 'Desc') {
+            text += 'Descending';
+        }
+
+        else text = 'something went wrong';
+
+        return text;
     }
 
-    if (orientation === 'Asc') {
-        text += ' /\\';
-    }
-    else if (orientation === 'Desc') {
-        text += ' \\/';
-    }
-    else text = 'something went wrong';
-
-    return text;
 };
 
 export const sortList = (list, columnToSort, orientation) => {
+    // console.log('on heler sort:',list);
     if (orientation === 'Asc') {
         return list.sort((b, a) => { return (b[columnToSort]) - (a[columnToSort]) });
     }
@@ -333,16 +345,45 @@ export const helpItems = [
         description: 'To properly calculate how much you have earned per hour, we need the total time to be decimal. To calculate it, simply tap the hours text box upon updating and provide the amount of hours and minutes you\'ve worked and the app will do the rest.',
         flex: Platform.OS === 'ios' ? 8 : 13
     },
+    // {
+    //     display: 'Changing list sort',
+    //     description: 'To change how the main list is sorted, simply tap and hold the top label and select the value you wish to sort the list with.',
+    //     flex: Platform.OS === 'ios' ? 11 : 24
+    // },
+    // {
+    //     display: 'Toggling list orientation',
+    //     description: 'To change the list orientation, simply tap the label at the top of the main list and the orientation will be toggled.',
+    //     flex: Platform.OS === 'ios' ? 12 : 20
+    // },
+];
+
+export const weekDays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+export const filters = [
     {
-        display: 'Changing list sort',
-        description: 'To change how the main list is sorted, simply tap and hold the top label and select the value you wish to sort the list with.',
-        flex: Platform.OS === 'ios' ? 11 : 24
+        key: "Days",
+        value: "dayNumber"
     },
     {
-        display: 'Toggling list orientation',
-        description: 'To change the list orientation, simply tap the label at the top of the main list and the orientation will be toggled.',
-        flex: Platform.OS === 'ios' ? 12 : 20
+        key: "Deliveroo",
+        value: "deliveroo"
     },
+    {
+        key: "Uber",
+        value: "uber"
+    },
+    {
+        key: "Hours",
+        value: "hours"
+    },
+    {
+        key: "Total",
+        value: "total"
+    },
+    {
+        key: "Per",
+        value: "per"
+    }
 ];
 
 export const SetPrecision = (value) => {
@@ -364,10 +405,13 @@ export const SetPrecision = (value) => {
     return Number(value);
 };
 
-export const stringDel = (Del) => ' - $' + Del;
-export const stringUber = (Uber) => ' - $' + Uber;
-export const stringTotal = (Total) => ' - $' + Total;
+export const stringVal = (Val) => ' - $' + Val;//works for all generic values, except per
 export const stringPer = (Per) => ' - $' + Per + '/h';
+
+export const stringDel = (Del) => ' - Deliveroo: $' + Del;//these need the names
+export const stringUber = (Uber) => ' - Uber: $' + Uber;
+export const stringTotal = (Total) => ' - Total: $' + Total;
+
 
 //console debugging
   // firebase.database().ref('deliveries/333').once('value', (data) => {

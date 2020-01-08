@@ -79,7 +79,7 @@ const HoursModal = props => {
                                     keyboardType='decimal-pad' />
 
                                 <TouchableOpacity onPress={props.onClose}>
-                                    <MyButton text='Cancel' colour={Colours.cancel} textColour={Colours.primaryText} />
+                                    <MyButton text='Cancel' colour={Colours.cancel} textColour={Colours.white} />
                                 </TouchableOpacity>
                             </View>
 

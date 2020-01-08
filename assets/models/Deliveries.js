@@ -1,5 +1,5 @@
 class Deliveries {
-    constructor(dayNumber, actualDay, deliveroo, uber, hours, total, per, week) {
+    constructor(dayNumber, actualDay, deliveroo, uber, hours, total, per, week, dayOfWeek) {
         this.dayNumber = dayNumber;
         this.actualDay = actualDay;
         this.deliveroo = deliveroo;
@@ -8,6 +8,7 @@ class Deliveries {
         this.total = total;
         this.per = per;
         this.week = week;
+        this.dayOfWeek = dayOfWeek
     }
 }
 

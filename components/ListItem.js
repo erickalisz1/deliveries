@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, View } from 'react-native';
-import { formatDate, SetPrecision } from '../assets/helper/helper';
+import { formatDate, SetPrecision, stringDel, stringPer, stringUber, stringTotal, stringVal } from '../assets/helper/helper';
 import { myStyles } from '../assets/helper/Styles';
 
 const ListItem = (props) => {
@@ -28,45 +28,45 @@ const ListItem = (props) => {
         }
 
         else if (Hours === 0 && Total > 0) {//worked but don't know the hours
-            text = day + ' - $' + Total;
+            text = day + stringVal(Total);
         }
 
         else {
-            text = day + ' - $' + Total + ' - ' + Hours + 'h - $' + Per + '/h';
+            text = day + stringVal(Total) + ' - ' + Hours + 'h ' + stringPer(Per);
         }
     }
 
     else if (columnToSort === 'deliveroo') {//sorting by deliveroo
         if (Hours > 0 && Del > 0) {
-            text = day + ' - Deliveroo: $' + Del + ' - $' + Per + '/h';
+            text = day + stringDel(Del) + stringPer(Per);
         }
         else if (Hours < 1 && Del > 0) {
-            text = day + ' - Deliveroo: $' + Del;
+            text = day + stringDel(Del);
         }
         else text = '-1';
     }
 
     else if (columnToSort === 'uber') {//sorting by uber
         if (Hours > 0 && Uber > 0) {
-            text = day + ' - Uber: $' + Uber + ' - $' + Per + '/h';
+            text = day + stringUber(Uber) + stringPer(Per);
         }
         else if (Hours < 1 && Uber > 0) {
-            text = day + ' - Uber: $' + Uber;
+            text = day + stringUber(Uber);
         }
         else text = '-1';
     }
     else if (columnToSort === 'total') {//sorting by total
         if (Hours > 0 && Total > 0) {
-            text = day + ' - Total: $' + Total + ' - $' + Per + '/h';
+            text = day + stringTotal(Total) + stringPer(Per);
         }
         else if (Hours < 1 && Total > 0) {
-            text = day + ' - Total: $' + Total;
+            text = day + stringTotal(Total);
         }
         else text = '-1';
     }
     else if (columnToSort === 'per') {//sorting by per
         if (Hours > 0 && Per > 0) {
-            text = day + ' - Total: $' + Total + ' - $' + Per + '/h';
+            text = day + stringTotal(Total) + stringPer(Per);
         }
         else text = '-1';
     }
