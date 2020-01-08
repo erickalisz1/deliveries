@@ -386,6 +386,25 @@ export const filters = [
     }
 ];
 
+export const conditions = [
+    {
+        key: "Larger",
+        value: ">"
+    },
+    {
+        key: "Larger Equal",
+        value: ">="
+    },
+    {
+        key: "Smaller",
+        value: "<"
+    },
+    {
+        key: "Smaller Equal",
+        value: "<="
+    }
+];
+
 export const SetPrecision = (value) => {
 
     value = Number(value);

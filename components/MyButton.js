@@ -10,6 +10,7 @@ const MyButton = (props) => {
             padding: 10,
             borderRadius: 15,
             backgroundColor: props.colour,
+            minWidth:70
         },
         text: {
             fontSize: 20,

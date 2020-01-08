@@ -8,5 +8,6 @@ export default Colours = {
     cancel: '#f44',
     success: '#0b0',
     selected: '#5fcfbf',
-    placeholder: '#888'
+    placeholder: '#888',
+    transparent:'rgba(0,0,0,0)'
 }

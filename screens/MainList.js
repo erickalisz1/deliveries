@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, FlatList, TouchableOpacity, Platform, Picker } from 'react-native';
+import { View, FlatList, TouchableOpacity, Platform, Alert } from 'react-native';
 import firebase from 'firebase';
 
 //components
@@ -92,10 +92,9 @@ const MainList = (props) => {
 
     // handling refresh
     const listLoaded = (loadedList) => {
-        // loadedList = loadedList.filter(item => new Date(item.actualDay).getFullYear() > 2019)
         setIsLoading(false);
         setDeliveriesList(loadedList);
-        setFirebaseList(loadedList);
+        setFirebaseList(loadedList);//stock list with no filters
         setIsRefreshing(false);
         setIsOpeningApp(checkIfTodayExists(loadedList, isOpeningApp));
         // setIsOpeningApp(false);
@@ -103,21 +102,35 @@ const MainList = (props) => {
 
     const filterList = (list, column, value, valueEnd, condition) => {
 
+        value = value === '' ? '0' : value;//if it wasn't set, make it 0
+
         value = Number(value);
 
         // console.log(,column);
-
-        if(condition === 'larger'){
-            list = list.filter( item => item[column] > value);
-            console.log('on filterList function: ',list)
-            setDeliveriesList(list);
+        if(column === 'dayNumber'){
+            list = list.filter(item => new Date(item.actualDay).getDay() === value)
+        }
+        else if(condition === '>'){
+            list = list.filter( item => item[column] > value);            
+        }else if(condition === '>='){
+            list = list.filter( item => item[column] >= value);            
+        }else if(condition === '<'){
+            list = list.filter( item => item[column] < value); 
+        }else if(condition === '<='){
+            list = list.filter( item => item[column] <= value);            
         }
 
         column = column === 'hours' ? 'dayNumber' : column;// there is no hours sort
 
-        setColumnToSort(column);
-        setOrientation('Asc');
-        setDisplayFilters(false);
+        if(list.length < 1){//if sorting returns no results
+            Alert.alert('No values to display');
+        }
+        else{
+            setDeliveriesList(list);
+            setColumnToSort(column);
+            setOrientation('Asc');
+            setDisplayFilters(false);
+        }
     };
 
     //handling update day
@@ -140,6 +153,12 @@ const MainList = (props) => {
         setIsLoading(true);
     };
 
+    const clearFilters = () => {
+        setDeliveriesList(firebaseList);
+        setOrientation('Desc');
+        setColumnToSort('dayNumber');
+    };
+
     isLoading ? renderList() : '';
 
     return (
@@ -153,7 +172,7 @@ const MainList = (props) => {
                     <ColumnsModal visible={displayColumns} onClose={() => setDisplayColumns(false)} selectColumn={getModalResult} />
                     <UpdateDays visible={displayUpdate} onClose={() => setDisplayUpdate(false)} dayToUpdate={selectedDay} />
                     <DetailModal visible={displayDetail} onClose={() => setDisplayDetail(false)} day={selectedDay} list={deliveriesList} />
-                    <FiltersModal visible={displayFilters} onClose={() => setDisplayFilters(false)} result={filterList} list={firebaseList}/> 
+                    <FiltersModal visible={displayFilters} onClose={() => setDisplayFilters(false)} result={filterList} list={firebaseList} clear={clearFilters}/> 
                     
 
                     <View style={myStyles.topContainer}>
