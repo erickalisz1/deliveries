@@ -11,7 +11,8 @@ export const myStyles = StyleSheet.create({
         textAlign: "center",
         fontSize: 17,
         color: Colours.primaryText,
-        minWidth:60
+        minWidth:60,
+        maxWidth:120
     },
     //main list
     sortLabel: {
@@ -27,6 +28,43 @@ export const myStyles = StyleSheet.create({
         alignItems:'center',
         marginTop: Platform.OS === 'ios' ? 15 : 35,
         marginBottom: 15,
+    },
+    //filter modal
+    horizontalContainer: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        minWidth: '100%',
+    },
+    verticalContainer: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        minWidth: '35%',
+    },
+    pickerWrapper: {
+        height: 50,
+        width: '40%',
+        borderRadius: 5,
+        borderWidth: Platform.OS === 'ios' ? 0 : 1,
+        borderColor: Colours.primaryText,
+        backgroundColor: Platform.OS === 'ios' ? Colours.transparent : Colours.primaryText,
+        marginBottom: Platform.OS === 'ios' ? 150 : 20,
+        marginTop: Platform.OS === 'ios' ? -50 : 0,
+        marginHorizontal: 10
+    },
+    columnPickerWrapper: {
+        height: 50,
+        width: '95%',
+        borderRadius: 5,
+        borderWidth: Platform.OS === 'ios' ? 0 : 1,
+        borderColor: Colours.primaryText,
+        backgroundColor: Platform.OS === 'ios' ? Colours.transparent : Colours.primaryText,
+        marginBottom: Platform.OS === 'ios' ? 150 : 20,
+        marginTop: Platform.OS === 'ios' ? -50 : 0,
+        marginHorizontal: 10
     },
     //lists
     listItem: {

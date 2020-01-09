@@ -100,37 +100,62 @@ const MainList = (props) => {
         // setIsOpeningApp(false);
     }
 
-    const filterList = (list, column, value, valueEnd, condition) => {
+    const filterList = (list, column, isRange, value, valueEnd, condition) => {
 
-        value = value === '' ? '0' : value;//if it wasn't set, make it 0
+        if (!isRange) {
 
-        value = Number(value);
+            value = value === '' ? '0' : value;//if it wasn't set, make it 0
 
-        // console.log(,column);
-        if(column === 'dayNumber'){
-            list = list.filter(item => new Date(item.actualDay).getDay() === value)
+            value = Number(value);
+
+            if (column === 'dayNumber') {
+                list = list.filter(item => new Date(item.actualDay).getDay() === value)
+            }
+            else {
+
+                if (condition === '>') {
+                    list = list.filter(item => item[column] > value);
+                }
+                else if (condition === '>=') {
+                    list = list.filter(item => item[column] >= value);
+                }
+                else if (condition === '<') {
+                    list = list.filter(item => item[column] > 0 && item[column] < value);
+                }
+                else if (condition === '<=') {
+                    list = list.filter(item => item[column] > 0 && item[column] <= value);
+                }
+            }
         }
-        else if(condition === '>'){
-            list = list.filter( item => item[column] > value);            
-        }else if(condition === '>='){
-            list = list.filter( item => item[column] >= value);            
-        }else if(condition === '<'){
-            list = list.filter( item => item[column] < value); 
-        }else if(condition === '<='){
-            list = list.filter( item => item[column] <= value);            
+        else {
+            if (column === 'dayNumber') {
+
+                console.log('start:', value, 'end:', valueEnd);
+
+                value++;
+                value = value === 7 ? 0 : value;//if it returns 6, its sunday and we must change it to sent it to the new Date()
+                
+                console.log('after ifs: start:', value, 'end:', valueEnd);
+
+                // list = list.filter(item => new Date(item.actualDay).getDay() === value)
+            }
+            else{
+                list = list.filter(item => item[column] >= value && item[column] <= valueEnd);
+            }
         }
 
         column = column === 'hours' ? 'dayNumber' : column;// there is no hours sort
 
-        if(list.length < 1){//if sorting returns no results
+        if (list.length < 1) {//if sorting returns no results
             Alert.alert('No values to display');
         }
-        else{
+        else {
             setDeliveriesList(list);
             setColumnToSort(column);
             setOrientation('Asc');
             setDisplayFilters(false);
         }
+
     };
 
     //handling update day
@@ -172,8 +197,8 @@ const MainList = (props) => {
                     <ColumnsModal visible={displayColumns} onClose={() => setDisplayColumns(false)} selectColumn={getModalResult} />
                     <UpdateDays visible={displayUpdate} onClose={() => setDisplayUpdate(false)} dayToUpdate={selectedDay} />
                     <DetailModal visible={displayDetail} onClose={() => setDisplayDetail(false)} day={selectedDay} list={deliveriesList} />
-                    <FiltersModal visible={displayFilters} onClose={() => setDisplayFilters(false)} result={filterList} list={firebaseList} clear={clearFilters}/> 
-                    
+                    <FiltersModal visible={displayFilters} onClose={() => setDisplayFilters(false)} result={filterList} list={firebaseList} clear={clearFilters} />
+
 
                     <View style={myStyles.topContainer}>
 
