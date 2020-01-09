@@ -12,6 +12,7 @@ import SmallText from '../SmallText';
 import Row from '../Row';
 import Column from '../Column';
 import { DAYS } from '../../assets/constants/strings';
+import SortingButton from '../SortingButton';
 
 const FiltersModal = (props) => {
 
@@ -23,11 +24,11 @@ const FiltersModal = (props) => {
     const [isRange, setIsRange] = useState(false);
 
     //range
-    const [weekDayStart, setWeekDayStart] = useState('0');
-    const [weekDayEnd, setWeekDayEnd] = useState('0');
     const [startValue, setStartValue] = useState('');
     const [endValue, setEndValue] = useState('');
-    const [daysEndList, setDaysEndList] = useState([]);
+    // const [weekDayStart, setWeekDayStart] = useState('0');
+    // const [weekDayEnd, setWeekDayEnd] = useState('0');
+    // const [daysEndList, setDaysEndList] = useState([]);
 
     const { list } = props;
 
@@ -41,9 +42,7 @@ const FiltersModal = (props) => {
 
     let rangeFilters = filters.map((row, index) => {
         return (
-            
             row.key !== DAYS ? <Picker.Item label={row.key} value={row.value} key={index} /> : null
-            
         );
     });
 
@@ -62,24 +61,20 @@ const FiltersModal = (props) => {
 
     const setFilters = () => {
 
-        if(!isRange && filter === 'dayNumber')
-        {//if its a weekDay
+        if (!isRange && filter === 'dayNumber') {//if its a weekDay
             props.result(list, filter, isRange, weekDay, '', '');
         }
-        else if(isRange && filter === 'dayNumber')
-        {//if its a range of days
-            props.result(list, filter, isRange, weekDayStart, weekDayEnd, '');
+        else if (isRange && filter === 'dayNumber') {//if its a range of days
+            // props.result(list, filter, isRange, weekDayStart, weekDayEnd, '');
         }
-        else if(!isRange && filter !== 'dayNumber')
-        {//if its a single value
+        else if (!isRange && filter !== 'dayNumber') {//if its a single value
             props.result(list, filter, isRange, value, -1, condition);
         }
-        else if(isRange && filter !== 'dayNumber')
-        {//if its a range between values
+        else if (isRange && filter !== 'dayNumber') {//if its a range between values
             props.result(list, filter, isRange, startValue, endValue, ' between ');
         }
 
-        
+
     };
 
     const clearFilters = () => {
@@ -100,19 +95,16 @@ const FiltersModal = (props) => {
     const handleSwitch = () => {
         isRange ? setIsRange(false) : setIsRange(true)
     };
-
+/*
     const updateWeekRange = value => {
         setWeekDayStart(value);
         setDaysEndList(daysList.filter(item => item.key > value));
-        
-    };
 
+    };
+*/
     let space;
 
-    space = filter === 'dayNumber' ? 7 : 6;
-
-    space = isRange ? 3 : space;
-
+    space = !isRange || filter === 'dayNumber' ? 5 : 3;
 
     return (
         <Modal transparent={true} visible={props.visible} animationType='slide'>
@@ -123,18 +115,21 @@ const FiltersModal = (props) => {
 
                     <ModalContainer dark={false}>
 
-                        <LargeText modal={true}>Filters</LargeText>
+                        <SortingButton text='Apply Filters' light/>
 
-                        <Row>
+                        {filter !== 'dayNumber' ? (
+                            <Row>
 
-                            <SmallText between={10}>Value</SmallText>
-                            <Switch value={isRange} onValueChange={handleSwitch} />
-                            <SmallText between={10}>Range</SmallText>
+                                <SmallText>Value</SmallText>
+                                <Switch value={isRange} onValueChange={handleSwitch} style={{margin:20}} />
+                                <SmallText>Range</SmallText>
 
-                        </Row>
+                            </Row>
+                        ) : null}
+
 
                         {isRange ? (
-                            <View style={{ marginTop: 45 }}>
+                            <View style={{ marginTop: 20 }}>
 
                                 <Row>
                                     <View style={myStyles.pickerWrapper}>
@@ -155,26 +150,26 @@ const FiltersModal = (props) => {
                                     <Column>
                                         <SmallText between={50} top={30}>From</SmallText>
 
-                                                <TextInput
-                                                    placeholder={filter}
-                                                    placeholderTextColor={Colours.placeholder}
-                                                    style={myStyles.input}
-                                                    onChangeText={startValueInput}
-                                                    value={startValue}
-                                                    keyboardType='decimal-pad' />
+                                        <TextInput
+                                            placeholder={filter}
+                                            placeholderTextColor={Colours.placeholder}
+                                            style={myStyles.input}
+                                            onChangeText={startValueInput}
+                                            value={startValue}
+                                            keyboardType='decimal-pad' />
 
                                     </Column>
 
                                     <Column>
                                         <SmallText between={50} top={30}>To</SmallText>
 
-                                                <TextInput
-                                                    placeholder={filter}
-                                                    placeholderTextColor={Colours.placeholder}
-                                                    style={myStyles.input}
-                                                    onChangeText={endValueInput}
-                                                    value={endValue}
-                                                    keyboardType='decimal-pad' />
+                                        <TextInput
+                                            placeholder={filter}
+                                            placeholderTextColor={Colours.placeholder}
+                                            style={myStyles.input}
+                                            onChangeText={endValueInput}
+                                            value={endValue}
+                                            keyboardType='decimal-pad' />
 
                                     </Column>
                                 </Row>
@@ -183,7 +178,7 @@ const FiltersModal = (props) => {
                             </View>
 
                         ) : (
-                                <View style={{marginTop:20}}>
+                                <View style={{ marginTop: 20 }}>
                                     <Row>
                                         <View style={myStyles.pickerWrapper}>
                                             <Picker
