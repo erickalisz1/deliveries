@@ -1,7 +1,8 @@
 import React from 'react';
 import { Text, View } from 'react-native';
-import { formatDate, SetPrecision, stringDel, stringPer, stringUber, stringTotal, stringVal } from '../assets/helper/helper';
+import { formatDate, SetPrecision } from '../assets/helper/helper';
 import { myStyles } from '../assets/helper/Styles';
+import { stringDel, stringPer, stringUber, stringTotal, stringVal } from '../assets/constants/strings';
 
 const ListItem = (props) => {
 

@@ -3,21 +3,22 @@ import { View, Text, StyleSheet, Modal, TouchableOpacity, Platform } from 'react
 import Colours from '../../assets/constants/darkTheme';
 import ModalSpace from '../modals/ModalSpace';
 import MyButton from '../MyButton';
+import { WEEKS, DEL, UB, TOTAL, PER, DAYS } from '../../assets/constants/strings';
 
 const ColumnsModal = (props) => {
 
     let options = props.week === true ? [//needed to have the lower case name as well because of the property name (might fix later by changing the class attributes to upper case)
-        {display:'Weeks', value:'week'}, 
-        {display:'Deliveroo', value:'deliveroo'}, 
-        {display:'Uber', value:'uber'}, 
-        {display:'Total', value:'total'}, 
-        {display:'Per', value:'per'}
+        {display:WEEKS, value:'week'}, 
+        {display:DEL, value:'deliveroo'}, 
+        {display:UB, value:'uber'}, 
+        {display:TOTAL, value:'total'}, 
+        {display:PER, value:'per'}
     ] : [
-        {display:'Days', value:'dayNumber'}, 
-        {display:'Deliveroo', value:'deliveroo'}, 
-        {display:'Uber', value:'uber'}, 
-        {display:'Total', value:'total'}, 
-        {display:'Per', value:'per'}
+        {display:DAYS, value:'dayNumber'}, 
+        {display:DEL, value:'deliveroo'}, 
+        {display:UB, value:'uber'}, 
+        {display:TOTAL, value:'total'}, 
+        {display:PER, value:'per'}
     ];
 
     const sortColumn = (selectedColumn) => {        

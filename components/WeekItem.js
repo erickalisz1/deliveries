@@ -2,7 +2,8 @@ import React from 'react';
 import { Text, View } from 'react-native';
 
 import { myStyles } from '../assets/helper/Styles';
-import { stringVal, stringPer, SetPrecision, setWeekString } from '../assets/helper/helper';
+import { stringVal, stringPer } from '../assets/constants/strings';
+import { SetPrecision, setWeekString } from '../assets/helper/helper';
 
 const WeekItem = (props) => {
 

@@ -1,5 +1,6 @@
 import { Alert, Platform } from 'react-native';
 import firebase from 'firebase';
+import { DEL, UB, HRS, TOTAL, PER, DAYS, LARGER, LARGER_EQUAL, SMALLER, SMALLER_EQUAL } from '../constants/strings';
 
 export const firebaseConfig = {
     apiKey: "AIzaSyBtFpyI8rFywqiHm3rnL2qbS3L4Dl_Y8sk",
@@ -357,51 +358,70 @@ export const helpItems = [
     // },
 ];
 
-export const weekDays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+//fixing filters UI
+export const weekDays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+export const assignDay = weekDays.map((value, index) => {
+    return ({
+        display: value,
+        value: index
+    })
+});
+
+
+
+export const fixDisplay = [
+    { display: DEL, value: 'deliveroo' },
+    { display: UB, value: 'uber' },
+    { display: HRS, value: 'hours' },
+    { display: TOTAL, value: 'total' },
+    { display: PER, value: 'per' }
+];
 
 export const filters = [
     {
-        key: "Days",
+        key: DAYS,
         value: "dayNumber"
     },
     {
-        key: "Deliveroo",
+        key: DEL,
         value: "deliveroo"
     },
     {
-        key: "Uber",
+        key: UB,
         value: "uber"
     },
     {
-        key: "Hours",
+        key: HRS,
         value: "hours"
     },
     {
-        key: "Total",
+        key: TOTAL,
         value: "total"
     },
     {
-        key: "Per",
+        key: PER,
         value: "per"
     }
 ];
 
+
 export const conditions = [
     {
         key: "Larger",
-        value: ">"
+        value: LARGER
     },
     {
         key: "Larger Equal",
-        value: ">="
+        value: LARGER_EQUAL
     },
     {
         key: "Smaller",
-        value: "<"
+        value: SMALLER
     },
     {
         key: "Smaller Equal",
-        value: "<="
+        value: SMALLER_EQUAL
     }
 ];
 
@@ -424,12 +444,7 @@ export const SetPrecision = (value) => {
     return Number(value);
 };
 
-export const stringVal = (Val) => ' - $' + Val;//works for all generic values, except per
-export const stringPer = (Per) => ' - $' + Per + '/h';
 
-export const stringDel = (Del) => ' - Deliveroo: $' + Del;//these need the names
-export const stringUber = (Uber) => ' - Uber: $' + Uber;
-export const stringTotal = (Total) => ' - Total: $' + Total;
 
 
 //console debugging

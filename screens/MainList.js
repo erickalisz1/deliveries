@@ -12,12 +12,15 @@ import DetailModal from '../components/modals/DetailModal';
 import SortingButton from '../components/SortingButton';
 
 // assets
-import { setLabelText, sortList, checkIfTodayExists } from '../assets/helper/helper';
+import { setLabelText, sortList, checkIfTodayExists, conditions, assignDay, fixDisplay } from '../assets/helper/helper';
+import { DEL, UB, TOTAL, PER, DAYS, SPACE, LARGER, LARGER_EQUAL, SMALLER, SMALLER_EQUAL, HRS } from '../assets/constants/strings';
 import Deliveries from '../assets/models/Deliveries';
 import { myStyles } from '../assets/helper/Styles';
 import Colours from '../assets/constants/darkTheme';
 import { Ionicons } from '@expo/vector-icons';
 import FiltersModal from '../components/modals/FiltersModal';
+import SmallText from '../components/SmallText';
+import Row from '../components/Row';
 
 
 const MainList = (props) => {
@@ -40,6 +43,7 @@ const MainList = (props) => {
     const [firebaseList, setFirebaseList] = useState([]);//the original list
     const [isRefreshing, setIsRefreshing] = useState(false);
     const [isOpeningApp, setIsOpeningApp] = useState(true);
+    const [activeFilter, setActiveFilter] = useState('');
 
     const renderList = () => {
 
@@ -110,21 +114,23 @@ const MainList = (props) => {
 
             if (column === 'dayNumber') {
                 list = list.filter(item => new Date(item.actualDay).getDay() === value)
+
             }
             else {
 
-                if (condition === '>') {
+                if (condition === LARGER) {
                     list = list.filter(item => item[column] > value);
                 }
-                else if (condition === '>=') {
+                else if (condition === LARGER_EQUAL) {
                     list = list.filter(item => item[column] >= value);
                 }
-                else if (condition === '<') {
+                else if (condition === SMALLER) {
                     list = list.filter(item => item[column] > 0 && item[column] < value);
                 }
-                else if (condition === '<=') {
+                else if (condition === SMALLER_EQUAL) {
                     list = list.filter(item => item[column] > 0 && item[column] <= value);
                 }
+
             }
         }
         else {
@@ -134,26 +140,48 @@ const MainList = (props) => {
 
                 value++;
                 value = value === 7 ? 0 : value;//if it returns 6, its sunday and we must change it to sent it to the new Date()
-                
+
                 console.log('after ifs: start:', value, 'end:', valueEnd);
 
-                // list = list.filter(item => new Date(item.actualDay).getDay() === value)
+                list = list.filter(item => new Date(item.actualDay).getDay() >= value && new Date(item.actualDay).getDay() <= valueEnd)
             }
-            else{
+            else {
+                console.log('column', column, 'value', value, 'valueEnd', valueEnd);
                 list = list.filter(item => item[column] >= value && item[column] <= valueEnd);
             }
         }
 
-        column = column === 'hours' ? 'dayNumber' : column;// there is no hours sort
 
         if (list.length < 1) {//if sorting returns no results
             Alert.alert('No values to display');
         }
         else {
             setDeliveriesList(list);
-            setColumnToSort(column);
             setOrientation('Asc');
             setDisplayFilters(false);
+
+
+            //fixing column display
+            if (isRange) {
+                column !== 'dayNumber' ? (//if its not the days
+                    fixDisplay.forEach(item => {
+                        item.value === column ? setActiveFilter(item.display + condition + value + ' and ' + valueEnd) : null
+                    })//e.g (Uber > 100)
+                ) : (null
+                        // assignDay.forEach(item => { item.value === value ? setActiveFilter(item.display) : null })
+                    );
+            }
+
+            else column !== 'dayNumber' ? (//if its not the days
+                fixDisplay.forEach(item => { item.value === column ? setActiveFilter(item.display + SPACE + condition + SPACE + value) : null })//e.g (Uber > 100)
+            ) : (
+                    assignDay.forEach(item => { item.value === value ? setActiveFilter(item.display) : null })
+                );
+
+
+
+            column === 'hours' ? setColumnToSort('total') : setColumnToSort(column);// there is no hours sort
+
         }
 
     };
@@ -182,6 +210,7 @@ const MainList = (props) => {
         setDeliveriesList(firebaseList);
         setOrientation('Desc');
         setColumnToSort('dayNumber');
+        setActiveFilter('');
     };
 
     isLoading ? renderList() : '';
@@ -210,10 +239,20 @@ const MainList = (props) => {
                             <SortingButton text={setLabelText(columnToSort, orientation, 'orientation')} />
                         </TouchableOpacity>
 
-                        <TouchableOpacity onPress={() => setDisplayFilters(true)} style={{ flex: 1, alignItems: 'flex-end' }}>
-                            <Ionicons name='ios-options' size={25} color={Colours.primaryText} />
+                        <TouchableOpacity onPress={() => setDisplayFilters(true)} style={{ flex: 1, alignItems: 'flex-end', marginRight: 5 }}>
+                            <Ionicons name='ios-options' size={25} color={activeFilter === '' ? Colours.primaryText : Colours.success} />
                         </TouchableOpacity>
                     </View>
+
+                    {activeFilter !== '' ? (
+                        <Row>
+                            <Ionicons name='ios-color-filter' size={24} color={Colours.success} />
+                            <View style={{ margin: 15 }}></View>
+                            <SmallText>{activeFilter}</SmallText>
+                            <View style={{ margin: 15 }}></View>
+                            <Ionicons name='ios-color-filter' size={24} color={Colours.success} />
+                        </Row>
+                    ) : null}
 
                     <FlatList
                         keyExtractor={item => JSON.stringify(item.dayNumber)}
