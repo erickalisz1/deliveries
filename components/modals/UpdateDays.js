@@ -11,6 +11,9 @@ import { myStyles } from '../../assets/helper/Styles';
 import ModalContainer from './ModalContainer';
 import ModalSpace from './ModalSpace';
 import MyButton from '../MyButton';
+import { Ionicons } from '@expo/vector-icons';
+import SmallText from '../SmallText';
+import Row from '../Row';
 
 const UpdateDays = (props) => {
 
@@ -26,7 +29,7 @@ const UpdateDays = (props) => {
   if (day) {
     let date = formatDate(day.actualDay);
 
-    console.log('selected:', date);
+    console.log('selected:', day.dayNumber);
 
     const deliverooInput = (enteredValue) => {
       setDelValue(enteredValue);
@@ -50,6 +53,14 @@ const UpdateDays = (props) => {
       setDelValue(value + '');
     };
 
+    const showPrevious = () => {
+      props.next(day.dayNumber, '<');
+    };
+
+    const showNext = () => {
+      props.next(day.dayNumber, '>');
+    };
+
     return (
 
       <Modal transparent={true} visible={props.visible} animationType='slide'>
@@ -61,64 +72,96 @@ const UpdateDays = (props) => {
           {/* needed to wrap this whole thing into another view so my keyboard dismiss worked */}
           <View style={{ flex: 1 }} >
 
-            <ModalSpace onClose={props.onClose} flex={Platform.OS === 'ios' ? 11 : 15} />
+            <ModalSpace onClose={props.onClose} flex={Platform.OS === 'ios' ? 9 : 8} />
 
             <ModalContainer dark={false} smaller={false}>
 
               <View style={styles.row}>
+                <TouchableOpacity onPress={() => showPrevious()} style={{ marginHorizontal: 10, padding:20 }}>
+
+                  <Ionicons name='ios-arrow-back' size={30} color={Colours.primaryText} />
+
+                </TouchableOpacity>
 
                 <View style={styles.selectDay}>
                   <Text style={myStyles.modalDescriptionLarge} >{date}</Text>
                 </View>
+
+                <TouchableOpacity onPress={() => showNext()} style={{ marginHorizontal: 10, padding:20 }}>
+
+                  <Ionicons name='ios-arrow-forward' size={30} color={Colours.primaryText} />
+
+                </TouchableOpacity>
+
               </View>
+
 
               <View style={styles.row}>
 
                 <View style={styles.column}>
+
+                  <TouchableOpacity onPress={() => setDisplayDelModal(true)}>
+                    <Row style={{marginVertical:10}}>
+                      <Ionicons name='ios-calculator' size={30} color={Colours.deliveroo} />
+                      <SmallText> Deliveroo</SmallText>
+                    </Row>
+                  </TouchableOpacity>
+
                   <TextInput
-                    placeholder="Deliveroo"
+                    placeholder={'' + day.deliveroo}
                     placeholderTextColor={Colours.placeholder}
                     style={myStyles.input}
                     onChangeText={deliverooInput}
                     value={delValue}
                     keyboardType='decimal-pad'
-                    onTouchStart={() => setDisplayDelModal(true)} />
+                  />
 
                   {/* moved the update statements to another file for cleaner code */}
 
                   <TouchableOpacity onPress={() => setDelValue(updateDeliveroo(day, delValue))}>
-                    <MyButton text='Update' colour={Colours.selected} textColour={Colours.black} />
+                    <MyButton text='Update' colour={Colours.deliveroo} textColour={Colours.black} />
                   </TouchableOpacity>
                 </View>
 
                 <View style={styles.column}>
+
+                  <Row style={{minHeight:33, marginVertical:10}}>
+                    <SmallText>Uber</SmallText>
+                  </Row>
+
                   <TextInput
-                    placeholder="Uber"
+                    placeholder={''+ day.uber}
                     placeholderTextColor={Colours.placeholder}
                     style={myStyles.input}
                     onChangeText={uberInput}
                     value={uberValue}
                     keyboardType='decimal-pad' />
 
-                  <TouchableOpacity onPress={() => { console.log('uber:', uberValue); setUberValue(updateUber(day, uberValue)) }}>
-                    <MyButton text='Update' colour={Colours.selected} textColour={Colours.black} />
+                  <TouchableOpacity onPress={() => setUberValue(updateUber(day, uberValue))}>
+                    <MyButton text='Update' colour={Colours.uber} textColour={Colours.black} />
                   </TouchableOpacity>
                 </View>
 
                 <View style={styles.column}>
+
+                <TouchableOpacity onPress={() => setDisplayHoursModal(true)}>
+                    <Row style={{marginVertical:10}}>
+                      <Ionicons name='ios-calculator' size={30} color={Colours.hours} />
+                      <SmallText> Hours</SmallText>
+                    </Row>
+                  </TouchableOpacity>
+
                   <TextInput
-                    placeholder="Hours"
+                    placeholder={'' + day.hours}
                     placeholderTextColor={Colours.placeholder}
                     style={myStyles.input}
                     onChangeText={hoursInput}
                     value={hoursValue}
                     keyboardType='decimal-pad'
-                    onTouchStart={() => setDisplayHoursModal(true)}
-
                   />
 
                   <TouchableOpacity onPress={() => setHoursValue(updateHours(day, hoursValue))}>
-                    <MyButton text='Update' colour={Colours.selected} textColour={Colours.black} />
+                    <MyButton text='Update' colour={Colours.hours} textColour={Colours.black} />
                   </TouchableOpacity>
                 </View>
 
@@ -128,7 +171,7 @@ const UpdateDays = (props) => {
 
             </ModalContainer>
 
-            <ModalSpace onClose={props.onClose} flex={Platform.OS === 'ios' ? 11 : 15} />
+            <ModalSpace onClose={props.onClose} flex={Platform.OS === 'ios' ? 9 : 8} />
 
           </View>
         </DismissKeyboard>
@@ -152,12 +195,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    margin:15
+    margin: 15
   },
   column: {
     display: 'flex',
     flexDirection: 'column',
-    flex:1,
+    flex: 1,
     marginHorizontal: 5
   },
 });

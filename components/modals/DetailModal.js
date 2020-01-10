@@ -6,8 +6,10 @@ import LargeText from '../LargeText';
 import ModalContainer from './ModalContainer';
 import ModalSpace from './ModalSpace';
 import MyButton from '../MyButton';
+import Row from '../Row';
 import { setWeekString, setDateString, setDailyMessage, setWeeklyMessage } from '../../assets/helper/helper';
 import { myStyles } from '../../assets/helper/Styles';
+import { Ionicons } from '@expo/vector-icons';
 
 const DetailModal = (props) => {
 
@@ -76,7 +78,7 @@ const DetailModal = (props) => {
         let space = 13 - count;
 
         //fixing space
-        space = space === 2 ? space = 4 : space ;
+        space = space === 2 ? space = 4 : space;
 
         return (
 
@@ -94,11 +96,19 @@ const DetailModal = (props) => {
                         <Text style={myStyles.modalDescriptionLarge}>{details}</Text>
                     </View>
 
+                    <Row>
 
-                    <TouchableOpacity onPress={props.onClose} style={myStyles.modalRow}>
-                        <MyButton text='Got it' colour={Colours.success} textColour={Colours.primaryText} />
-                    </TouchableOpacity>
+                        <TouchableOpacity onPress={props.edit}>
+                            <MyButton text='Update' colour={Colours.selected} textColour={Colours.backgroundLight}/>
+                        </TouchableOpacity>
 
+                        <View style={{marginHorizontal:20}}></View>
+
+                        <TouchableOpacity onPress={props.onClose}>
+                            <MyButton text='Got it' colour={Colours.success} textColour={Colours.white} />
+                        </TouchableOpacity>
+
+                    </Row>
                 </ModalContainer>
 
                 <ModalSpace onClose={props.onClose} flex={space} />

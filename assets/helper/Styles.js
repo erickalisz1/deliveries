@@ -4,7 +4,7 @@ import Colours from '../constants/darkTheme';
 export const myStyles = StyleSheet.create({
     //update
     input:{
-        borderBottomColor: Colours.selected,
+        borderBottomColor: Colours.accent,
         borderBottomWidth: 1,
         marginHorizontal: 5,
         padding: 5,
@@ -28,6 +28,8 @@ export const myStyles = StyleSheet.create({
         alignItems:'center',
         marginTop: Platform.OS === 'ios' ? 15 : 35,
         marginBottom: 15,
+        marginHorizontal:'2.5%',
+        maxWidth:'97.5%'
     },
     //filter modal
     horizontalContainer: {

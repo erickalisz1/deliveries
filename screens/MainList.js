@@ -12,8 +12,8 @@ import DetailModal from '../components/modals/DetailModal';
 import SortingButton from '../components/SortingButton';
 
 // assets
-import { setLabelText, sortList, checkIfTodayExists, conditions, assignDay, fixDisplay } from '../assets/helper/helper';
-import { DEL, UB, TOTAL, PER, DAYS, SPACE, LARGER, LARGER_EQUAL, SMALLER, SMALLER_EQUAL, HRS } from '../assets/constants/strings';
+import { setLabelText, sortList, checkIfTodayExists, assignDay, fixDisplay, nextDay } from '../assets/helper/helper';
+import { SPACE, LARGER, LARGER_EQUAL, SMALLER, SMALLER_EQUAL } from '../assets/constants/strings';
 import Deliveries from '../assets/models/Deliveries';
 import { myStyles } from '../assets/helper/Styles';
 import Colours from '../assets/constants/darkTheme';
@@ -50,7 +50,7 @@ const MainList = (props) => {
         let localList = [];
 
         let start = new Date();
-        let daysCount = 1;//started on tuesday
+        let daysCount = 0;
         let week = 0;
 
         console.log('Fetching List...');
@@ -112,9 +112,16 @@ const MainList = (props) => {
 
             value = Number(value);
 
-            if (column === 'dayNumber') {
+            if (column === 'dayNumber' && value < 7) {
+
                 list = list.filter(item => new Date(item.actualDay).getDay() === value)
 
+            }
+            else if (column === 'dayNumber' && value === 7){//selected "weekdays"
+                list = list.filter(item => new Date(item.actualDay).getDay() > 0 && new Date(item.actualDay).getDay() < 5) // monday to thursday
+            }
+            else if (column === 'dayNumber' && value === 8){//selected "weekends"
+                list = list.filter(item => new Date(item.actualDay).getDay() === 0 || new Date(item.actualDay).getDay() > 4) // friday, saturday, sunday
             }
             else {
 
@@ -134,6 +141,8 @@ const MainList = (props) => {
             }
         }
         else {
+            value === '' || valueEnd === '' ? list = [] : null;//if no values are set
+
             if (column === 'dayNumber') {
 
                 console.log('start:', value, 'end:', valueEnd);
@@ -167,9 +176,7 @@ const MainList = (props) => {
                     fixDisplay.forEach(item => {
                         item.value === column ? setActiveFilter(item.display + condition + value + ' and ' + valueEnd) : null
                     })//e.g (Uber > 100)
-                ) : (null
-                        // assignDay.forEach(item => { item.value === value ? setActiveFilter(item.display) : null })
-                    );
+                ) : null;
             }
 
             else column !== 'dayNumber' ? (//if its not the days
@@ -187,9 +194,9 @@ const MainList = (props) => {
     };
 
     //handling update day
-    const updateDay = (dayToUpdate) => {
+    const updateDay = () => {
+        setDisplayDetail(false);
         setDisplayUpdate(true);
-        setSelectedDay(dayToUpdate);
     };
 
     const toggleOrientation = () => {//switching orientations
@@ -213,7 +220,14 @@ const MainList = (props) => {
         setActiveFilter('');
     };
 
-    isLoading ? renderList() : '';
+    const findNext = (id, direction) => {
+
+        direction === '<' ? id-- : id++;
+
+        setSelectedDay(firebaseList.find((value) => value.dayNumber === id));
+    };
+
+    isLoading ? renderList() : null;
 
     return (
         <Container dark={true}>
@@ -223,10 +237,10 @@ const MainList = (props) => {
             {isLoading ? (<Loading />) : (
                 <View>
 
-                    <ColumnsModal visible={displayColumns} onClose={() => setDisplayColumns(false)} selectColumn={getModalResult} />
-                    <UpdateDays visible={displayUpdate} onClose={() => setDisplayUpdate(false)} dayToUpdate={selectedDay} />
-                    <DetailModal visible={displayDetail} onClose={() => setDisplayDetail(false)} day={selectedDay} list={deliveriesList} />
-                    <FiltersModal visible={displayFilters} onClose={() => setDisplayFilters(false)} result={filterList} list={firebaseList} clear={clearFilters} />
+                    <ColumnsModal visible={displayColumns} selectColumn={getModalResult} onClose={() => setDisplayColumns(false)} />
+                    <UpdateDays visible={displayUpdate} dayToUpdate={selectedDay} onClose={() => setDisplayUpdate(false)} next={findNext}/>
+                    <DetailModal visible={displayDetail} edit={updateDay} day={selectedDay} list={firebaseList} onClose={() => setDisplayDetail(false)}/>
+                    <FiltersModal visible={displayFilters} result={filterList} list={firebaseList} clear={clearFilters} onClose={() => setDisplayFilters(false)}/>
 
 
                     <View style={myStyles.topContainer}>
@@ -239,17 +253,15 @@ const MainList = (props) => {
                             <SortingButton text={setLabelText(columnToSort, orientation, 'orientation')} />
                         </TouchableOpacity>
 
-                        <TouchableOpacity onPress={() => setDisplayFilters(true)} style={{ flex: 1, alignItems: 'flex-end', marginRight: 5 }}>
+                        <TouchableOpacity onPress={() => setDisplayFilters(true)} style={{ flex: 1, alignItems: 'flex-end', padding: 15 }}>
                             <Ionicons name='ios-options' size={25} color={activeFilter === '' ? Colours.primaryText : Colours.success} />
                         </TouchableOpacity>
                     </View>
 
                     {activeFilter !== '' ? (
-                        <Row>
+                        <Row style={{margin:20, justifyContent:'space-around', maxWidth:'95%'}}>
                             <Ionicons name='ios-color-filter' size={24} color={Colours.success} />
-                            <View style={{ margin: 15 }}></View>
                             <SmallText>{activeFilter}</SmallText>
-                            <View style={{ margin: 15 }}></View>
                             <Ionicons name='ios-color-filter' size={24} color={Colours.success} />
                         </Row>
                     ) : null}
@@ -263,8 +275,9 @@ const MainList = (props) => {
                         renderItem={(item) =>
                             (
                                 <TouchableOpacity
-                                    onPress={() => { setSelectedDay(item.item); console.log(item.item.per); setDisplayDetail(true); }}
-                                    onLongPress={() => updateDay(item.item)}>
+                                    onPress={() => { setSelectedDay(item.item); setDisplayDetail(true); }}
+                                    // onLongPress={() => updateDay(item.item)}
+                                    >
 
                                     <ListItem
                                         selectedDay={item.item}

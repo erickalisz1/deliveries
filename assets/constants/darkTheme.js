@@ -9,5 +9,8 @@ export default Colours = {
     success: '#0b0',
     selected: '#5fcfbf',
     placeholder: '#888',
-    transparent:'rgba(0,0,0,0)'
+    transparent:'rgba(0,0,0,0)',
+    deliveroo:'#00CCBC',
+    uber:'#AFAFAF',
+    hours:'#99FF99'
 }

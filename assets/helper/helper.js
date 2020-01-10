@@ -359,7 +359,7 @@ export const helpItems = [
 ];
 
 //fixing filters UI
-export const weekDays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+export const weekDays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Weekdays", "Weekends"];
 
 export const assignDay = weekDays.map((value, index) => {
     return ({
@@ -381,27 +381,33 @@ export const fixDisplay = [
 export const filters = [
     {
         key: DAYS,
-        value: "dayNumber"
+        value: "dayNumber",
+        colour:'rgba(100,100,255,1)'
     },
     {
         key: DEL,
-        value: "deliveroo"
+        value: "deliveroo",
+        colour:'rgba(0,252,250,1)'
     },
     {
         key: UB,
-        value: "uber"
+        value: "uber",
+        colour:'rgba(175,175,175,1)'
     },
     {
         key: HRS,
-        value: "hours"
+        value: "hours",
+        colour:'rgba(153,255,153,1)'
     },
     {
         key: TOTAL,
-        value: "total"
+        value: "total",
+        colour:'#F36F36'
     },
     {
         key: PER,
-        value: "per"
+        value: "per",
+        colour:'rgba(255,192,203,1)'
     }
 ];
 

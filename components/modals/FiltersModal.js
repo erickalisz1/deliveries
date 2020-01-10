@@ -36,14 +36,28 @@ const FiltersModal = (props) => {
     //if filter is weekdays
     let pickFilters = filters.map((row, index) => {
         return (
-            <Picker.Item label={row.key} value={row.value} key={index} />
+            <Picker.Item label={row.key} value={row.value} key={index} color={row.colour}/>
         );
     });
 
     let rangeFilters = filters.map((row, index) => {
-        return (
-            row.key !== DAYS ? <Picker.Item label={row.key} value={row.value} key={index} /> : null
-        );
+
+        if(Platform.OS === 'ios'){
+            if(row.key !== DAYS){
+                return (
+                    <Picker.Item label={row.key} value={row.value} key={index} />
+                );
+            }
+        }
+        else{//android
+            if(row.key !== DAYS){
+                return (
+                    <Picker.Item label={row.key} value={row.value} key={index} />
+                );
+            }
+            else return <Picker.Item label={"-Select Range-"} value={'Select Range'} key={'index'} />
+        }
+
     });
 
     //if filter is weekdays

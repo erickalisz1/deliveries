@@ -6,7 +6,7 @@ import { myStyles } from '../assets/helper/Styles';
 const Row = props => {
     
     return (
-        <View style={myStyles.horizontalContainer}>
+        <View style={{...myStyles.horizontalContainer, ...props.style}}>
                 {props.children}
         </View>);
 };
