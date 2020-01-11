@@ -72,7 +72,7 @@ const UpdateDays = (props) => {
           {/* needed to wrap this whole thing into another view so my keyboard dismiss worked */}
           <View style={{ flex: 1 }} >
 
-            <ModalSpace onClose={props.onClose} flex={Platform.OS === 'ios' ? 9 : 8} />
+            <ModalSpace onClose={props.onClose} flex={9} />
 
             <ModalContainer dark={false} smaller={false}>
 
@@ -178,7 +178,7 @@ const UpdateDays = (props) => {
 
             </ModalContainer>
 
-            <ModalSpace onClose={props.onClose} flex={Platform.OS === 'ios' ? 9 : 8} />
+            <ModalSpace onClose={props.onClose} flex={9} />
 
           </View>
         </DismissKeyboard>

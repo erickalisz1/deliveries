@@ -11,7 +11,7 @@ import LargeText from '../LargeText';
 import SmallText from '../SmallText';
 import Row from '../Row';
 import Column from '../Column';
-import { DAYS } from '../../assets/constants/strings';
+import { DAYS, WEEKS } from '../../assets/constants/strings';
 import SortingButton from '../SortingButton';
 
 const FiltersModal = (props) => {
@@ -32,9 +32,6 @@ const FiltersModal = (props) => {
     //range
     const [startValue, setStartValue] = useState('');
     const [endValue, setEndValue] = useState('');
-    // const [weekDayStart, setWeekDayStart] = useState('0');
-    // const [weekDayEnd, setWeekDayEnd] = useState('0');
-    // const [daysEndList, setDaysEndList] = useState([]);
 
     const { list } = props;
 
@@ -43,15 +40,21 @@ const FiltersModal = (props) => {
     let pickFilters = props.week ? (
         //if its weeks, filter like this
         weekFilters.map((row, index) => {
-            if (row.value !== 'week') {
-                if (Platform.OS === 'ios') {
+
+            if (Platform.OS === 'ios') {
+                if (row.key !== WEEKS) {
                     return (
                         <Picker.Item label={row.key} value={row.value} key={index} color={row.colour} />
                     );
                 }
-                else return (
-                    <Picker.Item label={row.key} value={row.value} key={index} />
-                );
+            }
+            else {
+                if (row.key !== WEEKS) {
+                    return (
+                        <Picker.Item label={row.key} value={row.value} key={index} />
+                    );
+                }
+                else return <Picker.Item label={"-Select Range-"} value={'Select Range'} key={'index'} />
             }
 
         })
@@ -172,7 +175,7 @@ const FiltersModal = (props) => {
 
     let space;
 
-    space = !isRange || filter === 'dayNumber' ? 5 : 3;
+    space = !isRange || (filter === 'dayNumber' && !props.week) ? 5 : 3;
 
     return (
         <Modal transparent={true} visible={props.visible} animationType='slide'>
@@ -294,21 +297,18 @@ const FiltersModal = (props) => {
                                         </View>)}
 
                                 <Row>
-
-                                    <MyButton
-                                        text='Set'
-                                        colour={Colours.success}
-                                        textColour={Colours.white}
-                                        onPress={() => setWeekFilters()}
-                                        style={{ marginHorizontal: 20 }} />
-
                                     <MyButton
                                         text='Clear'
                                         colour={Colours.cancel}
                                         textColour={Colours.white}
                                         onPress={() => clearFilters()}
                                         style={{ marginHorizontal: 20 }} />
-
+                                    <MyButton
+                                        text='Set'
+                                        colour={filterColour}
+                                        textColour={Colours.black}
+                                        onPress={() => setWeekFilters()}
+                                        style={{ marginHorizontal: 20 }} />
                                 </Row>
 
                             </View>
@@ -316,6 +316,7 @@ const FiltersModal = (props) => {
                                 // Main List filters
                                 <View>
                                     {filter !== 'dayNumber' ? (
+                                        //if the filter is days, don't display the range
                                         <Row>
 
                                             <SmallText style={{ color: filterColour }}>Value</SmallText>
@@ -325,7 +326,6 @@ const FiltersModal = (props) => {
                                                 onValueChange={handleSwitch}
                                                 style={{ margin: 20 }}
                                                 trackColor={{ false: Colours.backgroundLight, true: filterColour }}
-                                            // ios_backgroundColor={filterColour}
                                             />
 
                                             <SmallText style={{ color: filterColour }}>Range</SmallText>
@@ -379,8 +379,6 @@ const FiltersModal = (props) => {
 
                                                 </Column>
                                             </Row>
-
-                                            {/* <View style={{ margin: 30 }}></View> */}
                                         </View>
 
                                     ) : (
@@ -398,41 +396,51 @@ const FiltersModal = (props) => {
                                                         </Picker>
                                                     </View>
 
-                                                    <View style={myStyles.pickerWrapper}>
-                                                        <Picker
-                                                            selectedValue={condition}
-                                                            mode="dropdown"
-                                                            itemStyle={styles.item}
-                                                            onValueChange={value => setCondition(value)}>
+                                                    {filter === 'dayNumber' ? (
+                                                        <View style={myStyles.pickerWrapper}>
+                                                            <Picker
+                                                                selectedValue={weekDay}
+                                                                mode="dropdown"
+                                                                itemStyle={styles.item}
+                                                                onValueChange={value => setWeekDay(value)}>
 
-                                                            {conditionsList}
-                                                        </Picker>
-                                                    </View>
+                                                                {daysList}
+                                                            </Picker>
+                                                        </View>
+                                                    ) : (
+                                                            <View style={myStyles.pickerWrapper}>
+                                                                <Picker
+                                                                    selectedValue={condition}
+                                                                    mode="dropdown"
+                                                                    itemStyle={styles.item}
+                                                                    onValueChange={value => setCondition(value)}>
+
+                                                                    {conditionsList}
+                                                                </Picker>
+                                                            </View>)}
+
                                                 </Row>
 
 
+                                                {filter === 'dayNumber' ? (
+                                                    //if the filter is days
+                                                    null
+                                                ) : (
+                                                        //if the filter is a number
+                                                        <Row>
+                                                            <TextInput
+                                                                placeholder={filter}
+                                                                placeholderTextColor={filterColour}
+                                                                style={myStyles.input}
+                                                                onChangeText={valueInput}
+                                                                value={value}
+                                                                keyboardType='decimal-pad' />
+                                                        </Row>)}
 
-                                                <Row>
-                                                    <TextInput
-                                                        placeholder={filter}
-                                                        placeholderTextColor={filterColour}
-                                                        style={myStyles.input}
-                                                        onChangeText={valueInput}
-                                                        value={value}
-                                                        keyboardType='decimal-pad' />
-                                                </Row>
 
                                             </View>)}
 
                                     <Row>
-
-                                        <MyButton
-                                            text='Set'
-                                            colour={Colours.success}
-                                            textColour={Colours.white}
-                                            onPress={() => setFilters()}
-                                            style={{ marginHorizontal: 20 }} />
-
                                         <MyButton
                                             text='Clear'
                                             colour={Colours.cancel}
@@ -440,6 +448,12 @@ const FiltersModal = (props) => {
                                             onPress={() => clearFilters()}
                                             style={{ marginHorizontal: 20 }} />
 
+                                        <MyButton
+                                            text='Set'
+                                            colour={filterColour}
+                                            textColour={Colours.black}
+                                            onPress={() => setFilters()}
+                                            style={{ marginHorizontal: 20 }} />
                                     </Row>
                                 </View>
                             )}

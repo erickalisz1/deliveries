@@ -9,8 +9,8 @@ const ColumnsModal = (props) => {
 
     let options = props.week ? weekFilters : filters;
 
-    const sortColumn = (selectedColumn) => {
-        props.selectColumn(selectedColumn);
+    const sortColumn = (selectedColumn, colour) => {
+        props.selectColumn(selectedColumn, colour);
     };
 
     let listOfOptions = options.map((row, index) => {//function to better display items
@@ -23,7 +23,7 @@ const ColumnsModal = (props) => {
                     borderWidth: 2,
                     borderRadius: 15,
                     borderColor: row.colour,
-                }} onPress={() => sortColumn(row.value)}>
+                }} onPress={() => sortColumn(row.value, row.colour)}>
                     <View>
                         <Text style={styles.value}>{row.key}</Text>
                     </View>

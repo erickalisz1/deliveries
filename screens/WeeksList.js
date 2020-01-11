@@ -216,8 +216,9 @@ const WeeksList = () => {
         orientation === 'Asc' ? setOrientation('Desc') : setOrientation('Asc');
     };
 
-    const getModalResult = (selectedColumn) => {//handle selected value from columns modal
+    const handleColumnResult = (selectedColumn, colour) => {//handle selected value from columns modal
         setColumnToSort(selectedColumn);
+        setFilterColour(colour);
         setDisplayColumns(false);
     };
 
@@ -234,7 +235,7 @@ const WeeksList = () => {
     };
 
     const modals = <View>
-        <ColumnsModal week visible={displayColumns} onClose={() => setDisplayColumns(false)} selectColumn={getModalResult} />
+        <ColumnsModal week visible={displayColumns} onClose={() => setDisplayColumns(false)} selectColumn={handleColumnResult} />
         <DetailModal visible={displayDetail} onClose={() => setDisplayDetail(false)} week={selectedWeek} />
         <FiltersModal week visible={displayFilters} result={filterList} list={firebaseList} clear={clearFilters} onClose={() => setDisplayFilters(false)} />
     </View>;
@@ -245,13 +246,13 @@ const WeeksList = () => {
 
         <SortingButton
             text={setLabelText(columnToSort, orientation, 'column')}
-            colour={Colours.primaryText}
+            colour={filterColour}
             onPress={() => setDisplayColumns(true)}
             style={{ flex: 4 }} />
 
         <SortingButton
             text={setLabelText(columnToSort, orientation, 'orientation')}
-            colour={Colours.primaryText}
+            colour={filterColour}
             onPress={() => toggleOrientation()}
             style={{ flex: 4 }} />
 

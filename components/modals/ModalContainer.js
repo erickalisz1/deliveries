@@ -14,12 +14,12 @@ const ModalContainer = props => {
             borderWidth:  2,
             borderColor: Colours.primaryText,
             marginHorizontal: props.smaller === true ? 35 : 20,
-            minHeight: Platform.OS === 'android' ? 150 : 0,
+            minHeight: Platform.OS === 'android' ? 350 : 0,
         }
     });
 
     return (
-        <View style={styles.container}>
+        <View style={{...styles.container, ...props.style}}>
                 {props.children}
         </View>);
 };

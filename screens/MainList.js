@@ -170,7 +170,6 @@ const MainList = (props) => {
             setOrientation('Asc');
             setDisplayFilters(false);
 
-
             //fixing column display
             if (isRange) {
                 column !== 'dayNumber' ? (//if its not the days
@@ -214,8 +213,9 @@ const MainList = (props) => {
         orientation === 'Asc' ? setOrientation('Desc') : setOrientation('Asc');
     };
 
-    const getModalResult = (selectedColumn) => {
+    const handleColumnResult = (selectedColumn, colour) => {
         setColumnToSort(selectedColumn);
+        setFilterColour(colour);
         setDisplayColumns(false);
     };
 
@@ -245,7 +245,7 @@ const MainList = (props) => {
     };
 
     const modals = <View>
-        <ColumnsModal visible={displayColumns} selectColumn={getModalResult} onClose={() => setDisplayColumns(false)} />
+        <ColumnsModal visible={displayColumns} selectColumn={handleColumnResult} onClose={() => setDisplayColumns(false)} />
         <UpdateDays visible={displayUpdate} dayToUpdate={selectedDay} onClose={() => setDisplayUpdate(false)} next={findNext} />
         <DetailModal visible={displayDetail} edit={updateDay} day={selectedDay} list={firebaseList} onClose={() => setDisplayDetail(false)} />
         <FiltersModal visible={displayFilters} result={filterList} list={firebaseList} clear={clearFilters} onClose={() => setDisplayFilters(false)} />

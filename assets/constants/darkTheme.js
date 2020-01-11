@@ -11,7 +11,7 @@ export default Colours = {
     placeholder: '#888',
     transparent:'rgba(0,0,0,0)',
 
-    days:'#ADD8E6',
+    days:'#AA0',
     deliveroo:'#00CCBC',
     uber:'#99FF99',
     hours:'#F44',
