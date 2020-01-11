@@ -37,7 +37,7 @@ const ListItem = (props) => {
         }
 
         else {
-            text += stringVal(Total) + ' - ' + Hours + 'h ' + stringPer(Per);
+            text += stringVal(Total) + stringPer(Per);
         }
     }
 

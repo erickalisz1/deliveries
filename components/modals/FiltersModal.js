@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TouchableOpacity, StyleSheet, Modal, Picker, Platform, TextInput, Switch, Alert } from 'react-native';
+import { View, StyleSheet, Modal, Picker, Platform, TextInput, Switch, Alert } from 'react-native';
 import Colours from '../../assets/constants/darkTheme';
 import ModalSpace from '../modals/ModalSpace';
 import MyButton from '../MyButton';
@@ -7,7 +7,6 @@ import ModalContainer from './ModalContainer';
 import { filters, weekDays, conditions, weekFilters } from '../../assets/helper/helper';
 import { myStyles } from '../../assets/helper/Styles';
 import DismissKeyboard from '../DismissKeyboard';
-import LargeText from '../LargeText';
 import SmallText from '../SmallText';
 import Row from '../Row';
 import Column from '../Column';
@@ -186,7 +185,7 @@ const FiltersModal = (props) => {
 
                     <ModalContainer dark={false}>
 
-                        <SortingButton text='Apply Filters' colour={weekFilterColour} light />
+                        <SortingButton text='Apply Filters' colour={props.week ? weekFilterColour : filterColour} light />
 
                         {props.week ? (
                             //Weeks List filters
