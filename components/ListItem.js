@@ -1,12 +1,18 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, TouchableOpacity } from 'react-native';
 import { formatDate, SetPrecision } from '../assets/helper/helper';
 import { myStyles } from '../assets/helper/Styles';
 import { stringDel, stringPer, stringUber, stringTotal, stringVal } from '../assets/constants/strings';
+import { Ionicons } from '@expo/vector-icons';
+import Colours from '../assets/constants/darkTheme';
 
 const ListItem = (props) => {
 
     const { columnToSort, selectedDay } = props;
+
+    const handleUpdate = () => {
+        props.onPress(selectedDay);
+    };
 
     let ActualDay = selectedDay.actualDay;
     let Del = SetPrecision(selectedDay.deliveroo);
@@ -37,10 +43,10 @@ const ListItem = (props) => {
 
     else if (columnToSort === 'deliveroo') {//sorting by deliveroo
         if (Hours > 0 && Del > 0) {
-            text += stringDel(Del) + stringPer(Per);
+            text += stringVal(Del) + stringPer(Per);
         }
         else if (Hours < 1 && Del > 0) {
-            text += stringDel(Del);
+            text += stringVal(Del);
         }
         else text = '-1';
     }
@@ -74,10 +80,16 @@ const ListItem = (props) => {
 
     return text === '-1' ? (null) : (
         <View style={myStyles.listItem}>
-            <Text style={myStyles.listItemValue}>{text}</Text>
+            <View style={myStyles.listItemColumn}>
+                <Text style={myStyles.listItemValue}>{text}</Text>
+            </View>
+            <View style={myStyles.listItemColumn}>
+                <TouchableOpacity onPress={handleUpdate} style={{paddingHorizontal:5}}>
+                    <Ionicons name='ios-create' size={15} color={props.buttonColour} />
+                </TouchableOpacity>
+            </View>
         </View>
     );
-    //todo make these srtrngs as in weekItem
 }
 
 

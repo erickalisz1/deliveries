@@ -50,10 +50,12 @@ const DetailModal = (props) => {
                         <Text style={myStyles.modalDescriptionLarge}>{details}</Text>
                     </View>
 
-
-                    <TouchableOpacity onPress={props.onClose} style={myStyles.modalRow}>
-                        <MyButton text='Got it' colour={Colours.success} textColour={Colours.primaryText} />
-                    </TouchableOpacity>
+                    <MyButton
+                        text='Got it'
+                        colour={Colours.success}
+                        textColour={Colours.primaryText}
+                        onPress={props.onClose}
+                        style={myStyles.modalRow} />
 
                 </ModalContainer>
 
@@ -98,15 +100,19 @@ const DetailModal = (props) => {
 
                     <Row>
 
-                        <TouchableOpacity onPress={props.edit}>
-                            <MyButton text='Update' colour={Colours.selected} textColour={Colours.backgroundLight}/>
-                        </TouchableOpacity>
+                        <MyButton
+                            text='Update'
+                            colour={Colours.selected}
+                            textColour={Colours.backgroundLight}
+                            onPress={props.edit} />
 
-                        <View style={{marginHorizontal:20}}></View>
+                        <View style={{ marginHorizontal: 20 }}></View>
 
-                        <TouchableOpacity onPress={props.onClose}>
-                            <MyButton text='Got it' colour={Colours.success} textColour={Colours.white} />
-                        </TouchableOpacity>
+                        <MyButton
+                            text='Got it'
+                            colour={Colours.success}
+                            textColour={Colours.white}
+                            onPress={props.onClose} />
 
                     </Row>
                 </ModalContainer>

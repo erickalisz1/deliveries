@@ -10,36 +10,38 @@ import { myStyles } from '../../assets/helper/Styles';
 
 const HelpModal = (props) => {
 
-    if(props.item){
+    if (props.item) {
         console.log(props.item.flex);
         return (
 
             <Modal transparent={true} visible={props.visible} animationType='slide'>
-    
-    
+
+
                 <ModalSpace onClose={props.onClose} flex={props.item.flex} />
-    
+
                 <ModalContainer dark={false} >
-    
+
                     <View style={myStyles.modalRow}>
                         <LargeText modal={true}>{props.item.display}</LargeText>
                     </View>
-    
+
                     <View style={myStyles.modalRow}>
                         <Text style={myStyles.modalDescription}>{props.item.description}</Text>
                     </View>
-    
-    
-                    <TouchableOpacity onPress={props.onClose} style={myStyles.modalRow}>
-                    <MyButton text='Got it' colour={Colours.success} textColour={Colours.primaryText} />
-                    </TouchableOpacity>
-    
+
+                    <MyButton
+                        text='Got it'
+                        colour={Colours.success}
+                        textColour={Colours.primaryText}
+                        onPress={props.onClose}
+                        style={myStyles.modalRow} />
+
                 </ModalContainer>
-    
+
                 <ModalSpace onClose={props.onClose} flex={props.item.flex} />
             </Modal>
-    
-    
+
+
         );
     }
     else return null;

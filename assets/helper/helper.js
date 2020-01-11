@@ -1,6 +1,7 @@
 import { Alert, Platform } from 'react-native';
 import firebase from 'firebase';
-import { DEL, UB, HRS, TOTAL, PER, DAYS, LARGER, LARGER_EQUAL, SMALLER, SMALLER_EQUAL } from '../constants/strings';
+import { DEL, UB, HRS, TOTAL, PER, DAYS, LARGER, LARGER_EQUAL, SMALLER, SMALLER_EQUAL, WEEKS } from '../constants/strings';
+import Colours from '../constants/darkTheme';
 
 export const firebaseConfig = {
     apiKey: "AIzaSyBtFpyI8rFywqiHm3rnL2qbS3L4Dl_Y8sk",
@@ -346,11 +347,11 @@ export const helpItems = [
         description: 'To properly calculate how much you have earned per hour, we need the total time to be decimal. To calculate it, simply tap the hours text box upon updating and provide the amount of hours and minutes you\'ve worked and the app will do the rest.',
         flex: Platform.OS === 'ios' ? 8 : 13
     },
-    // {
-    //     display: 'Changing list sort',
-    //     description: 'To change how the main list is sorted, simply tap and hold the top label and select the value you wish to sort the list with.',
-    //     flex: Platform.OS === 'ios' ? 11 : 24
-    // },
+    {
+        display: 'Filtering your list',
+        description: 'To filter your list, simply tap the filter icon at the top right, select the filter you wish to apply and press Set',
+        flex: Platform.OS === 'ios' ? 11 : 24
+    },
     // {
     //     display: 'Toggling list orientation',
     //     description: 'To change the list orientation, simply tap the label at the top of the main list and the orientation will be toggled.',
@@ -368,46 +369,69 @@ export const assignDay = weekDays.map((value, index) => {
     })
 });
 
-
-
-export const fixDisplay = [
-    { display: DEL, value: 'deliveroo' },
-    { display: UB, value: 'uber' },
-    { display: HRS, value: 'hours' },
-    { display: TOTAL, value: 'total' },
-    { display: PER, value: 'per' }
-];
-
 export const filters = [
     {
         key: DAYS,
         value: "dayNumber",
-        colour:'rgba(100,100,255,1)'
+        colour: Colours.days
     },
     {
         key: DEL,
         value: "deliveroo",
-        colour:'rgba(0,252,250,1)'
+        colour: Colours.deliveroo
     },
     {
         key: UB,
         value: "uber",
-        colour:'rgba(175,175,175,1)'
+        colour: Colours.uber
     },
     {
         key: HRS,
         value: "hours",
-        colour:'rgba(153,255,153,1)'
+        colour: Colours.hours
     },
     {
         key: TOTAL,
         value: "total",
-        colour:'#F36F36'
+        colour: Colours.total
     },
     {
         key: PER,
         value: "per",
-        colour:'rgba(255,192,203,1)'
+        colour: Colours.per
+    }
+];
+
+export const weekFilters = [
+    {
+        key: WEEKS,
+        value: "week",
+        colour: Colours.days
+    },
+    {
+        key: DEL,
+        value: "deliveroo",
+        colour: Colours.deliveroo
+    },
+    {
+        key: UB,
+        value: "uber",
+        colour: Colours.uber
+    },
+    {
+        key: HRS,
+        value: "hours",
+        colour: Colours.hours
+    },
+    {
+        key: TOTAL,
+        value: "total",
+        colour: Colours.total
+    },
+    {
+        key: PER,
+        value: "per",
+        colour: Colours.per
     }
 ];
 

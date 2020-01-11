@@ -28,8 +28,6 @@ export const myStyles = StyleSheet.create({
         alignItems:'center',
         marginTop: Platform.OS === 'ios' ? 15 : 35,
         marginBottom: 15,
-        marginHorizontal:'2.5%',
-        maxWidth:'97.5%'
     },
     //filter modal
     horizontalContainer: {
@@ -70,8 +68,13 @@ export const myStyles = StyleSheet.create({
     },
     //lists
     listItem: {
+        display:'flex',
+        flexDirection:'row',
+        justifyContent:'space-between',
         marginVertical: 1,
         minWidth: '95%',
+        maxWidth:'99%',
+        marginHorizontal:'1%',
         padding: 10,
         borderBottomWidth: 1,
         borderBottomColor: Colours.accent,
@@ -96,7 +99,8 @@ export const myStyles = StyleSheet.create({
     listItemValue: {
         fontSize: 15,
         color: Colours.primaryText,
-        textAlign: 'left'
+        textAlign: 'left',
+
     },
     //modals
     modalContainer: {

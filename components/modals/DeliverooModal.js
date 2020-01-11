@@ -29,18 +29,18 @@ const DeliverooModal = props => {
         enteredExtras === '' ? setEnteredExtras(0) : '';
         enteredFees === '' ? setEnteredFees(0) : '';
 
-            //the whole point of this calculator is to set this value
-            let fees = Number(enteredFees) *  feeRate;
-            let extras = Number(enteredExtras);
-            let total = Number(fees + extras);
+        //the whole point of this calculator is to set this value
+        let fees = Number(enteredFees) * feeRate;
+        let extras = Number(enteredExtras);
+        let total = Number(fees + extras);
 
-            total = total > 100 ? total.toPrecision(5) : total.toPrecision(4);
+        total = total > 100 ? total.toPrecision(5) : total.toPrecision(4);
 
-            props.setDel(total);
+        props.setDel(total);
 
-            setEnteredFees('');
-            setEnteredExtras('');
-        
+        setEnteredFees('');
+        setEnteredExtras('');
+
     };
 
     return (
@@ -67,9 +67,12 @@ const DeliverooModal = props => {
                                     value={enteredFees}
                                     keyboardType='decimal-pad' />
 
-                                <TouchableOpacity onPress={() => { setDel() }}>
-                                    <MyButton text='Done' colour={Colours.success} textColour={Colours.primaryText} />
-                                </TouchableOpacity>
+                                <MyButton
+                                    text='Done'
+                                    colour={Colours.success}
+                                    textColour={Colours.primaryText}
+                                    onPress={() => setDel()} />
+
                             </View>
                             <View style={myStyles.modalColumn}>
                                 <TextInput
@@ -80,9 +83,11 @@ const DeliverooModal = props => {
                                     value={enteredExtras}
                                     keyboardType='decimal-pad' />
 
-                                <TouchableOpacity onPress={props.onClose}>
-                                    <MyButton text='Cancel' colour={Colours.cancel} textColour={Colours.white} />
-                                </TouchableOpacity>
+                                <MyButton
+                                    text='Cancel'
+                                    colour={Colours.cancel}
+                                    textColour={Colours.white}
+                                    onPress={props.onClose} />
                             </View>
 
 

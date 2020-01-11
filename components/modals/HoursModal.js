@@ -65,9 +65,11 @@ const HoursModal = props => {
                                     value={enteredHours}
                                     keyboardType='decimal-pad' />
 
-                                <TouchableOpacity onPress={() => { setHours() }}>
-                                    <MyButton text='Done' colour={Colours.success} textColour={Colours.primaryText} />
-                                </TouchableOpacity>
+                                <MyButton
+                                    text='Done'
+                                    colour={Colours.success}
+                                    textColour={Colours.primaryText}
+                                    onPress={() => setHours()} />
                             </View>
                             <View style={myStyles.modalColumn}>
                                 <TextInput
@@ -78,9 +80,12 @@ const HoursModal = props => {
                                     value={enteredMinutes}
                                     keyboardType='decimal-pad' />
 
-                                <TouchableOpacity onPress={props.onClose}>
-                                    <MyButton text='Cancel' colour={Colours.cancel} textColour={Colours.white} />
-                                </TouchableOpacity>
+                                <MyButton
+                                    text='Cancel'
+                                    colour={Colours.cancel}
+                                    textColour={Colours.white}
+                                    onPress={props.onClose} />
+
                             </View>
 
 
