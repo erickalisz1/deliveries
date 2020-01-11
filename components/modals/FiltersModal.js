@@ -174,7 +174,7 @@ const FiltersModal = (props) => {
 
     let space;
 
-    space = !isRange || (filter === 'dayNumber' && !props.week) ? 5 : 3;
+    space = !isRange || filter === 'dayNumber' ? 5 : 3;
 
     return (
         <Modal transparent={true} visible={props.visible} animationType='slide'>

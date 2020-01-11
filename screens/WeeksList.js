@@ -232,6 +232,7 @@ const WeeksList = () => {
         setOrientation('Desc');
         setColumnToSort('week');
         setActiveFilter('');
+        setFilterColour(Colours.primaryText);
     };
 
     const modals = <View>

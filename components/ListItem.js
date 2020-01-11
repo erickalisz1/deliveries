@@ -4,7 +4,6 @@ import { formatDate, SetPrecision } from '../assets/helper/helper';
 import { myStyles } from '../assets/helper/Styles';
 import { stringDel, stringPer, stringUber, stringTotal, stringVal } from '../assets/constants/strings';
 import { Ionicons } from '@expo/vector-icons';
-import Colours from '../assets/constants/darkTheme';
 
 const ListItem = (props) => {
 
@@ -85,7 +84,7 @@ const ListItem = (props) => {
             </View>
             <View style={myStyles.listItemColumn}>
                 <TouchableOpacity onPress={handleUpdate} style={{paddingHorizontal:5}}>
-                    <Ionicons name='ios-create' size={15} color={props.buttonColour} />
+                    <Ionicons name='ios-create' size={20} color={props.buttonColour} />
                 </TouchableOpacity>
             </View>
         </View>
