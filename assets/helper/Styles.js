@@ -81,7 +81,7 @@ export const myStyles = StyleSheet.create({
     },
     listItemRow: {
         marginVertical: 3,
-        padding: 10,
+        padding: 20,
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
@@ -120,7 +120,7 @@ export const myStyles = StyleSheet.create({
     },
     modalDescription: {
         color: Colours.primaryText,
-        fontSize: 16,
+        fontSize: 17,
         textAlign: 'center'
     },
     modalDescriptionLarge: {

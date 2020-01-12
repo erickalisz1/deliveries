@@ -1,4 +1,5 @@
 import React from 'react';
+import { Platform } from 'react-native';
 
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import { createAppContainer } from 'react-navigation';
@@ -46,9 +47,11 @@ const TabNavigator = createBottomTabNavigator({
 },
     {
         tabBarOptions: {
-            style: {            
+            style: {
                 backgroundColor: Colours.backgroundLight,
-                overflow: 'hidden'
+                overflow: 'hidden',
+                padding: 10,
+                height: Platform.OS === 'ios' ? 55 : 65
             },
             activeTintColor: Colours.success
         }

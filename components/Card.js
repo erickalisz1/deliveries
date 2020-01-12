@@ -22,7 +22,7 @@ const Card = (props) => {
 
     const styles = StyleSheet.create({
         cardWrapper: {
-            margin: 10,
+            margin: 5,
             borderColor: colour,
             borderWidth: 2,
             minWidth: '80%',

@@ -171,6 +171,7 @@ const FiltersModal = (props) => {
     };
 
     let space = filter === 'dayNumber' ? 16 : 10;
+    space = props.week ? 8 : space;
 
     // !props.week ? (space = !isRange && filter === 'dayNumber' ? 5 : 4) : space = !isRange ? 6 : 4 ;
 
@@ -204,6 +205,7 @@ const FiltersModal = (props) => {
                                         onValueChange={handleSwitch}
                                         style={{ margin: 20 }}
                                         trackColor={{ false: Colours.backgroundLight, true: weekFilterColour }}
+                                        thumbColor={Platform.OS === 'android' ? weekFilterColour : ''}
                                     />
 
                                     <SmallText style={{ color: weekFilterColour }}>Range</SmallText>

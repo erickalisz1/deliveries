@@ -28,7 +28,7 @@ const DetailModal = (props) => {
         let count = (details.match(/\n/g) || []).length;
 
         //the more lines I have, the less space I will need outside my ModalContainer
-        let space = 11 - count;
+        let space = 16 - count;
 
         space = Platform.OS === 'ios' ? space : space += 5;
 
@@ -77,7 +77,7 @@ const DetailModal = (props) => {
         let count = (details.match(/\n/g) || []).length;
 
         //the more lines I have, the less space I will need outside my ModalContainer
-        let space = 13 - count;
+        let space = 16 - count;
 
         //fixing space
         space = space === 2 ? space = 4 : space;
@@ -88,7 +88,7 @@ const DetailModal = (props) => {
 
                 <ModalSpace onClose={props.onClose} flex={space} />
 
-                <ModalContainer dark={false} smaller={true} >
+                <ModalContainer dark={false} smaller={true} detail>
 
                     <View style={myStyles.modalRow}>
                         <LargeText modal={true}>{date}</LargeText>

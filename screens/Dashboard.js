@@ -115,6 +115,7 @@ const Dashboard = () => {
             {isLoading ? <Loading /> : (
                 <View>
                     <LargeText>Summary</LargeText>
+                    <View style={{marginVertical:5}}></View>
                     {cardsList}
                 </View>
             )}
