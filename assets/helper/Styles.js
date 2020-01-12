@@ -32,7 +32,7 @@ export const myStyles = StyleSheet.create({
     activeFilterContainer:{
         display:'flex',
         flexDirection:'row',
-        justifyContent:'space-between',
+        justifyContent:'center',
         alignItems:'center',
         marginVertical: 15,
         marginHorizontal:15

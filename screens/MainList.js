@@ -273,7 +273,7 @@ const MainList = (props) => {
         activeFilter !== '' ? (
             <View style={myStyles.activeFilterContainer}>
                 <Ionicons name='ios-color-filter' size={24} color={filterColour} />
-                <SmallText>{activeFilter}</SmallText>
+                <SmallText between={20}>{activeFilter}</SmallText>
                 <Ionicons name='ios-color-filter' size={24} color={filterColour} />
             </View>
         ) : null;
