@@ -1,9 +1,10 @@
 import React from 'react';
 import { View, Text, StyleSheet, Modal, TouchableOpacity, Platform } from 'react-native';
+
+import { filters, weekFilters } from '../../assets/helper/helper';
 import Colours from '../../assets/constants/darkTheme';
 import ModalSpace from '../modals/ModalSpace';
 import MyButton from '../MyButton';
-import { filters, weekFilters } from '../../assets/helper/helper';
 
 const ColumnsModal = (props) => {
 

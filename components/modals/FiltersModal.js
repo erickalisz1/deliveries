@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Modal, Picker, Platform, TextInput, Switch, Alert, Dimensions } from 'react-native';
+
 import Colours from '../../assets/constants/darkTheme';
 import ModalSpace from '../modals/ModalSpace';
 import MyButton from '../MyButton';
@@ -180,7 +181,7 @@ const FiltersModal = (props) => {
     availableDeviceHeight < 700 ?
         (Platform.OS === 'ios' ? space += 4 : null) //small ios : android
         :
-        null ; //large ios : android its ok, do nothing
+        null; //large ios : android its ok, do nothing
 
     return (
         <Modal transparent={true} visible={props.visible} animationType='slide'>
@@ -190,6 +191,7 @@ const FiltersModal = (props) => {
 
 
                     <ModalContainer dark={false}>
+
 
                         <SortingButton text='Apply Filters' colour={props.week ? weekFilterColour : filterColour} light />
 
@@ -232,28 +234,29 @@ const FiltersModal = (props) => {
 
                                         <Row>
                                             <Column>
-                                                <SmallText between={50} top={10} style={{ color: weekFilterColour, marginBottom: 10 }}>From</SmallText>
 
                                                 <TextInput
                                                     placeholder={weekFilter}
-                                                    placeholderTextColor={weekFilterColour+'80'}//make the colour a bit lighter
+                                                    placeholderTextColor={weekFilterColour + '80'}//make the colour a bit lighter
                                                     style={myStyles.input}
                                                     onChangeText={startValueInput}
                                                     value={startValue}
                                                     keyboardType='decimal-pad' />
 
+                                                <SmallText between={50} top={10} style={{ color: weekFilterColour, marginBottom: 10 }}>From</SmallText>
                                             </Column>
 
                                             <Column>
-                                                <SmallText between={50} top={10} style={{ color: weekFilterColour, marginBottom: 10 }}>To</SmallText>
 
                                                 <TextInput
                                                     placeholder={weekFilter}
-                                                    placeholderTextColor={weekFilterColour+'80'}//make the colour a bit lighter
+                                                    placeholderTextColor={weekFilterColour + '80'}//make the colour a bit lighter
                                                     style={myStyles.input}
                                                     onChangeText={endValueInput}
                                                     value={endValue}
                                                     keyboardType='decimal-pad' />
+
+                                                <SmallText between={50} top={10} style={{ color: weekFilterColour, marginBottom: 10 }}>To</SmallText>
 
                                             </Column>
                                         </Row>
@@ -292,7 +295,7 @@ const FiltersModal = (props) => {
                                             <Row>
                                                 <TextInput
                                                     placeholder={weekFilter}
-                                                    placeholderTextColor={weekFilterColour+'80'}//make the colour a bit lighter
+                                                    placeholderTextColor={weekFilterColour + '80'}//make the colour a bit lighter
                                                     style={myStyles.input}
                                                     onChangeText={valueInput}
                                                     value={value}
@@ -332,6 +335,7 @@ const FiltersModal = (props) => {
                                                 onValueChange={handleSwitch}
                                                 style={{ margin: 20 }}
                                                 trackColor={{ false: Colours.backgroundLight, true: filterColour }}
+                                                thumbColor={Platform.OS === 'android' ? filterColour : ''}
                                             />
 
                                             <SmallText style={{ color: filterColour }}>Range</SmallText>
@@ -360,29 +364,29 @@ const FiltersModal = (props) => {
 
                                             <Row>
                                                 <Column>
-                                                    <SmallText between={50} top={10} style={{ color: filterColour, marginBottom: 10 }}>From</SmallText>
 
                                                     <TextInput
                                                         placeholder={filter}
-                                                        placeholderTextColor={filterColour+'80'}//make the colour a bit lighter
+                                                        placeholderTextColor={filterColour + '80'}//make the colour a bit lighter
                                                         style={myStyles.input}
                                                         onChangeText={startValueInput}
                                                         value={startValue}
                                                         keyboardType='decimal-pad' />
 
+                                                    <SmallText between={50} top={10} style={{ color: filterColour, marginBottom: 10 }}>From</SmallText>
                                                 </Column>
 
                                                 <Column>
-                                                    <SmallText between={50} top={10} style={{ color: filterColour, marginBottom: 10 }}>To</SmallText>
 
                                                     <TextInput
                                                         placeholder={filter}
-                                                        placeholderTextColor={filterColour+'80'}//make the colour a bit lighter
+                                                        placeholderTextColor={filterColour + '80'}//make the colour a bit lighter
                                                         style={myStyles.input}
                                                         onChangeText={endValueInput}
                                                         value={endValue}
                                                         keyboardType='decimal-pad' />
 
+                                                    <SmallText between={50} top={10} style={{ color: filterColour, marginBottom: 10 }}>To</SmallText>
                                                 </Column>
                                             </Row>
                                         </View>
@@ -436,7 +440,7 @@ const FiltersModal = (props) => {
                                                         <Row>
                                                             <TextInput
                                                                 placeholder={filter}
-                                                                placeholderTextColor={filterColour+'80'}//make the colour a bit lighter
+                                                                placeholderTextColor={filterColour + '80'}//make the colour a bit lighter
                                                                 style={myStyles.input}
                                                                 onChangeText={valueInput}
                                                                 value={value}

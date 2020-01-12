@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Modal, TouchableOpacity } from 'react-native';
+import { Text, View, Modal } from 'react-native';
 
 import Colours from '../../assets/constants/darkTheme';
 import LargeText from '../LargeText';
@@ -11,7 +11,6 @@ import { myStyles } from '../../assets/helper/Styles';
 const HelpModal = (props) => {
 
     if (props.item) {
-        console.log(props.item.flex);
         return (
 
             <Modal transparent={true} visible={props.visible} animationType='slide'>

@@ -1,15 +1,14 @@
 import React from 'react';
-import { Text, View, Modal, TouchableOpacity, Platform } from 'react-native';
+import { Text, View, Modal, Platform } from 'react-native';
 
+import { setWeekString, setDateString, setDailyMessage, setWeeklyMessage } from '../../assets/helper/helper';
+import { myStyles } from '../../assets/helper/Styles';
 import Colours from '../../assets/constants/darkTheme';
 import LargeText from '../LargeText';
 import ModalContainer from './ModalContainer';
 import ModalSpace from './ModalSpace';
 import MyButton from '../MyButton';
 import Row from '../Row';
-import { setWeekString, setDateString, setDailyMessage, setWeeklyMessage } from '../../assets/helper/helper';
-import { myStyles } from '../../assets/helper/Styles';
-import { Ionicons } from '@expo/vector-icons';
 
 const DetailModal = (props) => {
 
@@ -17,9 +16,6 @@ const DetailModal = (props) => {
     if (props.week) {
 
         const { week } = props
-
-        console.log(week);
-
         let weekString = setWeekString(week.start, week.end);
 
         let details = setWeeklyMessage(week);

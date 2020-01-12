@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, Modal, TouchableOpacity, Platform } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Modal, TouchableOpacity } from 'react-native';
 
 import { formatDate } from '../../assets/helper/helper';
 import { updateDeliveroo, updateUber, updateHours } from '../../assets/helper/updates'

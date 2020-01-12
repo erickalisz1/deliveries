@@ -29,6 +29,14 @@ export const myStyles = StyleSheet.create({
         marginTop: Platform.OS === 'ios' ? 15 : 35,
         marginBottom: 15,
     },
+    activeFilterContainer:{
+        display:'flex',
+        flexDirection:'row',
+        justifyContent:'space-between',
+        alignItems:'center',
+        marginVertical: 15,
+        marginHorizontal:15
+    },
     //filter modal
     horizontalContainer: {
         display: 'flex',

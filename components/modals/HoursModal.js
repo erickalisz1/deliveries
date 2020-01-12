@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TextInput, Platform, Modal, Alert, TouchableOpacity } from 'react-native';
+import { View, TextInput, Platform, Modal, Alert } from 'react-native';
 
 import Colours from '../../assets/constants/darkTheme';
 import DismissKeyboard from '../DismissKeyboard';
@@ -31,8 +31,6 @@ const HoursModal = props => {
             let minutes = Number(enteredMinutes) / .6;
 
             minutes = minutes > 10 ? minutes.toPrecision(2) : minutes.toPrecision(1);
-
-            console.log(hours, minutes);
 
             props.setHours(hours, minutes);
             setEnteredHours('');

@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { View, TextInput, Modal, TouchableOpacity, Platform } from 'react-native';
+import { View, TextInput, Modal, Platform } from 'react-native';
 
+import { myStyles } from '../../assets/helper/Styles';
 import Colours from '../../assets/constants/darkTheme';
 import DismissKeyboard from '../DismissKeyboard';
 import LargeText from '../LargeText';
-import { myStyles } from '../../assets/helper/Styles';
 import ModalContainer from './ModalContainer';
 import ModalSpace from './ModalSpace';
 import MyButton from '../MyButton';

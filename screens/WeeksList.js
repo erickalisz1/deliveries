@@ -7,7 +7,7 @@ import WeekItem from '../components/WeekItem';
 import Weeks from '../assets/models/Weeks';
 import Loading from '../components/Loading';
 import ColumnsModal from '../components/modals/ColumnsModal';
-import { setLabelText, sortList, SetPrecision, assignDay, weekFilters } from '../assets/helper/helper';
+import { setLabelText, sortList, SetPrecision, weekFilters } from '../assets/helper/helper';
 import { myStyles } from '../assets/helper/Styles';
 import DetailModal from '../components/modals/DetailModal';
 import SortingButton from '../components/SortingButton';
@@ -159,17 +159,12 @@ const WeeksList = () => {
 
             if (column === 'dayNumber') {
 
-                console.log('start:', value, 'end:', valueEnd);
-
                 value++;
                 value = value === 7 ? 0 : value;//if it returns 6, its sunday and we must change it to sent it to the new Date()
-
-                console.log('after ifs: start:', value, 'end:', valueEnd);
 
                 list = list.filter(item => new Date(item.actualDay).getDay() >= value && new Date(item.actualDay).getDay() <= valueEnd)
             }
             else {
-                console.log('column', column, 'value', value, 'valueEnd', valueEnd);
                 list = list.filter(item => item[column] >= value && item[column] <= valueEnd);
             }
         }
@@ -268,12 +263,10 @@ const WeeksList = () => {
     const displayActiveFilter =
 
         activeFilter !== '' ? (
-            <View style={myStyles.topContainer}>
-                <View style={{ marginLeft: 10 }}></View>
+            <View style={myStyles.activeFilterContainer}>
                 <Ionicons name='ios-color-filter' size={24} color={filterColour} />
                 <SmallText>{activeFilter}</SmallText>
                 <Ionicons name='ios-color-filter' size={24} color={filterColour} />
-                <View style={{ marginRight: 10 }}></View>
             </View>
         ) : null;
 

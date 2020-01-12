@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Platform } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import Colours from '../../assets/constants/darkTheme';
 
 const ModalContainer = props => {
@@ -14,7 +14,7 @@ const ModalContainer = props => {
             borderWidth:  2,
             borderColor: Colours.primaryText,
             marginHorizontal: props.smaller === true ? 35 : 20,
-            minHeight: props.detail ? 200 : 300
+            minHeight: props.detail ? 200 : 310
         }
     });
 
