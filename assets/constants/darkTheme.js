@@ -11,10 +11,10 @@ export default Colours = {
     placeholder: '#888',
     transparent:'rgba(0,0,0,0)',
 
-    days:'#CC0',
+    days:'#CCCC00',
     deliveroo:'#00CCBC',
     uber:'#99FF99',
-    hours:'#F44',
+    hours:'#FF4444',
     total:'#F36F36',
-    per:'rgba(255,192,203,1)'
+    per:'#FFC0CB'
 }

@@ -70,7 +70,7 @@ export const myStyles = StyleSheet.create({
     listItem: {
         display:'flex',
         flexDirection:'row',
-        justifyContent:'space-between',
+        justifyContent:'flex-start',
         marginVertical: 1,
         minWidth: '95%',
         maxWidth:'99%',

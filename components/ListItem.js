@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
 import { formatDate, SetPrecision } from '../assets/helper/helper';
 import { myStyles } from '../assets/helper/Styles';
-import { stringDel, stringPer, stringUber, stringTotal, stringVal } from '../assets/constants/strings';
+import { stringPer, stringUber, stringTotal, stringVal } from '../assets/constants/strings';
 import { Ionicons } from '@expo/vector-icons';
 
 const ListItem = (props) => {
@@ -79,14 +79,11 @@ const ListItem = (props) => {
 
     return text === '-1' ? (null) : (
         <View style={myStyles.listItem}>
-            <View style={myStyles.listItemColumn}>
-                <Text style={myStyles.listItemValue}>{text}</Text>
-            </View>
-            <View style={myStyles.listItemColumn}>
-                <TouchableOpacity onPress={handleUpdate} style={{paddingHorizontal:5}}>
+                <TouchableOpacity onPress={handleUpdate} style={{paddingLeft:5, paddingRight:10}}>
                     <Ionicons name='ios-create' size={20} color={props.buttonColour} />
                 </TouchableOpacity>
-            </View>
+                <Text style={myStyles.listItemValue}>{text}</Text>
+            
         </View>
     );
 }

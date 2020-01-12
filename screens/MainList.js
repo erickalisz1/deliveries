@@ -102,7 +102,6 @@ const MainList = (props) => {
         setFirebaseList(loadedList);//stock list with no filters
         setIsRefreshing(false);
         setIsOpeningApp(checkIfTodayExists(loadedList, isOpeningApp));
-        // setIsOpeningApp(false);
     }
 
     const filterList = (list, column, isRange, value, valueEnd, condition) => {
@@ -182,25 +181,22 @@ const MainList = (props) => {
                     })//e.g (Uber > 100)
                 ) : null;
             }
-
-            else column !== 'dayNumber' ? (//if its not the days
+            else 
                 filters.forEach(item => {
                     if (item.value === column) {
-                        setActiveFilter(item.key + SPACE + condition + SPACE + value);
+                        //if its not the days
+                        column !== 'dayNumber' ? setActiveFilter(item.key + SPACE + condition + SPACE + value) : null;
                         setFilterColour(item.colour)
                     }
                     else null;
                 })//e.g (Uber > 100)
-            ) : (
-                    assignDay.forEach(item => { item.value === value ? setActiveFilter(item.display) : null })
-                );
 
+                column === 'dayNumber' ? (assignDay.forEach(item => { item.value === value ? setActiveFilter(item.display) : null })) : null;
 
 
             column === 'hours' ? setColumnToSort('total') : setColumnToSort(column);// there is no hours sort
 
         }
-
     };
 
     //handling update day
@@ -222,6 +218,8 @@ const MainList = (props) => {
     const handleRefresh = () => {
         setIsRefreshing(true);
         setIsLoading(true);
+        setActiveFilter('');
+        setFilterColour(Colours.primaryText);
     };
 
     const clearFilters = () => {
@@ -253,7 +251,7 @@ const MainList = (props) => {
 
     const topContainer = <View style={myStyles.topContainer}>
 
-        <View style={{marginLeft:10}}></View>
+        <View style={{ marginLeft: 10 }}></View>
 
         <SortingButton
             text={setLabelText(columnToSort, orientation, 'column')}

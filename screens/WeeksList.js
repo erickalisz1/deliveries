@@ -225,6 +225,8 @@ const WeeksList = () => {
     const handleRefresh = () => {//refresh list
         setIsRefreshing(true);
         setIsLoading(true);
+        setActiveFilter('');
+        setFilterColour(Colours.primaryText);
     };
 
     const clearFilters = () => {
