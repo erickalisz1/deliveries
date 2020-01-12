@@ -20,22 +20,22 @@ export const setLabelText = (columnToSort, orientation, type) => {
     if (type === 'column') {
 
         if (columnToSort === 'dayNumber') {
-            text += 'Days';
+            text += DAYS;
         }
         else if (columnToSort === 'week') {
-            text += 'Weeks';
+            text += WEEKS;
         }
         else if (columnToSort === 'deliveroo') {
-            text += 'Deliveroo';
+            text += DEL;
         }
         else if (columnToSort === 'uber') {
-            text += 'Uber';
+            text += UB;
         }
         else if (columnToSort === 'total') {
-            text += 'Total';
+            text += TOTAL;
         }
         else if (columnToSort === 'per') {
-            text += 'Per Hour';
+            text += PER;
         }
 
         else text = 'something went wrong';
@@ -373,32 +373,38 @@ export const filters = [
     {
         key: DAYS,
         value: "dayNumber",
-        colour: Colours.days
+        colour: Colours.days,
+        type: 'days'
     },
     {
         key: DEL,
         value: "deliveroo",
-        colour: Colours.deliveroo
+        colour: Colours.deliveroo,
+        type: 'number'
     },
     {
         key: UB,
         value: "uber",
-        colour: Colours.uber
-    },
-    {
-        key: HRS,
-        value: "hours",
-        colour: Colours.hours
+        colour: Colours.uber,
+        type: 'number'
     },
     {
         key: TOTAL,
         value: "total",
-        colour: Colours.total
+        colour: Colours.total,
+        type: 'number'
+    },
+    {
+        key: HRS,
+        value: "hours",
+        colour: Colours.hours,
+        type: 'hours'
     },
     {
         key: PER,
         value: "per",
-        colour: Colours.per
+        colour: Colours.per,
+        type: 'per'
     }
 ];
 
