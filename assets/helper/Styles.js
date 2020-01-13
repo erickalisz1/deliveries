@@ -74,6 +74,9 @@ export const myStyles = StyleSheet.create({
         marginTop: Platform.OS === 'ios' ? -50 : 0,
         marginHorizontal: 10
     },
+    pickerItem:{
+        color: Colours.primaryText
+    },
     //lists
     listItem: {
         display:'flex',

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TextInput, Modal, Platform } from 'react-native';
+import { View, TextInput, Modal } from 'react-native';
 
 import { myStyles } from '../../assets/helper/Styles';
 import Colours from '../../assets/constants/darkTheme';
@@ -11,6 +11,7 @@ import MyButton from '../MyButton';
 
 const DeliverooModal = props => {
 
+    //two textInputs
     const [enteredFees, setEnteredFees] = useState('');//empty string argument as default, function to change the text 
     const [enteredExtras, setEnteredExtras] = useState('');
 
@@ -53,7 +54,7 @@ const DeliverooModal = props => {
 
                     <ModalSpace onClose={props.onClose} flex={20} />
 
-                    <ModalContainer smaller={true} dark={true} detail>
+                    <ModalContainer smaller dark={true} detail>
 
                         <LargeText modal={true} >Deliveroo Calculator</LargeText>
 

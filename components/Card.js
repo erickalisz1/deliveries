@@ -9,7 +9,7 @@ const Card = (props) => {
 
     const availableDeviceHeight = Dimensions.get('window').height;
 
-    let beforeText = '', afterText = '';
+    let beforeText = '', afterText = '';//need these variables because values displayed can be dollars, hours or dollars per hour
 
     if(type === 'number'){
         beforeText = '$'

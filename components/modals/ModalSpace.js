@@ -20,7 +20,7 @@ const ModalSpace = props => {
     console.log('modal space',flex);
 
     return (
-        /* this makes so that pressing outside the modal closes it */
+        // this makes so that pressing outside the modal closes it 
         < TouchableWithoutFeedback onPress={props.onClose} >
             <View style={{ flex: flex }}></View>
         </TouchableWithoutFeedback >);

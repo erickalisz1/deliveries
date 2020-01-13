@@ -13,6 +13,7 @@ export const firebaseConfig = {
     appId: "1:138527506874:web:b77bf64674a2912ff1dd83"
 };
 
+//fixing display of main and weeks list top buttons 
 export const setLabelText = (columnToSort, orientation, type) => {
 
     let text = '';
@@ -59,7 +60,7 @@ export const setLabelText = (columnToSort, orientation, type) => {
 };
 
 export const sortList = (list, columnToSort, orientation) => {
-    // console.log('on heler sort:',list);
+
     if (orientation === 'Asc') {
         return list.sort((b, a) => { return (b[columnToSort]) - (a[columnToSort]) });
     }
@@ -68,11 +69,9 @@ export const sortList = (list, columnToSort, orientation) => {
     }
 };
 
-
 export const formatDate = (sDate) => {
 
     let today = new Date(sDate);
-
 
     let dd = today.getDate();
     let mm = today.getMonth() + 1; //January is 0!
@@ -89,6 +88,7 @@ export const formatDate = (sDate) => {
 
 export const setWeekString = (start, end) => { return formatDate(start).substr(0, 5) + ' - ' + formatDate(end) };
 
+// method to find next day on list
 export const nextDay = (sDate) => {
 
     // Create new Date instance
@@ -118,6 +118,7 @@ export const setDateString = (ActualDay) => {
     return (weekday + ', ' + day);
 };
 
+//setting detail modal message
 export const setDailyMessage = (selectedDay, list) => {
 
     let message = '';
@@ -270,10 +271,11 @@ export const setWeeklyMessage = (selectedWeek) => {
     return message;
 };
 
+//method to automatically add the following week in order to prevent errors
 export const checkIfTodayExists = (list, refreshing) => {
 
     if (refreshing) {
-        //refreshing is a boolean to see if the app is being refreshed. if it is, don't execute this block; 
+        //boolean to see if the app is being refreshed. if it is, don't execute this block; 
         //it must only execute upon first opening the app
 
         const today = new Date;
@@ -305,8 +307,6 @@ export const checkIfTodayExists = (list, refreshing) => {
     }
 
 };
-
-
 
 const addDay = (dayNumber, actualDay) => {
 
@@ -473,11 +473,3 @@ export const SetPrecision = (value) => {
     }
     return Number(value);
 };
-
-
-
-
-//console debugging
-  // firebase.database().ref('deliveries/333').once('value', (data) => {
-  //   console.log(data.child('actualDay'));
-  // });

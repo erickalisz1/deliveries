@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Modal, Platform } from 'react-native';
+import { Text, View, Modal } from 'react-native';
 
 import { setWeekString, setDateString, setDailyMessage, setWeeklyMessage } from '../../assets/helper/helper';
 import { myStyles } from '../../assets/helper/Styles';
@@ -80,7 +80,7 @@ const DetailModal = (props) => {
 
                 <ModalSpace onClose={props.onClose} flex={space} />
 
-                <ModalContainer dark={false} smaller={true} detail>
+                <ModalContainer dark={false} smaller detail>
 
                     <View style={myStyles.modalRow}>
                         <LargeText modal={true}>{date}</LargeText>
@@ -96,15 +96,17 @@ const DetailModal = (props) => {
                             text='Update'
                             colour={Colours.selected}
                             textColour={Colours.backgroundLight}
-                            onPress={props.edit} />
-
-                        <View style={{ marginHorizontal: 20 }}></View>
+                            onPress={props.edit} 
+                            style={{marginHorizontal:10}}
+                            />                        
 
                         <MyButton
                             text='Got it'
                             colour={Colours.success}
                             textColour={Colours.white}
-                            onPress={props.onClose} />
+                            onPress={props.onClose} 
+                            style={{marginHorizontal:10}}
+                            />
 
                     </Row>
                 </ModalContainer>

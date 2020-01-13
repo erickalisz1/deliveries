@@ -1,31 +1,38 @@
 import React, { useState } from 'react';
-import firebase from 'firebase';
 import { View, FlatList, Alert, Platform, TouchableOpacity } from 'react-native';
+import firebase from 'firebase';
+import { Ionicons } from '@expo/vector-icons';
 
+//assets
+import Weeks from '../assets/models/Weeks';
+import Colours from '../assets/constants/darkTheme';
+import { myStyles } from '../assets/helper/Styles';
+import { setLabelText, sortList, SetPrecision, weekFilters } from '../assets/helper/helper';
+import { SPACE, LARGER, LARGER_EQUAL, SMALLER, SMALLER_EQUAL } from '../assets/constants/strings';
+
+//components
 import Container from '../components/Container';
 import WeekItem from '../components/WeekItem';
-import Weeks from '../assets/models/Weeks';
 import Loading from '../components/Loading';
 import ColumnsModal from '../components/modals/ColumnsModal';
-import { setLabelText, sortList, SetPrecision, weekFilters } from '../assets/helper/helper';
-import { myStyles } from '../assets/helper/Styles';
 import DetailModal from '../components/modals/DetailModal';
 import SortingButton from '../components/SortingButton';
-import Colours from '../assets/constants/darkTheme';
 import FiltersModal from '../components/modals/FiltersModal';
-import { Ionicons } from '@expo/vector-icons';
-import { SPACE, LARGER, LARGER_EQUAL, SMALLER, SMALLER_EQUAL } from '../assets/constants/strings';
 import SmallText from '../components/SmallText';
 
 const WeeksList = () => {
 
+    //display settings states
+    //default list display
     const [orientation, setOrientation] = useState('Desc');
     const [columnToSort, setColumnToSort] = useState('week');
+
+    //modals
     const [displayColumns, setDisplayColumns] = useState(false);
     const [displayDetail, setDisplayDetail] = useState(false);
-    const [selectedWeek, setSelectedWeek] = useState(null);
-
     const [displayFilters, setDisplayFilters] = useState(false);
+    //detail
+    const [selectedWeek, setSelectedWeek] = useState(null);
 
     //fetch data from firebase states
     const [isLoading, setIsLoading] = useState(true);
@@ -33,6 +40,7 @@ const WeeksList = () => {
     const [firebaseList, setFirebaseList] = useState([]);//the original list
     const [isRefreshing, setIsRefreshing] = useState(false);
 
+    //filtering
     const [activeFilter, setActiveFilter] = useState('');
     const [filterColour, setFilterColour] = useState(Colours.primaryText);
 
@@ -141,15 +149,19 @@ const WeeksList = () => {
 
             if (condition === LARGER) {
                 list = list.filter(item => item[column] > value);
+                setOrientation('Asc');
             }
             else if (condition === LARGER_EQUAL) {
                 list = list.filter(item => item[column] >= value);
+                setOrientation('Asc');
             }
             else if (condition === SMALLER) {
                 list = list.filter(item => item[column] > 0 && item[column] < value);
+                setOrientation('Desc');
             }
             else if (condition === SMALLER_EQUAL) {
                 list = list.filter(item => item[column] > 0 && item[column] <= value);
+                setOrientation('Desc');
             }
 
 
@@ -175,7 +187,6 @@ const WeeksList = () => {
         }
         else {
             setDeliveriesList(list);
-            setOrientation('Asc');
             setDisplayFilters(false);
 
 
@@ -232,6 +243,16 @@ const WeeksList = () => {
         setFilterColour(Colours.primaryText);
     };
 
+    const displayFilterCount = () => {
+
+        let times = deliveriesList.length;
+
+        Alert.alert(
+            activeFilter, //title
+            (times !== 1) ? ('Occurred ' + times + ' times') : 'Occurred once' //message
+        );
+    };
+
     const modals = <View>
         <ColumnsModal week visible={displayColumns} onClose={() => setDisplayColumns(false)} selectColumn={handleColumnResult} />
         <DetailModal visible={displayDetail} onClose={() => setDisplayDetail(false)} week={selectedWeek} />
@@ -263,11 +284,11 @@ const WeeksList = () => {
     const displayActiveFilter =
 
         activeFilter !== '' ? (
-            <View style={myStyles.activeFilterContainer}>
+            <TouchableOpacity style={myStyles.activeFilterContainer} onPress={() => displayFilterCount()}>
                 <Ionicons name='ios-color-filter' size={24} color={filterColour} />
                 <SmallText between={20}>{activeFilter}</SmallText>
                 <Ionicons name='ios-color-filter' size={24} color={filterColour} />
-            </View>
+            </TouchableOpacity>
         ) : null;
 
     isLoading ? renderList() : '';

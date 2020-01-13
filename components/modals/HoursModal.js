@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TextInput, Platform, Modal, Alert } from 'react-native';
+import { View, TextInput, Modal, Alert } from 'react-native';
 
 import Colours from '../../assets/constants/darkTheme';
 import DismissKeyboard from '../DismissKeyboard';
@@ -49,7 +49,7 @@ const HoursModal = props => {
                 <View style={{ flex: 1 }} >
                     <ModalSpace onClose={props.onClose} flex={20} />
 
-                    <ModalContainer detail smaller={true} dark={true}>
+                    <ModalContainer detail smaller dark={true}>
 
                         <LargeText modal={true} >Hours Converter</LargeText>
 

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, FlatList, TouchableOpacity, Platform, Alert } from 'react-native';
 import firebase from 'firebase';
+import { Ionicons } from '@expo/vector-icons';
 
 //components
 import Loading from '../components/Loading';
@@ -17,13 +18,11 @@ import { SPACE, LARGER, LARGER_EQUAL, SMALLER, SMALLER_EQUAL } from '../assets/c
 import Deliveries from '../assets/models/Deliveries';
 import { myStyles } from '../assets/helper/Styles';
 import Colours from '../assets/constants/darkTheme';
-import { Ionicons } from '@expo/vector-icons';
 import FiltersModal from '../components/modals/FiltersModal';
 import SmallText from '../components/SmallText';
-import Row from '../components/Row';
 
 
-const MainList = (props) => {
+const MainList = () => {
 
     //display settings states
     //default list display
@@ -34,7 +33,7 @@ const MainList = (props) => {
     const [displayUpdate, setDisplayUpdate] = useState(false);
     const [displayDetail, setDisplayDetail] = useState(false);
     const [displayFilters, setDisplayFilters] = useState(false);
-    //update
+    //update / detail
     const [selectedDay, setSelectedDay] = useState(null);
 
     //fetch data from firebase states
@@ -43,6 +42,8 @@ const MainList = (props) => {
     const [firebaseList, setFirebaseList] = useState([]);//the original list
     const [isRefreshing, setIsRefreshing] = useState(false);
     const [isOpeningApp, setIsOpeningApp] = useState(true);
+    
+    //filtering
     const [activeFilter, setActiveFilter] = useState('');
     const [filterColour, setFilterColour] = useState(Colours.primaryText);
 
@@ -127,15 +128,19 @@ const MainList = (props) => {
 
                 if (condition === LARGER) {
                     list = list.filter(item => item[column] > value);
+                    setOrientation('Asc');
                 }
                 else if (condition === LARGER_EQUAL) {
                     list = list.filter(item => item[column] >= value);
+                    setOrientation('Asc');
                 }
                 else if (condition === SMALLER) {
                     list = list.filter(item => item[column] > 0 && item[column] < value);
+                    setOrientation('Desc');
                 }
                 else if (condition === SMALLER_EQUAL) {
                     list = list.filter(item => item[column] > 0 && item[column] <= value);
+                    setOrientation('Desc');
                 }
 
             }
@@ -161,7 +166,6 @@ const MainList = (props) => {
         }
         else {
             setDeliveriesList(list);
-            setOrientation('Asc');
             setDisplayFilters(false);
 
             //fixing column display
@@ -237,6 +241,16 @@ const MainList = (props) => {
         setDisplayUpdate(true);
     };
 
+    const displayFilterCount = () => {
+
+        let times = deliveriesList.length;
+
+        Alert.alert(
+            activeFilter, //title
+            (times !== 1) ? ('Occurred ' +  times + ' times') : 'Occurred once' //message
+            );
+    };
+
     const modals = <View>
         <ColumnsModal visible={displayColumns} selectColumn={handleColumnResult} onClose={() => setDisplayColumns(false)} />
         <UpdateDays visible={displayUpdate} dayToUpdate={selectedDay} onClose={() => setDisplayUpdate(false)} next={findNext} />
@@ -271,11 +285,11 @@ const MainList = (props) => {
     const displayActiveFilter =
 
         activeFilter !== '' ? (
-            <View style={myStyles.activeFilterContainer}>
+            <TouchableOpacity style={myStyles.activeFilterContainer} onPress={() => displayFilterCount()}>
                 <Ionicons name='ios-color-filter' size={24} color={filterColour} />
                 <SmallText between={20}>{activeFilter}</SmallText>
                 <Ionicons name='ios-color-filter' size={24} color={filterColour} />
-            </View>
+            </TouchableOpacity>
         ) : null;
 
     isLoading ? renderList() : null;

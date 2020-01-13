@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Modal, Picker, Platform, TextInput, Switch, Alert, Dimensions } from 'react-native';
+import { View, Modal, Picker, Platform, TextInput, Switch, Alert } from 'react-native';
 
 import Colours from '../../assets/constants/darkTheme';
 import ModalSpace from '../modals/ModalSpace';
@@ -13,6 +13,7 @@ import Row from '../Row';
 import Column from '../Column';
 import { DAYS, WEEKS } from '../../assets/constants/strings';
 import SortingButton from '../SortingButton';
+import PickerWrapper from '../PickerWrapper';
 
 const FiltersModal = (props) => {
 
@@ -180,7 +181,7 @@ const FiltersModal = (props) => {
                 <View style={{ flex: 1 }}>
                     <ModalSpace flex={space} onClose={props.onClose} />
 
-                    {/* //if its a range, we need more space */}
+                    {/* if its a range, we need more space */}
                     <ModalContainer dark={false} style={{minHeight: isRange ? 320 : 240}}>
 
                         <SortingButton text='Apply Filters' colour={props.week ? weekFilterColour : filterColour} light />
@@ -205,20 +206,19 @@ const FiltersModal = (props) => {
                                 </Row>
 
                                 {isRange ? (
-                                    <View style={{ marginTop: 20 }}>
-
-                                        <Row>
-                                            <View style={myStyles.pickerWrapper}>
+                                    <View>
+                                        <Row style={{ marginTop: 20 }}>
+                                            <PickerWrapper>
                                                 <Picker
                                                     selectedValue={weekFilter}
 
-                                                    itemStyle={styles.item}
+                                                    itemStyle={myStyles.pickerItem}
                                                     mode="dropdown"
                                                     onValueChange={(value) => handleFilter(value)}>
 
                                                     {rangeFilters}
                                                 </Picker>
-                                            </View>
+                                            </PickerWrapper>
 
                                         </Row>
 
@@ -250,35 +250,33 @@ const FiltersModal = (props) => {
 
                                             </Column>
                                         </Row>
-
-                                        {/* <View style={{ margin: 30 }}></View> */}
                                     </View>
 
                                 ) : (
-                                        <View style={{ marginTop: 20 }}>
-                                            <Row>
-                                                <View style={myStyles.pickerWrapper}>
+                                        <View>
+                                            <Row style={{ marginTop: 20 }}>
+                                                <PickerWrapper>
                                                     <Picker
                                                         selectedValue={filter}
 
-                                                        itemStyle={styles.item}
+                                                        itemStyle={myStyles.pickerItem}
                                                         mode="dropdown"
                                                         onValueChange={(value) => handleFilter(value)}>
 
                                                         {pickFilters}
                                                     </Picker>
-                                                </View>
+                                                </PickerWrapper>
 
-                                                <View style={myStyles.pickerWrapper}>
+                                                <PickerWrapper>
                                                     <Picker
                                                         selectedValue={condition}
                                                         mode="dropdown"
-                                                        itemStyle={styles.item}
+                                                        itemStyle={myStyles.pickerItem}
                                                         onValueChange={value => setCondition(value)}>
 
                                                         {conditionsList}
                                                     </Picker>
-                                                </View>
+                                                </PickerWrapper>
                                             </Row>
 
 
@@ -335,20 +333,19 @@ const FiltersModal = (props) => {
 
 
                                     {isRange ? (
-                                        <View style={{ marginTop: 20 }}>
-
-                                            <Row>
-                                                <View style={myStyles.pickerWrapper}>
+                                        <View>
+                                            <Row style={{ marginTop: 20 }}>
+                                                <PickerWrapper>
                                                     <Picker
                                                         selectedValue={filter}
 
-                                                        itemStyle={styles.item}
+                                                        itemStyle={myStyles.pickerItem}
                                                         mode="dropdown"
                                                         onValueChange={(value) => handleFilter(value)}>
 
                                                         {rangeFilters}
                                                     </Picker>
-                                                </View>
+                                                </PickerWrapper>
 
                                             </Row>
 
@@ -382,42 +379,42 @@ const FiltersModal = (props) => {
                                         </View>
 
                                     ) : (
-                                            <View style={{ marginTop: 20 }}>
-                                                <Row>
-                                                    <View style={myStyles.pickerWrapper}>
+                                            <View>
+                                                <Row style={{ marginTop: 20 }}>
+                                                    <PickerWrapper>
                                                         <Picker
                                                             selectedValue={filter}
 
-                                                            itemStyle={styles.item}
+                                                            itemStyle={myStyles.pickerItem}
                                                             mode="dropdown"
                                                             onValueChange={(value) => handleFilter(value)}>
 
                                                             {pickFilters}
                                                         </Picker>
-                                                    </View>
+                                                    </PickerWrapper>
 
                                                     {filter === 'dayNumber' ? (
-                                                        <View style={myStyles.pickerWrapper}>
+                                                        <PickerWrapper>
                                                             <Picker
                                                                 selectedValue={weekDay}
                                                                 mode="dropdown"
-                                                                itemStyle={styles.item}
+                                                                itemStyle={myStyles.pickerItem}
                                                                 onValueChange={value => setWeekDay(value)}>
 
                                                                 {daysList}
                                                             </Picker>
-                                                        </View>
+                                                        </PickerWrapper>
                                                     ) : (
-                                                            <View style={myStyles.pickerWrapper}>
+                                                            <PickerWrapper>
                                                                 <Picker
                                                                     selectedValue={condition}
                                                                     mode="dropdown"
-                                                                    itemStyle={styles.item}
+                                                                    itemStyle={myStyles.pickerItem}
                                                                     onValueChange={value => setCondition(value)}>
 
                                                                     {conditionsList}
                                                                 </Picker>
-                                                            </View>)}
+                                                            </PickerWrapper>)}
 
                                                 </Row>
 
@@ -467,13 +464,5 @@ const FiltersModal = (props) => {
         </Modal>
     );
 };
-
-const styles = StyleSheet.create({
-
-
-    item: {
-        color: Colours.primaryText
-    }
-});
 
 export default FiltersModal;

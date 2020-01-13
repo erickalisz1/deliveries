@@ -69,7 +69,7 @@ const UpdateDays = (props) => {
         <DeliverooModal visible={displayDelModal} setDel={setDel} onClose={() => setDisplayDelModal(false)} />
 
         <DismissKeyboard>
-          {/* needed to wrap this whole thing into another view so my keyboard dismiss worked */}
+          {/* needed to wrap this whole thing into another view so my keyboard dismiss works */}
           <View style={{ flex: 1 }} >
 
             <ModalSpace onClose={props.onClose} flex={Platform.OS === 'ios' ? 20 : 15} />
