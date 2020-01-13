@@ -1,11 +1,13 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Dimensions } from 'react-native';
 import Colours from '../assets/constants/darkTheme';
 import SmallText from './SmallText';
 
 const Card = (props) => {
 
     const { title, average, max, min, colour, type } = props;
+
+    const availableDeviceHeight = Dimensions.get('window').height;
 
     let beforeText = '', afterText = '';
 
@@ -42,7 +44,7 @@ const Card = (props) => {
         },
         content: {
             textAlign: 'left',
-            fontSize: 18,
+            fontSize: availableDeviceHeight > 700 ? 18 : 15,
             color: Colours.primaryText,
             marginVertical:2
         }

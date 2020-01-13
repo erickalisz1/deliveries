@@ -24,11 +24,7 @@ const DetailModal = (props) => {
         let count = (details.match(/\n/g) || []).length;
 
         //the more lines I have, the less space I will need outside my ModalContainer
-        let space = 16 - count;
-
-        space = Platform.OS === 'ios' ? space : space += 5;
-
-
+        let space = 12 - count;
 
         return (
 

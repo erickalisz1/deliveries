@@ -174,24 +174,14 @@ const FiltersModal = (props) => {
     let space = filter === 'dayNumber' ? 16 : 10;
     space = props.week ? 8 : space;
 
-    // !props.week ? (space = !isRange && filter === 'dayNumber' ? 5 : 4) : space = !isRange ? 6 : 4 ;
-
-    const availableDeviceHeight = Dimensions.get('window').height;
-
-    availableDeviceHeight < 700 ?
-        (Platform.OS === 'ios' ? space += 4 : null) //small ios : android
-        :
-        null; //large ios : android its ok, do nothing
-
     return (
         <Modal transparent={true} visible={props.visible} animationType='slide'>
             <DismissKeyboard>
                 <View style={{ flex: 1 }}>
                     <ModalSpace flex={space} onClose={props.onClose} />
 
-
-                    <ModalContainer dark={false}>
-
+                    {/* //if its a range, we need more space */}
+                    <ModalContainer dark={false} style={{minHeight: isRange ? 320 : 240}}>
 
                         <SortingButton text='Apply Filters' colour={props.week ? weekFilterColour : filterColour} light />
 

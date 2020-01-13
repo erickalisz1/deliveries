@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform } from 'react-native';
+import { Platform, Dimensions } from 'react-native';
 
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import { createAppContainer } from 'react-navigation';
@@ -51,7 +51,7 @@ const TabNavigator = createBottomTabNavigator({
                 backgroundColor: Colours.backgroundLight,
                 overflow: 'hidden',
                 padding: 10,
-                height: Platform.OS === 'ios' ? 55 : 65
+                height: Platform.OS === 'ios' ? (Dimensions.get('window').height < 700 ? 70 : 55) : 65,            
             },
             activeTintColor: Colours.success
         }

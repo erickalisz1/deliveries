@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, Modal, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Modal, TouchableOpacity, Platform } from 'react-native';
 
 import { formatDate } from '../../assets/helper/helper';
 import { updateDeliveroo, updateUber, updateHours } from '../../assets/helper/updates'
@@ -72,9 +72,9 @@ const UpdateDays = (props) => {
           {/* needed to wrap this whole thing into another view so my keyboard dismiss worked */}
           <View style={{ flex: 1 }} >
 
-            <ModalSpace onClose={props.onClose} flex={20} />
+            <ModalSpace onClose={props.onClose} flex={Platform.OS === 'ios' ? 20 : 15} />
 
-            <ModalContainer dark={false} smaller={false}>
+            <ModalContainer detail dark={false} smaller={false} >
 
               <View style={styles.row}>
                 <TouchableOpacity onPress={() => showPrevious()} style={{ marginHorizontal: 10, padding: 20 }}>
@@ -178,7 +178,7 @@ const UpdateDays = (props) => {
 
             </ModalContainer>
 
-            <ModalSpace onClose={props.onClose} flex={20} />
+            <ModalSpace onClose={props.onClose} flex={Platform.OS === 'ios' ? 20 : 15} />
 
           </View>
         </DismissKeyboard>

@@ -14,7 +14,8 @@ const ModalContainer = props => {
             borderWidth:  2,
             borderColor: Colours.primaryText,
             marginHorizontal: props.smaller === true ? 35 : 20,
-            minHeight: props.detail ? 200 : 310
+            minHeight: props.detail ? 210 : 0,
+            // maxHeight: props.calculator ? 100 : '100%'
         }
     });
 

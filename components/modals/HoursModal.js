@@ -47,9 +47,9 @@ const HoursModal = props => {
             <DismissKeyboard>
                 {/* needed to wrap this whole thing into another view so my keyboard dismiss worked */}
                 <View style={{ flex: 1 }} >
-                    <ModalSpace onClose={props.onClose} flex={Platform.OS === 'ios' ? 13 : 18} />
+                    <ModalSpace onClose={props.onClose} flex={20} />
 
-                    <ModalContainer smaller={true} dark={true}>
+                    <ModalContainer detail smaller={true} dark={true}>
 
                         <LargeText modal={true} >Hours Converter</LargeText>
 
@@ -91,7 +91,7 @@ const HoursModal = props => {
 
                     </ModalContainer>
 
-                    <ModalSpace onClose={props.onClose} flex={Platform.OS === 'ios' ? 13 : 18} />
+                    <ModalSpace onClose={props.onClose} flex={20} />
                 </View>
             </DismissKeyboard>
         </Modal>

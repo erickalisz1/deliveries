@@ -17,6 +17,8 @@ const ModalSpace = props => {
 
     flex = flex <= 0 ? 3 : flex;//if for some reason its taking no space, set it to be larger
 
+    console.log('modal space',flex);
+
     return (
         /* this makes so that pressing outside the modal closes it */
         < TouchableWithoutFeedback onPress={props.onClose} >
