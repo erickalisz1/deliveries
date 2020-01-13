@@ -29,7 +29,7 @@ const UpdateDays = (props) => {
   if (day) {
     let date = formatDate(day.actualDay);
 
-    console.log('selected:', day.dayNumber);
+    //console.log('selected:', day.dayNumber); //console debugging
 
     const deliverooInput = (enteredValue) => {
       setDelValue(enteredValue);

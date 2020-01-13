@@ -107,17 +107,16 @@ const FiltersModal = (props) => {
 
     const setFilters = () => {
 
+        let start = Number(startValue);
+        let end = Number(endValue);
+
         if (!isRange && filter === 'dayNumber') {//if its a weekDay
             props.result(list, filter, isRange, weekDay, '', '');
-        }
-        else if (isRange && filter === 'dayNumber') {//if its a range of days
-            // props.result(list, filter, isRange, weekDayStart, weekDayEnd, '');
         }
         else if (!isRange && filter !== 'dayNumber') {//if its a single value
             props.result(list, filter, isRange, value, -1, condition);
         }
-        else if (isRange && filter !== 'dayNumber' && endValue > startValue) {//if its a range between values, the end value must be larger than the start
-
+        else if (isRange && filter !== 'dayNumber' && end > start) {//if its a range between values, the end value must be larger than the start
             props.result(list, filter, isRange, startValue, endValue, ' between ');
         }
         else Alert.alert('Please chek your values');
@@ -147,8 +146,6 @@ const FiltersModal = (props) => {
 
     const startValueInput = (enteredValue) => {
         setStartValue(enteredValue);
-        //needs to be more than the other
-        setEndValue(Number(++enteredValue) + '');
     };
     const endValueInput = (enteredValue) => {
         setEndValue(enteredValue);
@@ -182,7 +179,7 @@ const FiltersModal = (props) => {
                     <ModalSpace flex={space} onClose={props.onClose} />
 
                     {/* if its a range, we need more space */}
-                    <ModalContainer dark={false} style={{minHeight: isRange ? 320 : 240}}>
+                    <ModalContainer dark={false} style={{ minHeight: isRange ? 320 : 240, borderColor: props.week ? weekFilterColour : filterColour }}>
 
                         <SortingButton text='Apply Filters' colour={props.week ? weekFilterColour : filterColour} light />
 
@@ -197,8 +194,8 @@ const FiltersModal = (props) => {
                                         value={isRange}
                                         onValueChange={handleSwitch}
                                         style={{ margin: 20 }}
-                                        trackColor={{ false: Colours.backgroundLight, true: weekFilterColour }}
-                                        thumbColor={Platform.OS === 'android' ? weekFilterColour : ''}
+                                        trackColor={{ true: weekFilterColour }}
+                                        thumbColor={Platform.OS === 'android' ? Colours.white : ''}
                                     />
 
                                     <SmallText style={{ color: weekFilterColour }}>Range</SmallText>
@@ -322,8 +319,8 @@ const FiltersModal = (props) => {
                                                 value={isRange}
                                                 onValueChange={handleSwitch}
                                                 style={{ margin: 20 }}
-                                                trackColor={{ false: Colours.backgroundLight, true: filterColour }}
-                                                thumbColor={Platform.OS === 'android' ? filterColour : ''}
+                                                trackColor={{ true: weekFilterColour }}
+                                                thumbColor={Platform.OS === 'android' ? Colours.white : ''}
                                             />
 
                                             <SmallText style={{ color: filterColour }}>Range</SmallText>

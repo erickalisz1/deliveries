@@ -58,7 +58,7 @@ export const myStyles = StyleSheet.create({
         borderRadius: 5,
         borderWidth: Platform.OS === 'ios' ? 0 : 1,
         borderColor: Colours.primaryText,
-        backgroundColor: Platform.OS === 'ios' ? Colours.transparent : Colours.primaryText,
+        backgroundColor: Platform.OS === 'ios' ? Colours.transparent : Colours.white,
         marginBottom: Platform.OS === 'ios' ? 150 : 20,
         marginTop: Platform.OS === 'ios' ? -50 : 0,
         marginHorizontal: 10
