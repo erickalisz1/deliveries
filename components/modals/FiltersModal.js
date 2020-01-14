@@ -124,10 +124,13 @@ const FiltersModal = (props) => {
 
     const setWeekFilters = () => {
 
+        let start = Number(startValue);
+        let end = Number(endValue);
+
         if (!isRange) {//if its a single value
             props.result(list, weekFilter, isRange, value, -1, condition);
         }
-        else if (isRange && endValue > startValue) {//if its a range between values, the end value must be larger than the start
+        else if (isRange && end > start) {//if its a range between values, the end value must be larger than the start
 
             props.result(list, weekFilter, isRange, startValue, endValue, ' between ');
         }

@@ -30,8 +30,8 @@ const HelpModal = (props) => {
 
                     <MyButton
                         text='Got it'
-                        colour={Colours.success}
-                        textColour={Colours.primaryText}
+                        colour={Colours.selected}
+                        textColour={Colours.black}
                         onPress={props.onClose}
                         style={myStyles.modalRow} />
 

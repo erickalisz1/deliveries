@@ -44,8 +44,8 @@ const DetailModal = (props) => {
 
                     <MyButton
                         text='Got it'
-                        colour={Colours.success}
-                        textColour={Colours.primaryText}
+                        colour={Colours.selected}
+                        textColour={Colours.black}
                         onPress={props.onClose}
                         style={myStyles.modalRow} />
 
@@ -95,15 +95,15 @@ const DetailModal = (props) => {
                         <MyButton
                             text='Update'
                             colour={Colours.selected}
-                            textColour={Colours.backgroundLight}
+                            textColour={Colours.black}
                             onPress={props.edit} 
                             style={{marginHorizontal:10}}
                             />                        
 
                         <MyButton
                             text='Got it'
-                            colour={Colours.success}
-                            textColour={Colours.white}
+                            colour={Colours.selected}
+                            textColour={Colours.black}
                             onPress={props.onClose} 
                             style={{marginHorizontal:10}}
                             />

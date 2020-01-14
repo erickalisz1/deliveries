@@ -53,7 +53,7 @@ const TabNavigator = createBottomTabNavigator({
                 padding: 10,
                 height: Platform.OS === 'ios' ? (Dimensions.get('window').height < 700 ? 70 : 55) : 65,            
             },
-            activeTintColor: Colours.success
+            activeTintColor: Colours.selected
         }
     });
 
