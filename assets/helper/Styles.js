@@ -2,7 +2,7 @@ import { StyleSheet, Platform } from 'react-native';
 import Colours from '../constants/darkTheme';
 
 export const myStyles = StyleSheet.create({
-    //update
+    //inputs
     input:{
         borderBottomColor: Colours.accent,
         borderBottomWidth: 1,
@@ -13,6 +13,17 @@ export const myStyles = StyleSheet.create({
         color: Colours.primaryText,
         minWidth:60,
         maxWidth:120
+    },
+    inputVertical:{
+        borderBottomColor: Colours.accent,
+        borderBottomWidth: 1,
+        padding: 5,
+        textAlign: "center",
+        fontSize: 17,
+        color: Colours.primaryText,
+        minWidth:60,
+        maxWidth:120,
+        marginBottom:40
     },
     //main list
     sortLabel: {

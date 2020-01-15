@@ -6,7 +6,7 @@ export default Colours = {
     black: '#000',
     white: '#fff',
     cancel: '#f44',
-    success: '#0b0',
+    success: '#090',
     selected: '#5fcfbf',
     placeholder: '#888',
     transparent: 'rgba(0,0,0,0)',

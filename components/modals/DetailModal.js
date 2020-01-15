@@ -102,7 +102,7 @@ const DetailModal = (props) => {
 
                         <MyButton
                             text='Got it'
-                            colour={Colours.selected}
+                            colour={Colours.success}
                             textColour={Colours.black}
                             onPress={props.onClose} 
                             style={{marginHorizontal:10}}

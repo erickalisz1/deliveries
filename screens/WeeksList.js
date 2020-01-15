@@ -146,39 +146,27 @@ const WeeksList = () => {
 
             value = Number(value);
 
-
             if (condition === LARGER) {
-                list = list.filter(item => item[column] > value);
+                list = list.filter(item => item.accurate === true ? (item[column] > value) : null);
                 setOrientation('Asc');
             }
             else if (condition === LARGER_EQUAL) {
-                list = list.filter(item => item[column] >= value);
+                list = list.filter(item => item.accurate === true ? (item[column] >= value) : null);
                 setOrientation('Asc');
             }
             else if (condition === SMALLER) {
-                list = list.filter(item => item[column] > 0 && item[column] < value);
+                list = list.filter(item => item.accurate === true ? (item[column] > 0 && item[column] < value) : null);
                 setOrientation('Desc');
             }
             else if (condition === SMALLER_EQUAL) {
-                list = list.filter(item => item[column] > 0 && item[column] <= value);
+                list = list.filter(item => item.accurate === true ? (item[column] > 0 && item[column] <= value) : null);
                 setOrientation('Desc');
             }
-
-
         }
         else {
             value === '' || valueEnd === '' ? list = [] : null;//if no values are set
 
-            if (column === 'dayNumber') {
-
-                value++;
-                value = value === 7 ? 0 : value;//if it returns 6, its sunday and we must change it to sent it to the new Date()
-
-                list = list.filter(item => new Date(item.actualDay).getDay() >= value && new Date(item.actualDay).getDay() <= valueEnd)
-            }
-            else {
-                list = list.filter(item => item[column] >= value && item[column] <= valueEnd);
-            }
+            list = list.filter(item => item.accurate === true ? (item[column] >= value && item[column] <= valueEnd) : null);
         }
 
 

@@ -6,7 +6,7 @@ import { myStyles } from '../assets/helper/Styles';
 const PickerWrapper = props => {
     
     return (
-        <View style={myStyles.pickerWrapper}>
+        <View style={{...myStyles.pickerWrapper, ...props.style}}>
                 {props.children}
         </View>
         );
