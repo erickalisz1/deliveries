@@ -13,8 +13,8 @@ const ModalContainer = props => {
             borderRadius:50,
             borderWidth:  2,
             borderColor: Colours.primaryText,
-            marginHorizontal: props.smaller ? 35 : 20,
-            minHeight: props.detail ? 210 : 0,
+            marginHorizontal: props.marginHorizontal ? props.marginHorizontal : 20,
+            minHeight: props.minHeight ? props.minHeight : 210,
         }
     });
 

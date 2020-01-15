@@ -1,6 +1,6 @@
 import { Alert, Platform } from 'react-native';
 import firebase from 'firebase';
-import { DEL, UB, HRS, TOTAL, PER, DAYS, LARGER, LARGER_EQUAL, SMALLER, SMALLER_EQUAL, WEEKS } from '../constants/strings';
+import { DEL, UB, HRS, TOTAL, PER, DAYS, LARGER, LARGER_EQUAL, SMALLER, SMALLER_EQUAL, WEEKS, BETWEEN } from '../constants/strings';
 import Colours from '../constants/darkTheme';
 
 export const firebaseConfig = {
@@ -452,6 +452,10 @@ export const conditions = [
     {
         key: "Smaller Equal",
         value: SMALLER_EQUAL
+    },
+    {
+        key: "Between",
+        value : BETWEEN
     }
 ];
 

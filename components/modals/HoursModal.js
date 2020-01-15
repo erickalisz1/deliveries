@@ -49,7 +49,7 @@ const HoursModal = props => {
                 <View style={{ flex: 1 }} >
                     <ModalSpace onClose={props.onClose} flex={20} />
 
-                    <ModalContainer detail smaller dark={true}>
+                    <ModalContainer marginHorizontal={40} minHeight={110} dark={true}>
 
                         <LargeText modal={true} >Hours Converter</LargeText>
 
@@ -64,10 +64,10 @@ const HoursModal = props => {
                                     keyboardType='decimal-pad' />
 
                                 <MyButton
-                                    text='Done'
-                                    colour={Colours.success}
-                                    textColour={Colours.primaryText}
-                                    onPress={() => setHours()} />
+                                    text='Cancel'
+                                    colour={Colours.cancel}
+                                    textColour={Colours.white}
+                                    onPress={props.onClose} />
                             </View>
                             <View style={myStyles.modalColumn}>
                                 <TextInput
@@ -79,10 +79,10 @@ const HoursModal = props => {
                                     keyboardType='decimal-pad' />
 
                                 <MyButton
-                                    text='Cancel'
-                                    colour={Colours.cancel}
-                                    textColour={Colours.white}
-                                    onPress={props.onClose} />
+                                    text='Done'
+                                    colour={Colours.success}
+                                    textColour={Colours.primaryText}
+                                    onPress={() => setHours()} />
 
                             </View>
 

@@ -208,6 +208,7 @@ const MainList = () => {
         orientation === 'Asc' ? setOrientation('Desc') : setOrientation('Asc');
     };
 
+    //apllying selected column to sort list
     const handleColumnResult = (selectedColumn, colour) => {
         setColumnToSort(selectedColumn);
         setFilterColour(colour);
@@ -229,6 +230,7 @@ const MainList = () => {
         setFilterColour(Colours.primaryText);
     };
 
+    //iterate through days on update modal
     const findNext = (id, direction) => {
 
         direction === '<' ? id-- : id++;
@@ -241,6 +243,7 @@ const MainList = () => {
         setDisplayUpdate(true);
     };
 
+    //simple alert with the length of the filtered list
     const displayFilterCount = () => {
 
         let times = deliveriesList.length;

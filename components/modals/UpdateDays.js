@@ -74,7 +74,7 @@ const UpdateDays = (props) => {
 
             <ModalSpace onClose={props.onClose} flex={Platform.OS === 'ios' ? 20 : 15} />
 
-            <ModalContainer detail dark={false} smaller={false} >
+            <ModalContainer marginHorizontal={20} minHeight={165} >
 
               <View style={styles.row}>
                 <TouchableOpacity onPress={() => showPrevious()} style={{ marginHorizontal: 10, padding: 20 }}>

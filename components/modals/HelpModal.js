@@ -18,7 +18,7 @@ const HelpModal = (props) => {
 
                 <ModalSpace onClose={props.onClose} flex={props.item.flex} />
 
-                <ModalContainer dark={false} detail>
+                <ModalContainer dark={false}>
 
                     <View style={myStyles.modalRow}>
                         <LargeText modal={true}>{props.item.display}</LargeText>

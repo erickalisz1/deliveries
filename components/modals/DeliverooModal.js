@@ -54,7 +54,7 @@ const DeliverooModal = props => {
 
                     <ModalSpace onClose={props.onClose} flex={20} />
 
-                    <ModalContainer smaller dark={true} detail>
+                    <ModalContainer marginHorizontal={40} minHeight={110} dark={true}>
 
                         <LargeText modal={true} >Deliveroo Calculator</LargeText>
 

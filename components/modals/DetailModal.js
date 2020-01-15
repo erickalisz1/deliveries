@@ -32,7 +32,7 @@ const DetailModal = (props) => {
 
                 <ModalSpace onClose={props.onClose} flex={space} />
 
-                <ModalContainer>
+                <ModalContainer smaller detail>
 
                     <View style={myStyles.modalRow}>
                         <LargeText modal={true}>{weekString}</LargeText>

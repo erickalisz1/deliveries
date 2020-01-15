@@ -9,7 +9,7 @@ export const myStyles = StyleSheet.create({
         marginHorizontal: 5,
         padding: 5,
         textAlign: "center",
-        fontSize: 17,
+        fontSize: 18,
         color: Colours.primaryText,
         minWidth:60,
         maxWidth:120
@@ -70,8 +70,7 @@ export const myStyles = StyleSheet.create({
         borderWidth: Platform.OS === 'ios' ? 0 : 1,
         borderColor: Colours.primaryText,
         backgroundColor: Platform.OS === 'ios' ? Colours.transparent : Colours.white,
-        marginBottom: Platform.OS === 'ios' ? 150 : 20,
-        marginTop: Platform.OS === 'ios' ? -50 : 0,
+        marginBottom: Platform.OS === 'ios' ? 120 : 20,
         marginHorizontal: 10
     },
     columnPickerWrapper: {

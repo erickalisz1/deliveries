@@ -12,10 +12,11 @@ export const LARGER = ">";
 export const LARGER_EQUAL = ">=";
 export const SMALLER = "<";
 export const SMALLER_EQUAL = "<=";
+export const BETWEEN = "><";
 
 export const stringVal = (Val) => ' - $' + Val;//works for all generic values, except per
-export const stringPer = (Per) => ' - $' + Per + '/h';
 
+export const stringPer = (Per) => ' - $' + Per + '/h';
 export const stringDel = (Del) => ' - Deliveroo: $' + Del;//these need the names
 export const stringUber = (Uber) => ' - Uber: $' + Uber;
 export const stringTotal = (Total) => ' - Total: $' + Total;

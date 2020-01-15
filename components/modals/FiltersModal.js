@@ -11,7 +11,7 @@ import DismissKeyboard from '../DismissKeyboard';
 import SmallText from '../SmallText';
 import Row from '../Row';
 import Column from '../Column';
-import { DAYS, WEEKS } from '../../assets/constants/strings';
+import { DAYS, WEEKS, BETWEEN } from '../../assets/constants/strings';
 import SortingButton from '../SortingButton';
 import PickerWrapper from '../PickerWrapper';
 
@@ -27,7 +27,6 @@ const FiltersModal = (props) => {
     const [weekFilter, setWeekFilter] = useState('deliveroo');
     const [weekFilterColour, setWeekFilterColour] = useState(Colours.deliveroo);
 
-    const [value, setValue] = useState('');
     const [isRange, setIsRange] = useState(false);
 
     //range
@@ -72,26 +71,6 @@ const FiltersModal = (props) => {
             })
         );
 
-    let rangeFilters = filters.map((row, index) => {
-
-        if (Platform.OS === 'ios') {
-            if (row.key !== DAYS) {
-                return (
-                    <Picker.Item label={row.key} value={row.value} key={index} color={row.colour} />
-                );
-            }
-        }
-        else {//android
-            if (row.key !== DAYS) {
-                return (
-                    <Picker.Item label={row.key} value={row.value} key={index} />
-                );
-            }
-            else return <Picker.Item label={"-Select Range-"} value={'Select Range'} key={'index'} />
-        }
-
-    });
-
     //if filter is weekdays
     let daysList = weekDays.map((row, index) => {//{array}.map array is going to be set by state and changed according to what the user selects
         return (
@@ -110,31 +89,31 @@ const FiltersModal = (props) => {
         let start = Number(startValue);
         let end = Number(endValue);
 
-        if (!isRange && filter === 'dayNumber') {//if its a weekDay
-            props.result(list, filter, isRange, weekDay, '', '');
-        }
-        else if (!isRange && filter !== 'dayNumber') {//if its a single value
-            props.result(list, filter, isRange, value, -1, condition);
-        }
-        else if (isRange && filter !== 'dayNumber' && end > start) {//if its a range between values, the end value must be larger than the start
-            props.result(list, filter, isRange, startValue, endValue, ' between ');
-        }
-        else Alert.alert('Please chek your values');
-    };
+        if (props.week) {
 
-    const setWeekFilters = () => {
+            if (!isRange) {//if its a single value
+                props.result(list, weekFilter, isRange, startValue, -1, condition);
+            }
+            else if (isRange && end > start) {//if its a range between values, the end value must be larger than the start
 
-        let start = Number(startValue);
-        let end = Number(endValue);
-
-        if (!isRange) {//if its a single value
-            props.result(list, weekFilter, isRange, value, -1, condition);
+                props.result(list, weekFilter, isRange, startValue, endValue, ' between ');
+            }
+            else Alert.alert('Please chek your values');
         }
-        else if (isRange && end > start) {//if its a range between values, the end value must be larger than the start
 
-            props.result(list, weekFilter, isRange, startValue, endValue, ' between ');
+        else {
+            if (!isRange && filter === 'dayNumber') {//if its a weekDay
+                props.result(list, filter, isRange, weekDay, '', '');
+            }
+            else if (!isRange && filter !== 'dayNumber') {//if its a single value
+                props.result(list, filter, isRange, startValue, -1, condition);
+            }
+            else if (isRange && end > start) {//if its a range between values, the end value must be larger than the start
+                props.result(list, filter, isRange, startValue, endValue, ' between ');
+            }
+            else Alert.alert('Please chek your values');
         }
-        else Alert.alert('Please chek your values');
+
 
     };
 
@@ -143,9 +122,9 @@ const FiltersModal = (props) => {
         props.onClose();
     };
 
-    const valueInput = (enteredValue) => {
-        setValue(enteredValue);
-    };
+    // const valueInput = (enteredValue) => {
+    //     setValue(enteredValue);
+    // };
 
     const startValueInput = (enteredValue) => {
         setStartValue(enteredValue);
@@ -154,13 +133,16 @@ const FiltersModal = (props) => {
         setEndValue(enteredValue);
     };
 
-    const handleSwitch = () => {
-        isRange ? setIsRange(false) : setIsRange(true)
-    };
+    // const handleSwitch = () => {
+    //     isRange ? setIsRange(false) : setIsRange(true)
+    // };
 
     const handleFilter = value => {
 
         filters.forEach(item => {
+
+            if (value === 'dayNumber') setIsRange(false);
+
             if (item.value === value) {
                 setFilter(value);
                 setFilterColour(item.colour);
@@ -172,8 +154,21 @@ const FiltersModal = (props) => {
         });
     };
 
-    let space = filter === 'dayNumber' ? 16 : 12;
-    space = props.week ? 8 : space;
+    const handleCondition = value => {
+
+        setCondition(value);
+
+        if (value === BETWEEN) {
+            setIsRange(true);
+        }
+        else setIsRange(false);
+    };
+
+    let space = 20;
+    let minHeight = 330;
+
+    minHeight = (filter === 'dayNumber') ? 250 : minHeight;
+    minHeight = props.week ? 350 : minHeight;
 
     return (
         <Modal transparent={true} visible={props.visible} animationType='slide'>
@@ -181,268 +176,176 @@ const FiltersModal = (props) => {
                 <View style={{ flex: 1 }}>
                     <ModalSpace flex={space} onClose={props.onClose} />
 
-                    {/* if its a range, we need more space */}
-                    <ModalContainer dark={false} style={{ minHeight: 250, borderColor: props.week ? weekFilterColour : filterColour }}>
+                    <ModalContainer dark={false} minHeight={minHeight} style={{ borderColor: props.week ? weekFilterColour : filterColour }}>
 
-                        <SortingButton text='Apply Filters' colour={props.week ? weekFilterColour : filterColour} light />
+
+                        <SortingButton text='Apply Filters' colour={props.week ? weekFilterColour : filterColour} light onPress={() => setFilters()} />
 
                         {props.week ? (
                             //Weeks List filters
                             <View>
-                                <Row style={{marginVertical:20}}>
+                                <Row style={{ marginTop: 20 }}>
+                                    {isRange ? (
+                                        <Row>
+                                            <TextInput
+                                                placeholder={'From'}
+                                                placeholderTextColor={weekFilterColour + '80'}//make the colour a bit lighter
+                                                style={myStyles.input}
+                                                onChangeText={startValueInput}
+                                                value={startValue}
+                                                keyboardType='decimal-pad' />
 
-                                    <SmallText style={{ color: weekFilterColour }}>Value</SmallText>
+                                            <TextInput
+                                                placeholder={'To'}
+                                                placeholderTextColor={weekFilterColour + '80'}//make the colour a bit lighter
+                                                style={myStyles.input}
+                                                onChangeText={endValueInput}
+                                                value={endValue}
+                                                keyboardType='decimal-pad' />
 
-                                    <Switch
-                                        value={isRange}
-                                        onValueChange={handleSwitch}
-                                        style={{ marginHorizontal: 20 }}
-                                        trackColor={{ true: weekFilterColour }}
-                                        thumbColor={Platform.OS === 'android' ? Colours.white : ''}
-                                    />
+                                        </Row>
 
-                                    <SmallText style={{ color: weekFilterColour }}>Range</SmallText>
+                                    ) :
+
+                                        <TextInput
+                                            placeholder={weekFilter}
+                                            placeholderTextColor={weekFilterColour + '80'}//make the colour a bit lighter
+                                            style={myStyles.input}
+                                            onChangeText={startValueInput}
+                                            value={startValue}
+                                            keyboardType='decimal-pad'
+                                        />
+                                    }
 
                                 </Row>
 
-                                {isRange ? (
-                                    <View>
-                                        <Row>
-                                            <Column>
-                                                <PickerWrapper style={{ width: '95%' }}>
-                                                    <Picker
-                                                        selectedValue={weekFilter}
+                                <Row style={{ marginTop: 15 }}>
+                                    <PickerWrapper>
+                                        <Picker
+                                            selectedValue={filter}
 
-                                                        itemStyle={myStyles.pickerItem}
-                                                        mode="dropdown"
-                                                        onValueChange={(value) => handleFilter(value)}>
+                                            itemStyle={myStyles.pickerItem}
+                                            mode="dropdown"
+                                            onValueChange={(value) => handleFilter(value)}>
 
-                                                        {rangeFilters}
-                                                    </Picker>
-                                                </PickerWrapper>
+                                            {pickFilters}
+                                        </Picker>
+                                    </PickerWrapper>
 
-                                            </Column>
+                                    <PickerWrapper>
+                                        <Picker
+                                            selectedValue={condition}
+                                            mode="dropdown"
+                                            itemStyle={myStyles.pickerItem}
+                                            onValueChange={value => handleCondition(value)}>
 
-                                            <Column>
-
-                                                <TextInput
-                                                    placeholder={'From'}
-                                                    placeholderTextColor={weekFilterColour + '80'}//make the colour a bit lighter
-                                                    style={myStyles.inputVertical}
-                                                    onChangeText={startValueInput}
-                                                    value={startValue}
-                                                    keyboardType='decimal-pad' />
-
-                                                <TextInput
-                                                    placeholder={'To'}
-                                                    placeholderTextColor={weekFilterColour + '80'}//make the colour a bit lighter
-                                                    style={myStyles.inputVertical}
-                                                    onChangeText={endValueInput}
-                                                    value={endValue}
-                                                    keyboardType='decimal-pad' />
-
-                                            </Column>
-                                        </Row>
-                                    </View>
-
-                                ) : (
-                                        <View>
-                                            <Row>
-                                                <TextInput
-                                                    placeholder={weekFilter}
-                                                    placeholderTextColor={weekFilterColour + '80'}//make the colour a bit lighter
-                                                    style={myStyles.inputVertical}
-                                                    onChangeText={valueInput}
-                                                    value={value}
-                                                    keyboardType='decimal-pad' />
-                                            </Row>
-
-                                            <Row>
-                                                <PickerWrapper>
-                                                    <Picker
-                                                        selectedValue={filter}
-
-                                                        itemStyle={myStyles.pickerItem}
-                                                        mode="dropdown"
-                                                        onValueChange={(value) => handleFilter(value)}>
-
-                                                        {pickFilters}
-                                                    </Picker>
-                                                </PickerWrapper>
-
-                                                <PickerWrapper>
-                                                    <Picker
-                                                        selectedValue={condition}
-                                                        mode="dropdown"
-                                                        itemStyle={myStyles.pickerItem}
-                                                        onValueChange={value => setCondition(value)}>
-
-                                                        {conditionsList}
-                                                    </Picker>
-                                                </PickerWrapper>
-                                            </Row>
-
-
-                                            
-
-                                        </View>)}
-
-                                <Row>
-                                    <MyButton
-                                        text='Clear'
-                                        colour={Colours.accent}
-                                        textColour={Colours.backgroundLight}
-                                        onPress={() => clearFilters()}
-                                        style={{ marginHorizontal: 20 }} />
-                                    <MyButton
-                                        text='Set'
-                                        colour={weekFilterColour}
-                                        textColour={Colours.black}
-                                        onPress={() => setWeekFilters()}
-                                        style={{ marginHorizontal: 20 }} />
+                                            {conditionsList}
+                                        </Picker>
+                                    </PickerWrapper>
                                 </Row>
 
                             </View>
                         ) : (
                                 // Main List filters
                                 <View>
-                                    {filter !== 'dayNumber' ? (
-                                        //if the filter is days, don't display the range
-                                        <Row>
-
-                                            <SmallText style={{ color: filterColour }}>Value</SmallText>
-
-                                            <Switch
-                                                value={isRange}
-                                                onValueChange={handleSwitch}
-                                                style={{ margin: 20 }}
-                                                trackColor={{ true: weekFilterColour }}
-                                                thumbColor={Platform.OS === 'android' ? Colours.white : ''}
-                                            />
-
-                                            <SmallText style={{ color: filterColour }}>Range</SmallText>
-
-                                        </Row>
-                                    ) : null}
-
-
-                                    {isRange ? (
-                                        <View>
+                                    {filter === 'dayNumber' ? (
+                                        //if the filter is days                           
+                                        null
+                                    ) : (
+                                            //if the filter is a number
                                             <Row style={{ marginTop: 20 }}>
-                                                <Column>
-                                                    <PickerWrapper style={{ width: '95%' }}>
-                                                        <Picker
-                                                            selectedValue={filter}
+                                                {isRange ? (
+                                                    <Row>
+                                                        <TextInput
+                                                            placeholder={'From'}
+                                                            placeholderTextColor={filterColour + '80'}//make the colour a bit lighter
+                                                            style={myStyles.input}
+                                                            onChangeText={startValueInput}
+                                                            value={startValue}
+                                                            keyboardType='decimal-pad' />
 
-                                                            itemStyle={myStyles.pickerItem}
-                                                            mode="dropdown"
-                                                            onValueChange={(value) => handleFilter(value)}>
+                                                        <TextInput
+                                                            placeholder={'To'}
+                                                            placeholderTextColor={filterColour + '80'}//make the colour a bit lighter
+                                                            style={myStyles.input}
+                                                            onChangeText={endValueInput}
+                                                            value={endValue}
+                                                            keyboardType='decimal-pad' />
 
-                                                            {rangeFilters}
-                                                        </Picker>
-                                                    </PickerWrapper>
+                                                    </Row>
 
-                                                </Column>
-
-                                                <Column style={{ marginLeft: 20 }}>
+                                                ) :
 
                                                     <TextInput
-                                                        placeholder={'From'}
+                                                        placeholder={filter}
                                                         placeholderTextColor={filterColour + '80'}//make the colour a bit lighter
-                                                        style={myStyles.inputVertical}
+                                                        style={myStyles.input}
                                                         onChangeText={startValueInput}
                                                         value={startValue}
-                                                        keyboardType='decimal-pad' />
+                                                        keyboardType='decimal-pad'
+                                                    />
+                                                }
 
-                                                    <TextInput
-                                                        placeholder={'To'}
-                                                        placeholderTextColor={filterColour + '80'}//make the colour a bit lighter
-                                                        style={myStyles.inputVertical}
-                                                        onChangeText={endValueInput}
-                                                        value={endValue}
-                                                        keyboardType='decimal-pad' />
-
-                                                </Column>
                                             </Row>
-                                        </View>
+                                        )}
 
-                                    ) : (
-                                            <View>
-                                                <Row style={{ marginTop: 20 }}>
-                                                    <PickerWrapper>
-                                                        <Picker
-                                                            selectedValue={filter}
+                                    <Row style={{ marginTop: 15 }}>
+                                        <PickerWrapper>
+                                            <Picker
+                                                selectedValue={filter}
 
-                                                            itemStyle={myStyles.pickerItem}
-                                                            mode="dropdown"
-                                                            onValueChange={(value) => handleFilter(value)}>
+                                                itemStyle={myStyles.pickerItem}
+                                                mode="dropdown"
+                                                onValueChange={(value) => handleFilter(value)}>
 
-                                                            {pickFilters}
-                                                        </Picker>
-                                                    </PickerWrapper>
+                                                {pickFilters}
+                                            </Picker>
+                                        </PickerWrapper>
 
-                                                    {filter === 'dayNumber' ? (
-                                                        <PickerWrapper>
-                                                            <Picker
-                                                                selectedValue={weekDay}
-                                                                mode="dropdown"
-                                                                itemStyle={myStyles.pickerItem}
-                                                                onValueChange={value => setWeekDay(value)}>
+                                        {filter === 'dayNumber' ? (
+                                            <PickerWrapper>
+                                                <Picker
+                                                    selectedValue={weekDay}
+                                                    mode="dropdown"
+                                                    itemStyle={myStyles.pickerItem}
+                                                    onValueChange={value => setWeekDay(value)}>
 
-                                                                {daysList}
-                                                            </Picker>
-                                                        </PickerWrapper>
-                                                    ) : (
-                                                            <PickerWrapper>
-                                                                <Picker
-                                                                    selectedValue={condition}
-                                                                    mode="dropdown"
-                                                                    itemStyle={myStyles.pickerItem}
-                                                                    onValueChange={value => setCondition(value)}>
+                                                    {daysList}
+                                                </Picker>
+                                            </PickerWrapper>
+                                        ) : (
+                                                <PickerWrapper>
+                                                    <Picker
+                                                        selectedValue={condition}
+                                                        mode="dropdown"
+                                                        itemStyle={myStyles.pickerItem}
+                                                        onValueChange={value => handleCondition(value)}>
 
-                                                                    {conditionsList}
-                                                                </Picker>
-                                                            </PickerWrapper>)}
+                                                        {conditionsList}
+                                                    </Picker>
+                                                </PickerWrapper>)}
 
-                                                </Row>
-
-
-                                                {filter === 'dayNumber' ? (
-                                                    //if the filter is days
-                                                    null
-                                                ) : (
-                                                        //if the filter is a number
-                                                        <Row>
-                                                            <TextInput
-                                                                placeholder={filter}
-                                                                placeholderTextColor={filterColour + '80'}//make the colour a bit lighter
-                                                                style={myStyles.input}
-                                                                onChangeText={valueInput}
-                                                                value={value}
-                                                                keyboardType='decimal-pad' />
-                                                        </Row>)}
-
-
-                                            </View>)}
-
-                                    <Row>
-                                        <MyButton
-                                            text='Clear'
-                                            colour={Colours.accent}
-                                            textColour={Colours.backgroundLight}
-                                            onPress={() => clearFilters()}
-                                            style={{ marginHorizontal: 20 }} />
-
-                                        <MyButton
-                                            text='Set'
-                                            colour={filterColour}
-                                            textColour={Colours.black}
-                                            onPress={() => setFilters()}
-                                            style={{ marginHorizontal: 20 }} />
                                     </Row>
+
+
                                 </View>
                             )}
 
+                        <Row style={{ marginTop: 20 }}>
+                            <MyButton
+                                text='Clear'
+                                colour={Colours.accent}
+                                textColour={Colours.backgroundLight}
+                                onPress={() => clearFilters()}
+                                style={{ marginHorizontal: 20 }} />
+
+                            <MyButton
+                                text='Set'
+                                colour={props.week ? weekFilterColour : filterColour}
+                                textColour={Colours.black}
+                                onPress={() => setFilters()}
+                                style={{ marginHorizontal: 20 }} />
+                        </Row>
 
                     </ModalContainer>
 
