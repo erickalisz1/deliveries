@@ -22,7 +22,6 @@ import Container from './components/Container';
 import LargeText from './components/LargeText';
 import MyButton from './components/MyButton';
 import { myStyles } from './assets/helper/Styles';
-import User from './assets/models/User';
 import Loading from './components/Loading';
 
 // Initialize Firebase
@@ -33,10 +32,6 @@ export default function App() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const [isLoading, setIsLoading] = useState(true);
-  const [userList, setUserList] = useState([]);
-  // const [user, setUser] = useState(null);
-
   const usernameInput = (input) => {
     setUsername(input);
   };
@@ -45,68 +40,29 @@ export default function App() {
     setPassword(input);
   };
 
-  const fetchUsers = () => {
-    let localList = [];
-
-    console.log('Fetching Users...');
-
-    let query = firebase.database().ref(fireRef).orderByKey();
-
-    // SELECT * STATEMENT
-    query.once('value').then(function (snapshot) {
-      snapshot.forEach(function (childSnapshot) {
-
-        const user = new User();
-
-        let id = childSnapshot.key;
-
-        user.UserID = Number(id);
-        user.username = childSnapshot.val().username;
-        user.password = childSnapshot.val().password;
-        user.firstName = childSnapshot.val().firstName;
-        user.lastName = childSnapshot.val().lastName;
-
-        localList.push(user);
-      });
-
-      //finished building list
-
-    }).then(() => { listLoaded(localList) });
-  };
-
-  const listLoaded = (loadedList) => {
-    setIsLoading(false);
-    setUserList(loadedList);
-    console.log(loadedList);
-  }
-
-  const searchUser = (u, p) => {
-
-    let currentUser = null;
-
-    userList.forEach(user => {
-      if (user.username === u && user.password === p) {
-        currentUser = user;
-
-        firebase.auth().currentUser = user;
-        firebase.auth().currentUser.u
-
-      }
-    });
-
-    currentUser !== null ? console.log(currentUser) : Alert.alert("Wrong username or password");
-
-
-
-    // return (<TabNavigator screenProps={{user:user}} />);
-
-  };
-
   const firebaseLogin = (email, password) => {
     firebase.auth().signInWithEmailAndPassword(email, password).
-      then(user => {
-        console.log(user);
-        
+      then(value => {
+
+        let userID = firebase.auth().currentUser.uid;
+
+        firebase.
+          database().
+          ref(fireRef).
+          orderByKey().
+          once('value').
+          then(snapshot => {
+            snapshot.forEach(child => {
+              child.key === userID ? (
+                firebase.auth().currentUser.displayName = child.val().firstName + ' ' + child.val().lastName
+              )
+                : null;
+                console.log('currentUser.displayName:', firebase.auth().currentUser.displayName);
+            });
+          }).catch();
+
+        console.log('userID:', userID);
+
 
       }).catch(error => console.log(error));
   };
@@ -125,45 +81,39 @@ export default function App() {
   //   firebase.auth().signOut().then(() => {});
   // };
 
-  isLoading ? fetchUsers() : null;
-
   return (
-    <Container dark={true}>
-      {isLoading ? <Loading /> :
-        <View>
-          <LargeText>Log in</LargeText>
-          <TextInput
-            placeholder={username}
-            placeholderTextColor={Colours.placeholder}
-            style={myStyles.input}
-            onChangeText={usernameInput}
-            value={username}
-            keyboardType='decimal-pad'
-          />
-          <TextInput
-            placeholder={password}
-            placeholderTextColor={Colours.placeholder}
-            style={myStyles.input}
-            onChangeText={passwordInput}
-            value={password}
-            keyboardType='default'
-            secureTextEntry={true}
-          />
-          <MyButton
-            onPress={() => firebaseLogin(username, password)}
-            text='Login'
-            colour={Colours.success}
-            textColour={Colours.black} />
+    <Container>
 
-          <MyButton
-            onPress={() => displayUser()}
-            text='Show user'
-            colour={Colours.success}
-            textColour={Colours.black} />
+      <LargeText modal={true}>Log in</LargeText>
+      <TextInput
+        placeholder={username}
+        placeholderTextColor={Colours.primaryText}
+        style={myStyles.input}
+        onChangeText={usernameInput}
+        value={username}
+        keyboardType='decimal-pad'
+      />
+      <TextInput
+        placeholder={password}
+        placeholderTextColor={Colours.primaryText}
+        style={myStyles.input}
+        onChangeText={passwordInput}
+        value={password}
+        keyboardType='default'
+        secureTextEntry={true}
+      />
+      <MyButton
+        onPress={() => firebaseLogin(username, password)}
+        text='Login'
+        colour={Colours.success}
+        textColour={Colours.black} />
 
-        </View>
+      <MyButton
+        onPress={() => displayUser()}
+        text='Show user'
+        colour={Colours.success}
+        textColour={Colours.black} />
 
-      }
 
     </Container>
   );
