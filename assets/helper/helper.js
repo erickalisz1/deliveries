@@ -13,6 +13,8 @@ export const firebaseConfig = {
     appId: "1:138527506874:web:b77bf64674a2912ff1dd83"
 };
 
+export const fireRef = "Users/";
+
 //fixing display of main and weeks list top buttons 
 export const setLabelText = (columnToSort, orientation, type) => {
 

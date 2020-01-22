@@ -13,7 +13,7 @@ import DetailModal from '../components/modals/DetailModal';
 import SortingButton from '../components/SortingButton';
 
 // assets
-import { setLabelText, sortList, checkIfTodayExists, assignDay, filters } from '../assets/helper/helper';
+import { setLabelText, sortList, checkIfTodayExists, assignDay, filters, fireRef } from '../assets/helper/helper';
 import { SPACE, LARGER, LARGER_EQUAL, SMALLER, SMALLER_EQUAL } from '../assets/constants/strings';
 import Deliveries from '../assets/models/Deliveries';
 import { myStyles } from '../assets/helper/Styles';
@@ -57,7 +57,7 @@ const MainList = () => {
 
         console.log('Fetching List...');
 
-        let query = firebase.database().ref('deliveries/').orderByKey();
+        let query = firebase.database().ref(firebase.auth().currentUser.uid).orderByKey();
 
         // SELECT * STATEMENT
         query.once('value').then(function (snapshot) {
@@ -80,6 +80,7 @@ const MainList = () => {
                 delivery.dayOfWeek = new Date(delivery.actualDay).getDay();
 
                 localList.push(delivery);
+                
 
                 //logic to define weeks based on days
                 daysCount += 1;
