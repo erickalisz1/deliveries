@@ -1,7 +1,6 @@
 import { ACTIONS } from "../actions/actions";
 
 const initialState = {
-    isLoggedIn: false,
     username: '',
     userDaysList: [],
     userWeeksList: [],
@@ -9,11 +8,6 @@ const initialState = {
 
 export default (state = initialState, action) => {
     switch (action.type) {
-        case ACTIONS.SET_IS_LOGGED:
-            return {
-                ...state,
-                isLoggedIn: action.value
-            };
         case ACTIONS.SET_USER_NAME:
             return {
                 ...state,

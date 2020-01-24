@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
-import { View, Platform } from 'react-native';
+import React from 'react';
+import { useSelector } from 'react-redux';
+
 import Container from '../components/Container';
 import Card from '../components/Card';
-import firebase from 'firebase';
-import Loading from '../components/Loading';
-import Deliveries from '../assets/models/Deliveries';
-import { SetPrecision, filters, fireRef, deliveries } from '../assets/helper/helper';
 import LargeText from '../components/LargeText';
+
+import { SetPrecision, filters } from '../assets/helper/helper';
 import { DAYS } from '../assets/constants/strings';
-import { useSelector } from 'react-redux';
+
+
 
 const Dashboard = () => {
 
@@ -63,19 +63,9 @@ const Dashboard = () => {
 
     return (
         <Container dark={true}>
-            <LargeText>Your Summary</LargeText>
-            <View style={{ marginVertical: 5 }}></View>
+            <LargeText style={{ marginVertical: 5 }}>Your Summary</LargeText>
             {Cards}
         </Container> 
     );
-};
-
-Dashboard.navigationOptions = (navigationData) => {
-    const userName = navigationData.navigation.getParam('name');
-    
-    return {
-        headerTitle: userName
-        
-    };
 };
 export default Dashboard;

@@ -19,7 +19,6 @@ const AppHelp = (props) => {
     const [itemSelected, setItemSelected] = useState(null);
 
     const dispatch = useDispatch();
-    let isUserSignedIn = useSelector(state => state.user.isLoggedIn);
 
     let displayItems = helpItems.map((row, index) => {//function to better display items
         return (
@@ -33,7 +32,7 @@ const AppHelp = (props) => {
     //onSignedOut
     const firebaseLogout = () => {
         firebase.auth().signOut().then(() => {
-            
+
             console.log('Dispatch--> loggedIn = false');
             dispatch({
                 type: ACTIONS.SET_IS_LOGGED,
@@ -58,7 +57,7 @@ const AppHelp = (props) => {
         });
     };
 
-    return isUserSignedIn ? (
+    return (
         <Container dark={true}>
 
             <HelpModal visible={displayHelpModal} onClose={() => setDisplayHelpModal(false)} item={itemSelected} />
@@ -70,7 +69,7 @@ const AppHelp = (props) => {
             <MyButton text="Log Out" colour={Colours.cancel} textColour={Colours.white} onPress={() => firebaseLogout()} />
 
         </Container>
-    ) : <Login />;
+    );
 };
 
 

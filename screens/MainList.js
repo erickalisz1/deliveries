@@ -24,7 +24,7 @@ import SmallText from '../components/SmallText';
 const MainList = () => {
 
     const list = useSelector(state => state.user.userDaysList);
-
+    console.log('daysList.length',list.length);
 
     //display settings states
     //default list display

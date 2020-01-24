@@ -266,7 +266,7 @@ const mondayOfThisWeek = () => {
     else if (weekDay > 1) {//rest of week
         today = today.setDate(today.getDate() - (today.getDay() - 1));
     }
-    
+
     return today;
 };
 
@@ -274,7 +274,7 @@ const mondayOfThisWeek = () => {
 export const checkIfTodayExists = (list, refreshing) => {
 
     const today = new Date();
-    let count = 0;
+    
 
     if (list.length < 1) {//if the user has no days on firebase
 
@@ -297,9 +297,11 @@ export const checkIfTodayExists = (list, refreshing) => {
             //boolean to see if the app is being refreshed. if it is, don't execute this block; 
             //it must only execute upon first opening the app
 
+            let count = 0;
+
             let lastDateOnDB = new Date(list[list.length - 1].actualDay);//last sunday on DB
 
-            let lastDayOnDB = list[0].dayNumber;//last dayNumber on DB
+            let lastDayOnDB = list[list.length - 1].dayNumber;//last dayNumber on DB
 
             let daysUntil = today - lastDateOnDB;
 
@@ -317,7 +319,7 @@ export const checkIfTodayExists = (list, refreshing) => {
                 daysUntil = today - lastDateOnDB;
 
             }
-            count === 0 ? ('') : (Alert.alert('Success', 'The following week has been added to the DB'));
+            count === 0 ? null : (Alert.alert('Success', 'The following week has been added to the DB'));
         }
     }
 

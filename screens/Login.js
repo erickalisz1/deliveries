@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import firebase from 'firebase';
-import { Alert, Platform } from 'react-native';
+import { Alert, Platform, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import Container from '../components/Container';
@@ -14,6 +14,7 @@ import { ACTIONS } from '../store/actions/actions';
 import Deliveries from '../assets/models/Deliveries';
 import Loading from '../components/Loading';
 import Weeks from '../assets/models/Weeks';
+import DismissKeyboard from '../components/DismissKeyboard';
 
 const Login = (props) => {
     const [username, setUsername] = useState('');
@@ -206,35 +207,29 @@ const Login = (props) => {
         //updating app state
         console.log('Dispatching actions--> user signed in');
 
-        dispatch({
-            type: ACTIONS.SET_IS_LOGGED,
-            value: true
-        }, {
-            type: ACTIONS.SET_USER_NAME,
-            value: userName
-        });
-        // dispatch({
-        //     type: ACTIONS.SET_USER_NAME,
-        //     value: userName
-        // });
-        dispatch({
-            type: ACTIONS.SET_USER_DAYS_LIST,
-            value: daysList
-        });
-        dispatch({
-            type: ACTIONS.SET_USER_WEEKS_LIST,
-            value: weeksList
-        });
-        //finished assigning everything
+        dispatch(
+            {// setting username
+                type: ACTIONS.SET_USER_NAME,
+                value: userName
+            });
+        dispatch(
+            {//setting days list
+                type: ACTIONS.SET_USER_DAYS_LIST,
+                value: daysList
+            });
+        dispatch(
+            {//setting weeks list
+                type: ACTIONS.SET_USER_WEEKS_LIST,
+                value: weeksList
+            });
+        //finished building user
         setIsFetchingData(false);
+        //clear inputs
         setUsername('');
         setPassword('');
 
-        props.navigation.navigate({
-            routeName: 'Tabs', params: {
-                name: firebase.auth().currentUser.displayName + '\'s Deliveries'
-            }
-        });
+        //redirect to main app
+        props.navigation.navigate('Tabs', { title: firebase.auth().currentUser.displayName + '\'s Deliveries' });
     };
 
     // const createUser = (email, password) => {
@@ -246,29 +241,40 @@ const Login = (props) => {
     return (
         isFetchingData ? <Loading /> :
             <Container>
-                <LargeText modal={true}>{'Hello there!\n\nPlease sign in to\nview your Deliveries'}</LargeText>
-                <TextInput
-                    placeholder={'Email'}
-                    placeholderTextColor={Colours.primaryText + '80'}
-                    style={myStyles.login}
-                    onChangeText={usernameInput}
-                    value={username}
-                    keyboardType='email-address'
-                />
-                <TextInput
-                    placeholder={'Password'}
-                    placeholderTextColor={Colours.primaryText + '80'}
-                    style={myStyles.login}
-                    onChangeText={passwordInput}
-                    value={password}
-                    keyboardType='default'
-                    secureTextEntry={true}
-                />
-                <MyButton
-                    onPress={() => firebaseLogin(username, password)}
-                    text='Login'
-                    colour={Colours.success}
-                    textColour={Colours.black} />
+                <DismissKeyboard>
+                    <View>
+                        <LargeText modal={true}>{'Hello there!\n\nPlease sign in to\nview your Deliveries'}</LargeText>
+                        <TextInput
+                            placeholder={'Email'}
+                            placeholderTextColor={Colours.primaryText + '80'}
+                            style={myStyles.login}
+                            onChangeText={usernameInput}
+                            value={username}
+                            keyboardType='email-address'
+                        />
+                        <TextInput
+                            placeholder={'Password'}
+                            placeholderTextColor={Colours.primaryText + '80'}
+                            style={myStyles.login}
+                            onChangeText={passwordInput}
+                            value={password}
+                            keyboardType='default'
+                            secureTextEntry={true}
+                        />
+                        <MyButton
+                            onPress={() => firebaseLogin(username, password)}
+                            text='Login'
+                            colour={Colours.success}
+                            textColour={Colours.black} />
+                        <MyButton
+                            text='Admin'
+                            colour={Colours.success}
+                            textColour={Colours.black}
+                            // onPress={()=> {setUsername('admin@admin.com'); setPassword('adminait')}}
+                            onPress={() => { setUsername('eric@ait.com'); setPassword('eric123') }}
+                        />
+                    </View>
+                </DismissKeyboard>
             </Container>
     );
 };
