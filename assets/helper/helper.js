@@ -13,7 +13,8 @@ export const firebaseConfig = {
     appId: "1:138527506874:web:b77bf64674a2912ff1dd83"
 };
 
-export const fireRef = "Users/";
+export const fireRef = "Users/";//my parent object
+export const deliveriesRef = "/Deliveries";
 
 //fixing display of main and weeks list top buttons 
 export const setLabelText = (columnToSort, orientation, type) => {
@@ -73,7 +74,7 @@ export const sortList = (list, columnToSort, orientation) => {
 
 export const formatDate = (sDate) => {
 
-    return new Date(sDate).toLocaleDateString();
+    return new Date(sDate).toLocaleDateString('en-GB');
 };
 
 export const setWeekString = (start, end) => { return formatDate(start).substr(0, 5) + ' - ' + formatDate(end) };
@@ -86,7 +87,7 @@ export const nextDay = (sDate) => {
 
     date.setDate(date.getDate() + 1);
 
-    return date.toISOString().substring(0,10);
+    return date.toISOString().substring(0, 10);
 };
 
 export const setDateString = (ActualDay) => {
@@ -252,20 +253,17 @@ export const setWeeklyMessage = (selectedWeek) => {
 
 //method to find the first day of the week
 const mondayOfThisWeek = () => {
-    
+
     const today = new Date('2018-02-26');
     const weekDay = today.getDay();
 
-    if(weekDay === 0)
-    {//sunday
+    if (weekDay === 0) {//sunday
         today = today.setDate(today.getDate() - 6);
     }
-    else if(weekDay === 1)
-    {//monday just return
-        
+    else if (weekDay === 1) {//monday just return
+
     }
-    else if(weekDay > 1)
-    {//rest of week
+    else if (weekDay > 1) {//rest of week
         today = today.setDate(today.getDate() - (today.getDay() - 1));
     }
 
@@ -275,30 +273,28 @@ const mondayOfThisWeek = () => {
 //method to automatically add the following week in order to prevent errors
 export const checkIfTodayExists = (list, refreshing) => {
 
-    list = [];
     const today = new Date();
 
     if (list.length < 1) {//if the user has no days on firebase
 
-        let actualDay = new Date(mondayOfThisWeek()).toISOString().substring(0, 10);
+        let actualDay = new Date(mondayOfThisWeek()).toISOString().substring(0, 10);//e.g 2019-12-26
         let ID = 0;
 
         for (let i = 0; i < 7; i++) {//add one week
-            
-            // addDay(ID, actualDay);
-            console.log('adding:', ID, actualDay);
+
+            addDay(ID, actualDay);
 
             //incrementing both date and ID for them to be added
             actualDay = nextDay(actualDay);
             ID++;
         }
     }
-    else {
+    else {//if the user has days
 
         if (!refreshing) {
             //boolean to see if the app is being refreshed. if it is, don't execute this block; 
             //it must only execute upon first opening the app
-    
+
             let lastDateOnDB = new Date(list[0].actualDay);//last sunday on DB
 
             let lastDayOnDB = list[0].dayNumber;//last dayNumber on DB
@@ -323,14 +319,14 @@ export const checkIfTodayExists = (list, refreshing) => {
             count === 0 ? ('') : (Alert.alert('Success', 'The following week has been added to the DB'));
         }
     }
-    
+
     //returning false to set the state on the main list and ensure that this doesn't execute again
     return false;
 };
 
 const addDay = (dayNumber, actualDay) => {//will need the user Ref later on
 
-    firebase.database().ref('deliveries/' + dayNumber).set(
+    firebase.database().ref(fireRef + firebase.auth().currentUser.uid + deliveriesRef + "/" + dayNumber).set(
         {
             actualDay: actualDay,
             deliveroo: 0,

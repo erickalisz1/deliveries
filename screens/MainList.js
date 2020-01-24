@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { View, FlatList, TouchableOpacity, Platform, Alert } from 'react-native';
-import firebase from 'firebase';
+import { View, FlatList, TouchableOpacity, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useSelector } from 'react-redux';
 
 //components
 import Loading from '../components/Loading';
@@ -13,9 +13,8 @@ import DetailModal from '../components/modals/DetailModal';
 import SortingButton from '../components/SortingButton';
 
 // assets
-import { setLabelText, sortList, checkIfTodayExists, assignDay, filters, fireRef } from '../assets/helper/helper';
+import { setLabelText, sortList, checkIfTodayExists, assignDay, filters } from '../assets/helper/helper';
 import { SPACE, LARGER, LARGER_EQUAL, SMALLER, SMALLER_EQUAL } from '../assets/constants/strings';
-import Deliveries from '../assets/models/Deliveries';
 import { myStyles } from '../assets/helper/Styles';
 import Colours from '../assets/constants/darkTheme';
 import FiltersModal from '../components/modals/FiltersModal';
@@ -47,55 +46,63 @@ const MainList = () => {
     const [activeFilter, setActiveFilter] = useState('');
     const [filterColour, setFilterColour] = useState(Colours.primaryText);
 
-    const renderList = () => {
+    const list = useSelector(state => state.user.userDaysList);
+    console.log(list);
 
-        let localList = [];
+   { // const fetchDaysList = () => {
 
-        let start = new Date();
-        let daysCount = 0;
-        let week = 0;
+    //     let localList = [];
 
-        console.log('Fetching List...');
+    //     let start = new Date();
+    //     let daysCount = 0;
+    //     let week = 0;
 
-        let query = firebase.database().ref(firebase.auth().currentUser.uid).orderByKey();
+    //     console.log('Fetching List...');
 
-        // SELECT * STATEMENT
-        query.once('value').then(function (snapshot) {
-            snapshot.forEach(function (childSnapshot) {
+    //     const currentUserID = firebase.auth().currentUser.uid;
 
-                const delivery = new Deliveries();
+    //     // SELECT * STATEMENT
+    //     firebase.
+    //     database().
+    //     ref(fireRef+currentUserID+deliveries).
+    //     orderByKey().
+    //     once('value').
+    //     then(snapshot => {
+    //         snapshot.forEach(childSnapshot => {
 
-                let id = childSnapshot.key;
+    //             const delivery = new Deliveries();
 
-                delivery.dayNumber = Number(id);
-                delivery.actualDay = childSnapshot.val().actualDay;
-                delivery.deliveroo = childSnapshot.val().deliveroo;
-                delivery.uber = childSnapshot.val().uber;
-                delivery.hours = childSnapshot.val().hours;
-                delivery.total = delivery.deliveroo + delivery.uber;
+    //             let id = childSnapshot.key;
 
-                delivery.hours > 0 ? (delivery.per = delivery.total / delivery.hours) : (delivery.per = 0);
+    //             delivery.dayNumber = Number(id);
+    //             delivery.actualDay = childSnapshot.val().actualDay;
+    //             delivery.deliveroo = childSnapshot.val().deliveroo;
+    //             delivery.uber = childSnapshot.val().uber;
+    //             delivery.hours = childSnapshot.val().hours;
+    //             delivery.total = delivery.deliveroo + delivery.uber;
 
-                delivery.week = week;
-                delivery.dayOfWeek = new Date(delivery.actualDay).getDay();
+    //             delivery.hours > 0 ? (delivery.per = delivery.total / delivery.hours) : (delivery.per = 0);
 
-                localList.push(delivery);
-                
+    //             delivery.week = week;
+    //             delivery.dayOfWeek = new Date(delivery.actualDay).getDay();
+                    
+    //             localList.push(delivery);
+            
+    //             //logic to define weeks based on days
+    //             daysCount += 1;
+    //             if (daysCount === 7) {
+    //                 daysCount = 0;
+    //                 week += 1;
+    //             }
+    //         });
 
-                //logic to define weeks based on days
-                daysCount += 1;
-                if (daysCount === 7) {
-                    daysCount = 0;
-                    week += 1;
-                }
-            });
+    //         //finished building list
+    //         let finish = new Date();
+    //         console.log((finish - start) + 'ms to fetch list on', Platform.OS);
 
-            //finished building list
-            let finish = new Date();
-            console.log((finish - start) + 'ms to fetch list on', Platform.OS);
-
-        }).then(() => { listLoaded(localList) });
-    };
+    //     }).then(() => { listLoaded(localList) });
+    // };
+}
 
     // handling refresh
     const listLoaded = (loadedList) => {
@@ -103,7 +110,7 @@ const MainList = () => {
         setDeliveriesList(loadedList);
         setFirebaseList(loadedList);//stock list with no filters
         setIsRefreshing(false);
-        setIsOpeningApp(checkIfTodayExists(loadedList, isOpeningApp));
+        setIsOpeningApp(checkIfTodayExists(loadedList, isRefreshing));
     }
 
     const filterList = (list, column, isRange, value, valueEnd, condition) => {
@@ -296,7 +303,7 @@ const MainList = () => {
             </TouchableOpacity>
         ) : null;
 
-    isLoading ? renderList() : null;
+    isLoading ? listLoaded(list) : null;
 
     return (
         <Container dark={true}>

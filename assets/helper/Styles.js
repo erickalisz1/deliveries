@@ -3,6 +3,17 @@ import Colours from '../constants/darkTheme';
 
 export const myStyles = StyleSheet.create({
     //inputs
+    login:{
+        borderBottomColor: Colours.accent,
+        borderBottomWidth: 1,
+        marginHorizontal: 5,
+        marginVertical:10,
+        padding: 5,
+        textAlign: "center",
+        fontSize: 18,
+        color: Colours.primaryText,
+        minWidth:'45%',
+    },
     input:{
         borderBottomColor: Colours.accent,
         borderBottomWidth: 1,

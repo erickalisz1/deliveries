@@ -11,13 +11,14 @@ const Card = (props) => {
 
     let beforeText = '', afterText = '';//need these variables because values displayed can be dollars, hours or dollars per hour
 
-    if(type === 'number'){
+
+    if (type === 'number') {
         beforeText = '$'
     }
-    else if(type === 'hours'){
+    else if (type === 'hours') {
         afterText = 'h'
     }
-    else if(type === 'per'){
+    else if (type === 'per') {
         beforeText = '$';
         afterText = '/h';
     }
@@ -46,7 +47,7 @@ const Card = (props) => {
             textAlign: 'left',
             fontSize: availableDeviceHeight > 700 ? 18 : 15,
             color: Colours.primaryText,
-            marginVertical:2
+            marginVertical: 2
         }
     });
 
