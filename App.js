@@ -16,10 +16,11 @@ console.warn = message => {
 };
 
 //my imports
-import TabNavigator from './navigation/Navigator';
+import StackNav from './navigation/Navigator';
 import { firebaseConfig } from './assets/helper/helper';
 import Login from './screens/Login';
 import rootReducer from './store';
+import Loading from './components/Loading';
 
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
@@ -38,7 +39,7 @@ export default function App() {
 
   return (
     <Provider store={store}>
-      {!isUserSignedIn ? <Login result={getResult} /> : <TabNavigator  />}
+      <StackNav />
     </Provider>
   );
 }

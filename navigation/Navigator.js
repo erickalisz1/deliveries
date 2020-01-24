@@ -2,6 +2,7 @@ import React from 'react';
 import { Platform, Dimensions } from 'react-native';
 
 import { createBottomTabNavigator } from 'react-navigation-tabs';
+import { createStackNavigator } from 'react-navigation-stack';
 import { createAppContainer } from 'react-navigation';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -10,6 +11,19 @@ import AppHelp from '../screens/AppHelp';
 import Colours from '../assets/constants/darkTheme';
 import WeeksList from '../screens/WeeksList';
 import Dashboard from '../screens/Dashboard';
+import Login from '../screens/Login';
+
+// let UserName = useSelector(state => state.user.username);
+
+const defaultStackNavOptions =
+{
+    headerStyle: {
+        backgroundColor: Colours.background,
+    },
+    headerTintColor: Colours.primaryText
+};
+
+
 
 const TabNavigator = createBottomTabNavigator({
     Dashboard: {
@@ -51,10 +65,29 @@ const TabNavigator = createBottomTabNavigator({
                 backgroundColor: Colours.backgroundLight,
                 overflow: 'hidden',
                 padding: 10,
-                height: Platform.OS === 'ios' ? (Dimensions.get('window').height < 700 ? 70 : 55) : 65,            
+                height: Platform.OS === 'ios' ? (Dimensions.get('window').height < 700 ? 70 : 55) : 65,
             },
             activeTintColor: Colours.selected
         }
     });
 
-export default createAppContainer(TabNavigator);
+const StackNavigator = createStackNavigator({
+    Login: {
+        screen: Login,
+        navigationOptions:{
+            headerTitle: 'Login'
+        }
+    },
+    Tabs:{ 
+        screen: TabNavigator,
+        navigationOptions:{
+            headerTitle: 'Your Deliveries'
+        }
+    },
+},
+    {
+        defaultNavigationOptions: defaultStackNavOptions
+    }
+
+);
+export default createAppContainer(StackNavigator);

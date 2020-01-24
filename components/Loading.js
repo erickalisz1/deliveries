@@ -3,9 +3,10 @@ import Container from './Container';
 import LargeText from './LargeText';
 
 const Loading = () => {
+ 
     return (
         <Container dark={true}>
-            <LargeText>Loading Data...</LargeText>
+            <LargeText>Fetching Data...</LargeText>
         </Container>
     );
 };

@@ -23,6 +23,9 @@ import SmallText from '../components/SmallText';
 
 const MainList = () => {
 
+    const list = useSelector(state => state.user.userDaysList);
+
+
     //display settings states
     //default list display
     const [orientation, setOrientation] = useState('Desc');
@@ -41,68 +44,11 @@ const MainList = () => {
     const [firebaseList, setFirebaseList] = useState([]);//the original list
     const [isRefreshing, setIsRefreshing] = useState(false);
     const [isOpeningApp, setIsOpeningApp] = useState(true);
-    
+
     //filtering
     const [activeFilter, setActiveFilter] = useState('');
     const [filterColour, setFilterColour] = useState(Colours.primaryText);
 
-    const list = useSelector(state => state.user.userDaysList);
-    console.log(list);
-
-   { // const fetchDaysList = () => {
-
-    //     let localList = [];
-
-    //     let start = new Date();
-    //     let daysCount = 0;
-    //     let week = 0;
-
-    //     console.log('Fetching List...');
-
-    //     const currentUserID = firebase.auth().currentUser.uid;
-
-    //     // SELECT * STATEMENT
-    //     firebase.
-    //     database().
-    //     ref(fireRef+currentUserID+deliveries).
-    //     orderByKey().
-    //     once('value').
-    //     then(snapshot => {
-    //         snapshot.forEach(childSnapshot => {
-
-    //             const delivery = new Deliveries();
-
-    //             let id = childSnapshot.key;
-
-    //             delivery.dayNumber = Number(id);
-    //             delivery.actualDay = childSnapshot.val().actualDay;
-    //             delivery.deliveroo = childSnapshot.val().deliveroo;
-    //             delivery.uber = childSnapshot.val().uber;
-    //             delivery.hours = childSnapshot.val().hours;
-    //             delivery.total = delivery.deliveroo + delivery.uber;
-
-    //             delivery.hours > 0 ? (delivery.per = delivery.total / delivery.hours) : (delivery.per = 0);
-
-    //             delivery.week = week;
-    //             delivery.dayOfWeek = new Date(delivery.actualDay).getDay();
-                    
-    //             localList.push(delivery);
-            
-    //             //logic to define weeks based on days
-    //             daysCount += 1;
-    //             if (daysCount === 7) {
-    //                 daysCount = 0;
-    //                 week += 1;
-    //             }
-    //         });
-
-    //         //finished building list
-    //         let finish = new Date();
-    //         console.log((finish - start) + 'ms to fetch list on', Platform.OS);
-
-    //     }).then(() => { listLoaded(localList) });
-    // };
-}
 
     // handling refresh
     const listLoaded = (loadedList) => {
@@ -188,7 +134,7 @@ const MainList = () => {
                     })//e.g (Uber > 100)
                 ) : null;
             }
-            else 
+            else
                 filters.forEach(item => {
                     if (item.value === column) {
                         //if its not the days
@@ -198,7 +144,7 @@ const MainList = () => {
                     else null;
                 })//e.g (Uber > 100)
 
-                column === 'dayNumber' ? (assignDay.forEach(item => { item.value === value ? setActiveFilter(item.display) : null })) : null;
+            column === 'dayNumber' ? (assignDay.forEach(item => { item.value === value ? setActiveFilter(item.display) : null })) : null;
 
 
             column === 'hours' ? setColumnToSort('total') : setColumnToSort(column);// there is no hours sort
@@ -258,8 +204,8 @@ const MainList = () => {
 
         Alert.alert(
             activeFilter, //title
-            (times !== 1) ? ('Occurred ' +  times + ' times') : 'Occurred once' //message
-            );
+            (times !== 1) ? ('Occurred ' + times + ' times') : 'Occurred once' //message
+        );
     };
 
     const modals = <View>

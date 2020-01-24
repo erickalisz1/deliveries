@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { TouchableOpacity } from 'react-native';
 import firebase from 'firebase';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import LargeText from '../components/LargeText';
 import Container from '../components/Container';
@@ -11,14 +11,15 @@ import { helpItems } from '../assets/helper/helper';
 import MyButton from '../components/MyButton';
 import Colours from '../assets/constants/darkTheme';
 import Login from './Login';
+import { ACTIONS } from '../store/actions/actions';
 
-const AppHelp = () => {
+const AppHelp = (props) => {
 
     const [displayHelpModal, setDisplayHelpModal] = useState(false);
     const [itemSelected, setItemSelected] = useState(null);
-    const [isUserSignedIn, setIsUserSignedIn] = useState(true);
-    
-    console.log('useSelector(state => state.user.isLoggedIn):', useSelector(state => state.user.isLoggedIn));
+
+    const dispatch = useDispatch();
+    let isUserSignedIn = useSelector(state => state.user.isLoggedIn);
 
     let displayItems = helpItems.map((row, index) => {//function to better display items
         return (
@@ -31,8 +32,30 @@ const AppHelp = () => {
     })
     //onSignedOut
     const firebaseLogout = () => {
-        firebase.auth().currentUser.updateProfile({displayName:""});
-        firebase.auth().signOut().then(() => { setIsUserSignedIn(false); });
+        firebase.auth().signOut().then(() => {
+            
+            console.log('Dispatch--> loggedIn = false');
+            dispatch({
+                type: ACTIONS.SET_IS_LOGGED,
+                value: false
+            });
+            console.log('Dispatch--> userName = \'\' ');
+            dispatch({
+                type: ACTIONS.SET_USER_NAME,
+                value: ''
+            });
+            console.log('Dispatch--> daysList = \'\' ');
+            dispatch({
+                type: ACTIONS.SET_USER_DAYS_LIST,
+                value: []
+            });
+            console.log('Dispatch--> weeksList = \'\' ');
+            dispatch({
+                type: ACTIONS.SET_USER_WEEKS_LIST,
+                value: []
+            });
+            props.navigation.navigate('Login');
+        });
     };
 
     return isUserSignedIn ? (

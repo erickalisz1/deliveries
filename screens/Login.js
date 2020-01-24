@@ -48,7 +48,7 @@ const Login = (props) => {
                             if (child.key === userID) {
                                 firebase.auth().currentUser.
                                     updateProfile({ displayName: child.val().firstName + child.val().lastName }).
-                                    then(() =>  welcomeUser( firebase.auth().currentUser.displayName, userID ));
+                                    then(() => welcomeUser(firebase.auth().currentUser.displayName, userID));
                             }
                         });
                     }).catch(error => console.log(error));
@@ -138,96 +138,103 @@ const Login = (props) => {
         // SELECT * STATEMENT
         daysList.forEach(day => {
 
-                let week = new Weeks();
+            let week = new Weeks();
 
-                //incrementing sums
-                delSum += day.deliveroo;
-                ubSum += day.uber;
-                hoursSum += day.hours;
+            //incrementing sums
+            delSum += day.deliveroo;
+            ubSum += day.uber;
+            hoursSum += day.hours;
 
-                //checkning the days with data
-                daysWithDel = day.deliveroo === 0 ? daysWithDel : daysWithDel += 1;//if its zero, dont increase the count
-                daysWithUber = day.uber === 0 ? daysWithUber : daysWithUber += 1;
-                daysWithHours = day.hours === 0 ? daysWithHours : daysWithHours += 1;
+            //checkning the days with data
+            daysWithDel = day.deliveroo === 0 ? daysWithDel : daysWithDel += 1;//if its zero, dont increase the count
+            daysWithUber = day.uber === 0 ? daysWithUber : daysWithUber += 1;
+            daysWithHours = day.hours === 0 ? daysWithHours : daysWithHours += 1;
 
-                //because I started on a tuesday
-                if (day.key === '1') {
-                    weekStart = day.actualDay;
+            //because I started on a tuesday
+            if (day.key === '1') {
+                weekStart = day.actualDay;
+            }
+
+            if (daysCount === 0) {
+                weekStart = day.actualDay;
+            }
+
+            daysCount += 1;
+
+            if (daysCount === 7) {//end of week reached
+                daysCount = 0;
+
+                week.week = weekNumber;
+                week.deliveroo = SetPrecision(delSum);
+                week.uber = SetPrecision(ubSum);
+                week.hours = SetPrecision(hoursSum);
+                week.total = SetPrecision(week.deliveroo + week.uber);
+
+                week.hours > 0 ? (week.per = SetPrecision(week.total / week.hours)) : (week.per = 0);
+
+                week.start = weekStart;
+                week.end = day.actualDay;
+
+                //checking if it has accurate data by evaluating if the number of days with all 3 values is the same
+                if (daysWithHours !== daysWithDel && daysWithHours !== daysWithUber) {
+                    week.accurate = false;
                 }
+                else week.accurate = true;
 
-                if (daysCount === 0) {
-                    weekStart = day.actualDay;
-                }
+                weeksList.push(week);
 
-                daysCount += 1;
+                //resetting values for next iteration
+                daysWithHours = 0;
+                daysWithDel = 0;
+                daysWithUber = 0;
 
-                if (daysCount === 7) {//end of week reached
-                    daysCount = 0;
+                delSum = 0;
+                ubSum = 0;
+                hoursSum = 0;
+                //increment week number
+                weekNumber += 1;
+            }
+        });
 
-                    week.week = weekNumber;
-                    week.deliveroo = SetPrecision(delSum);
-                    week.uber = SetPrecision(ubSum);
-                    week.hours = SetPrecision(hoursSum);
-                    week.total = SetPrecision(week.deliveroo + week.uber);
-
-                    week.hours > 0 ? (week.per = SetPrecision(week.total / week.hours)) : (week.per = 0);
-
-                    week.start = weekStart;
-                    week.end = day.actualDay;
-
-                    //checking if it has accurate data by evaluating if the number of days with all 3 values is the same
-                    if (daysWithHours !== daysWithDel && daysWithHours !== daysWithUber) {
-                        week.accurate = false;
-                    }
-                    else week.accurate = true;
-
-                    weeksList.push(week);
-
-                    //resetting values for next iteration
-                    daysWithHours = 0;
-                    daysWithDel = 0;
-                    daysWithUber = 0;
-
-                    delSum = 0;
-                    ubSum = 0;
-                    hoursSum = 0;
-                    //increment week number
-                    weekNumber += 1;
-                }
-            });
-
-            //finished building list
-            let finish = new Date();
-            console.log((finish - started) + 'ms to fetch list on', Platform.OS);
-            listsLoaded(daysList, weeksList, userName);
+        //finished building list
+        let finish = new Date();
+        console.log((finish - started) + 'ms to fetch list on', Platform.OS);
+        listsLoaded(daysList, weeksList, userName);
     };
 
     const listsLoaded = (daysList, weeksList, userName) => {
         //updating app state
-        console.log('Dispatching action--> login = true');
+        console.log('Dispatching actions--> user signed in');
 
         dispatch({
             type: ACTIONS.SET_IS_LOGGED,
             value: true
-        });
-        console.log('Dispatching action--> userName');
-        dispatch({
+        }, {
             type: ACTIONS.SET_USER_NAME,
             value: userName
         });
-        console.log('Dispatching action--> daysList');
+        // dispatch({
+        //     type: ACTIONS.SET_USER_NAME,
+        //     value: userName
+        // });
         dispatch({
             type: ACTIONS.SET_USER_DAYS_LIST,
             value: daysList
         });
-        console.log('Dispatching action--> weeksList');
         dispatch({
             type: ACTIONS.SET_USER_WEEKS_LIST,
             value: weeksList
         });
         //finished assigning everything
         setIsFetchingData(false);
-        props.result(true);
+        setUsername('');
+        setPassword('');
+
+        props.navigation.navigate({
+            routeName: 'Tabs', params: {
+                name: firebase.auth().currentUser.displayName + '\'s Deliveries'
+            }
+        });
     };
 
     // const createUser = (email, password) => {
@@ -237,32 +244,32 @@ const Login = (props) => {
     // };
 
     return (
-        isFetchingData ? <Loading/> :
-        <Container>
-            <LargeText modal={true}>Hi there, please sign in</LargeText>
-            <TextInput
-                placeholder={'Email'}
-                placeholderTextColor={Colours.primaryText + '80'}
-                style={myStyles.login}
-                onChangeText={usernameInput}
-                value={username}
-                keyboardType='email-address'
-            />
-            <TextInput
-                placeholder={'Password'}
-                placeholderTextColor={Colours.primaryText + '80'}
-                style={myStyles.login}
-                onChangeText={passwordInput}
-                value={password}
-                keyboardType='default'
-                secureTextEntry={true}
-            />
-            <MyButton
-                onPress={() => firebaseLogin(username, password)}
-                text='Login'
-                colour={Colours.success}
-                textColour={Colours.black} />
-        </Container>
+        isFetchingData ? <Loading /> :
+            <Container>
+                <LargeText modal={true}>{'Hello there!\n\nPlease sign in to\nview your Deliveries'}</LargeText>
+                <TextInput
+                    placeholder={'Email'}
+                    placeholderTextColor={Colours.primaryText + '80'}
+                    style={myStyles.login}
+                    onChangeText={usernameInput}
+                    value={username}
+                    keyboardType='email-address'
+                />
+                <TextInput
+                    placeholder={'Password'}
+                    placeholderTextColor={Colours.primaryText + '80'}
+                    style={myStyles.login}
+                    onChangeText={passwordInput}
+                    value={password}
+                    keyboardType='default'
+                    secureTextEntry={true}
+                />
+                <MyButton
+                    onPress={() => firebaseLogin(username, password)}
+                    text='Login'
+                    colour={Colours.success}
+                    textColour={Colours.black} />
+            </Container>
     );
 };
 

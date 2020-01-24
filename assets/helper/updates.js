@@ -1,13 +1,15 @@
 import { Alert } from 'react-native';
 import firebase from 'firebase';
-import { formatDate } from './helper';
+import { formatDate, fireRef } from './helper';
 
 export const updateDeliveroo = (day,value) => {
+
+  const userID = firebase.auth().currentUser.uid+"/";
 
     if (value.length >= 1) {//if theres data
       day.deliveroo = Number(value);
 
-      firebase.database().ref('deliveries/' + day.dayNumber).set(
+      firebase.database().ref(fireRef + userID + day.dayNumber).set(
         {
           actualDay: day.actualDay,
           deliveroo: day.deliveroo,
@@ -31,10 +33,13 @@ export const updateDeliveroo = (day,value) => {
   };
 
  export const updateUber = (day, value) => {
+
+  const userID = firebase.auth().currentUser.uid+"/";
+  
     if (value.length >= 1) {//if theres data
       day.uber = Number(value);
 
-      firebase.database().ref('deliveries/' + day.dayNumber).set(
+      firebase.database().ref(fireRef + userID + day.dayNumber).set(
         {
           actualDay: day.actualDay,
           deliveroo: day.deliveroo,
@@ -58,10 +63,13 @@ export const updateDeliveroo = (day,value) => {
   };
 
  export const updateHours = (day, value) => {
+
+  const userID = firebase.auth().currentUser.uid+"/";
+
     if (value.length >= 1) {//if theres data
       day.hours = Number(value);
 
-      firebase.database().ref('deliveries/' + day.dayNumber).set(
+      firebase.database().ref(fireRef + userID + day.dayNumber).set(
         {
           actualDay: day.actualDay,
           deliveroo: day.deliveroo,

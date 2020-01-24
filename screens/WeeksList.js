@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { View, FlatList, Alert, Platform, TouchableOpacity } from 'react-native';
-import firebase from 'firebase';
 import { Ionicons } from '@expo/vector-icons';
+import { useSelector } from 'react-redux';
 
 //assets
-import Weeks from '../assets/models/Weeks';
 import Colours from '../assets/constants/darkTheme';
 import { myStyles } from '../assets/helper/Styles';
 import { setLabelText, sortList, SetPrecision, weekFilters } from '../assets/helper/helper';
@@ -21,6 +20,9 @@ import FiltersModal from '../components/modals/FiltersModal';
 import SmallText from '../components/SmallText';
 
 const WeeksList = () => {
+
+
+    const list = useSelector(state => state.user.userWeeksList);
 
     //display settings states
     //default list display
@@ -44,91 +46,6 @@ const WeeksList = () => {
     const [activeFilter, setActiveFilter] = useState('');
     const [filterColour, setFilterColour] = useState(Colours.primaryText);
 
-    const renderList = () => {
-
-        let localList = [];
-
-        let started = new Date();
-
-        //declaring them outside loops to don't loose them after iterations
-        let daysCount = 0;
-        let weekNumber = 0;
-        let delSum = 0, ubSum = 0, hoursSum = 0;
-        let daysWithDel = 0, daysWithUber = 0, daysWithHours = 0;
-        let weekStart = '';
-
-        console.log('Fetching List...');
-
-        let query = firebase.database().ref('deliveries/').orderByKey();
-
-        // SELECT * STATEMENT
-        query.once('value').then(function (snapshot) {
-            snapshot.forEach(function (childSnapshot) {
-
-                let week = new Weeks();
-
-                //incrementing sums
-                delSum += childSnapshot.val().deliveroo;
-                ubSum += childSnapshot.val().uber;
-                hoursSum += childSnapshot.val().hours;
-
-                //checkning the days with data
-                daysWithDel = childSnapshot.val().deliveroo === 0 ? daysWithDel : daysWithDel += 1;//if its zero, dont increase the count
-                daysWithUber = childSnapshot.val().uber === 0 ? daysWithUber : daysWithUber += 1;
-                daysWithHours = childSnapshot.val().hours === 0 ? daysWithHours : daysWithHours += 1;
-
-                //because I started on a tuesday
-                if (childSnapshot.key === '1') {
-                    weekStart = childSnapshot.val().actualDay;
-                }
-
-                if (daysCount === 0) {
-                    weekStart = childSnapshot.val().actualDay;
-                }
-
-                daysCount += 1;
-
-                if (daysCount === 7) {//end of week reached
-                    daysCount = 0;
-
-                    week.week = weekNumber;
-                    week.deliveroo = SetPrecision(delSum);
-                    week.uber = SetPrecision(ubSum);
-                    week.hours = SetPrecision(hoursSum);
-                    week.total = SetPrecision(week.deliveroo + week.uber);
-
-                    week.hours > 0 ? (week.per = SetPrecision(week.total / week.hours)) : (week.per = 0);
-
-                    week.start = weekStart;
-                    week.end = childSnapshot.val().actualDay;
-
-                    //checking if it has accurate data by evaluating if the number of days with all 3 values is the same
-                    if (daysWithHours !== daysWithDel && daysWithHours !== daysWithUber) {
-                        week.accurate = false;
-                    }
-                    else week.accurate = true;
-
-                    localList.push(week);
-
-                    //resetting values for next iteration
-                    daysWithHours = 0;
-                    daysWithDel = 0;
-                    daysWithUber = 0;
-
-                    delSum = 0;
-                    ubSum = 0;
-                    hoursSum = 0;
-                    //increment week number
-                    weekNumber += 1;
-                }
-            });
-
-            //finished building list
-            let finish = new Date();
-            console.log((finish - started) + 'ms to fetch list on', Platform.OS);
-
-        }).then(() => { listLoaded(localList) });
-    };
 
     // handling refresh
     const listLoaded = (loadedList) => {
@@ -279,7 +196,7 @@ const WeeksList = () => {
             </TouchableOpacity>
         ) : null;
 
-    isLoading ? renderList() : '';
+    isLoading ? listLoaded(list) : null;
 
     return (
         <Container dark={true}>

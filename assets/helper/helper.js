@@ -254,7 +254,7 @@ export const setWeeklyMessage = (selectedWeek) => {
 //method to find the first day of the week
 const mondayOfThisWeek = () => {
 
-    const today = new Date('2018-02-26');
+    let today = new Date();
     const weekDay = today.getDay();
 
     if (weekDay === 0) {//sunday
@@ -266,14 +266,15 @@ const mondayOfThisWeek = () => {
     else if (weekDay > 1) {//rest of week
         today = today.setDate(today.getDate() - (today.getDay() - 1));
     }
-
-    return today.toISOString().substring(0, 10);
+    
+    return today;
 };
 
 //method to automatically add the following week in order to prevent errors
 export const checkIfTodayExists = (list, refreshing) => {
 
     const today = new Date();
+    let count = 0;
 
     if (list.length < 1) {//if the user has no days on firebase
 
@@ -288,6 +289,7 @@ export const checkIfTodayExists = (list, refreshing) => {
             actualDay = nextDay(actualDay);
             ID++;
         }
+        Alert.alert('Success', 'Your first week has been added to the DB')
     }
     else {//if the user has days
 
@@ -295,12 +297,11 @@ export const checkIfTodayExists = (list, refreshing) => {
             //boolean to see if the app is being refreshed. if it is, don't execute this block; 
             //it must only execute upon first opening the app
 
-            let lastDateOnDB = new Date(list[0].actualDay);//last sunday on DB
+            let lastDateOnDB = new Date(list[list.length - 1].actualDay);//last sunday on DB
 
             let lastDayOnDB = list[0].dayNumber;//last dayNumber on DB
 
             let daysUntil = today - lastDateOnDB;
-            let count = 0;
 
             while (daysUntil > 0) {//while the last day on the DB is in the future
                 for (let i = 0; i < 7; i++) {//add one week
