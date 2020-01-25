@@ -1,12 +1,15 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useState } from 'react';
+import firebase from 'firebase';
+import { useSelector, useDispatch } from 'react-redux';
 
 import Container from '../components/Container';
 import Card from '../components/Card';
 import LargeText from '../components/LargeText';
 
-import { SetPrecision, filters } from '../assets/helper/helper';
+import { SetPrecision, filters, fireRef, deliveriesRef } from '../assets/helper/helper';
 import { DAYS } from '../assets/constants/strings';
+import Deliveries from '../assets/models/Deliveries';
+import { ACTIONS } from '../store/actions/actions';
 
 
 
@@ -14,6 +17,65 @@ const Dashboard = () => {
 
     let list = useSelector(state => state.user.userDaysList);
     let name = useSelector(state => state.user.username);
+    let refresh = useSelector(state => state.user.shouldRefresh);
+    
+    const [refreshedList, setRefreshedList] = useState(list);
+
+    const dispatch = useDispatch();
+
+    const refreshList = (userID, userName) => {
+
+        let localList = [];
+
+        let start = new Date();
+        let daysCount = 0;
+        let week = 0;
+
+        console.log('Refreshing Days List for', userName);
+
+        // SELECT * STATEMENT
+        firebase.
+            database().
+            ref(fireRef + userID + deliveriesRef).
+            orderByKey().
+            once('value').
+            then(snapshot => {
+                snapshot.forEach(day => {
+
+                    const delivery = new Deliveries();
+
+                    let id = day.key;
+
+                    delivery.dayNumber = Number(id);
+                    delivery.actualDay = day.val().actualDay;
+                    delivery.deliveroo = day.val().deliveroo;
+                    delivery.uber = day.val().uber;
+                    delivery.hours = day.val().hours;
+                    delivery.total = delivery.deliveroo + delivery.uber;
+
+                    delivery.hours > 0 ? (delivery.per = delivery.total / delivery.hours) : (delivery.per = 0);
+
+                    delivery.week = week;
+                    delivery.dayOfWeek = new Date(delivery.actualDay).getDay();
+
+                    localList.push(delivery);
+
+                    //logic to define weeks based on days
+                    daysCount += 1;
+                    if (daysCount === 7) {
+                        daysCount = 0;
+                        week += 1;
+                    }
+                });
+
+                //finished building list
+                let finish = new Date();
+                console.log((finish - start) + 'ms to fetch list for', name);
+
+            }).then(() => { setRefreshedList(localList); dispatch({type:ACTIONS.SHOULD_REFRESH_SUMMARY, value:false})});
+    };
+
+    refresh ? refreshList(firebase.auth().currentUser.uid, name) : null;
 
     let Cards;
     //the columns I want to display
@@ -33,7 +95,7 @@ const Dashboard = () => {
                 if (temp < min) min = temp;
                 if (temp > max) max = temp;
             }
-            let avg = (SetPrecision(cardList.reduce((total, next) => total + next[column.value], 0) / cardList.length));
+            let avg = cardList.reduce((total, next) => total + next[column.value], 0) / cardList.length;
 
 
             listOfCards.push({
@@ -50,8 +112,8 @@ const Dashboard = () => {
         Cards = listOfCards.map(row => {
             return <Card
                 title={row.column}
-                average={row.avg}
-                min={row.min}
+                average={SetPrecision(row.avg)}
+                min={SetPrecision(row.min)}
                 max={SetPrecision(row.max)}
                 key={row.key}
                 colour={row.colour}
@@ -60,13 +122,13 @@ const Dashboard = () => {
 
     }
 
-    displayCards(list);
+    displayCards(refreshedList);
 
     return (
         <Container dark={true}>
             <LargeText style={{ marginVertical: 5 }}>{name}'s Summary</LargeText>
             {Cards}
-        </Container> 
+        </Container>
     );
 };
 export default Dashboard;

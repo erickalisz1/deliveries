@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import firebase from 'firebase';
 import { View, FlatList, Alert, Platform, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useSelector } from 'react-redux';
@@ -6,7 +7,7 @@ import { useSelector } from 'react-redux';
 //assets
 import Colours  from '../assets/constants/Colours';
 import { myStyles } from '../assets/helper/Styles';
-import { setLabelText, sortList, SetPrecision, weekFilters } from '../assets/helper/helper';
+import { setLabelText, sortList, weekFilters } from '../assets/helper/helper';
 import { SPACE, LARGER, LARGER_EQUAL, SMALLER, SMALLER_EQUAL } from '../assets/constants/strings';
 
 //components
@@ -22,6 +23,7 @@ import SmallText from '../components/SmallText';
 const WeeksList = () => {
 
     const list = useSelector(state => state.user.userWeeksList);
+    const name = useSelector(state => state.user.username);
 
     //display settings states
     //default list display
@@ -45,6 +47,57 @@ const WeeksList = () => {
     const [activeFilter, setActiveFilter] = useState('');
     const [filterColour, setFilterColour] = useState(Colours.primaryText);
 
+    const refreshList = (userID, userName) => {
+
+        let localList = [];
+
+        let start = new Date();
+        let daysCount = 0;
+        let week = 0;
+
+        console.log('Refreshing Days List for', userName);
+
+        // SELECT * STATEMENT
+        firebase.
+            database().
+            ref(fireRef + userID + deliveriesRef).
+            orderByKey().
+            once('value').
+            then(snapshot => {
+                snapshot.forEach(day => {
+
+                    const delivery = new Deliveries();
+
+                    let id = day.key;
+
+                    delivery.dayNumber = Number(id);
+                    delivery.actualDay = day.val().actualDay;
+                    delivery.deliveroo = day.val().deliveroo;
+                    delivery.uber = day.val().uber;
+                    delivery.hours = day.val().hours;
+                    delivery.total = delivery.deliveroo + delivery.uber;
+
+                    delivery.hours > 0 ? (delivery.per = delivery.total / delivery.hours) : (delivery.per = 0);
+
+                    delivery.week = week;
+                    delivery.dayOfWeek = new Date(delivery.actualDay).getDay();
+
+                    localList.push(delivery);
+
+                    //logic to define weeks based on days
+                    daysCount += 1;
+                    if (daysCount === 7) {
+                        daysCount = 0;
+                        week += 1;
+                    }
+                });
+
+                //finished building list
+                let finish = new Date();
+                console.log((finish - start) + 'ms to fetch list on', Platform.OS);
+
+            }).then(() => { listLoaded(localList) });
+    };
 
     // handling refresh
     const listLoaded = (loadedList) => {
@@ -137,6 +190,7 @@ const WeeksList = () => {
         setIsLoading(true);
         setActiveFilter('');
         setFilterColour(Colours.primaryText);
+        refreshList(firebase.auth().currentUser.uid, name);
     };
 
     const clearFilters = () => {

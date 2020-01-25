@@ -7,6 +7,7 @@ import MyButton from '../components/MyButton';
 import Colours from '../assets/constants/Colours';
 import LargeText from "../components/LargeText";
 import { ACTIONS } from '../store/actions/actions';
+import { ROUTES } from '../assets/constants/strings';
 
 const MyAccount = (props) => {
 
@@ -15,7 +16,7 @@ const MyAccount = (props) => {
     //onSignedOut
     const firebaseLogout = () => {
         firebase.auth().signOut().then(() => {
-            
+
             console.log('Dispatch--> userName = \'\' ');
             dispatch({
                 type: ACTIONS.SET_USER_NAME,
@@ -31,9 +32,11 @@ const MyAccount = (props) => {
                 type: ACTIONS.SET_USER_WEEKS_LIST,
                 value: []
             });
-            props.navigation.navigate('Login');
+            props.navigation.navigate(ROUTES.LOGIN);
         });
     };
+
+
 
     return (
         <Container>

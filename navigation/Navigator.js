@@ -13,6 +13,7 @@ import WeeksList from '../screens/WeeksList';
 import Dashboard from '../screens/Dashboard';
 import Login from '../screens/Login';
 import MyAccount from '../screens/MyAccount';
+import Register from '../screens/Register';
 
 const defaultStackNavOptions =
 {
@@ -74,6 +75,12 @@ const StackNavigator = createStackNavigator({
         screen: Login,
         navigationOptions:{
             headerTitle: 'Welcome!'
+        }
+    },
+    Register:{
+        screen:Register,
+        navigationOptions:{
+            headerTitle:'Create Account'
         }
     },
     Tabs:{ 

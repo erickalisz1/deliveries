@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, Modal, TouchableOpacity, Platform } from 'react-native';
+import { useDispatch } from 'react-redux';
 
 import { formatDate } from '../../assets/helper/helper';
 import { updateDeliveroo, updateUber, updateHours } from '../../assets/helper/updates'
@@ -14,6 +15,7 @@ import MyButton from '../MyButton';
 import { Ionicons } from '@expo/vector-icons';
 import SmallText from '../SmallText';
 import Row from '../Row';
+import { ACTIONS } from '../../store/actions/actions';
 
 const UpdateDays = (props) => {
 
@@ -23,6 +25,15 @@ const UpdateDays = (props) => {
 
   const [displayHoursModal, setDisplayHoursModal] = useState(false);
   const [displayDelModal, setDisplayDelModal] = useState(false);
+
+  const dispatch = useDispatch();
+
+  const refreshSummary = () => {
+    dispatch({
+      type: ACTIONS.SHOULD_REFRESH_SUMMARY,
+      value: true
+    });
+  };
 
   let day = props.dayToUpdate;
 
@@ -122,7 +133,7 @@ const UpdateDays = (props) => {
                     text='Update'
                     colour={Colours.deliveroo}
                     textColour={Colours.black}
-                    onPress={() => setDelValue(updateDeliveroo(day, delValue))} />
+                    onPress={() => { setDelValue(updateDeliveroo(day, delValue)); refreshSummary(); }} />
 
                 </View>
 
@@ -144,7 +155,7 @@ const UpdateDays = (props) => {
                     text='Update'
                     colour={Colours.uber}
                     textColour={Colours.black}
-                    onPress={() => setUberValue(updateUber(day, uberValue))} />
+                    onPress={() => { setUberValue(updateUber(day, uberValue)); refreshSummary(); }} />
                 </View>
 
                 <View style={styles.column}>
@@ -169,7 +180,7 @@ const UpdateDays = (props) => {
                     text='Update'
                     colour={Colours.hours}
                     textColour={Colours.black}
-                    onPress={() => setHoursValue(updateHours(day, hoursValue))} />
+                    onPress={() => { setHoursValue(updateHours(day, hoursValue)); refreshSummary(); }} />
                 </View>
 
 

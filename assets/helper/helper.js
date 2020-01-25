@@ -274,16 +274,41 @@ const mondayOfThisWeek = () => {
 //method to automatically add the following week in order to prevent errors
 export const checkIfTodayExists = (list) => {
 
+    console.log('inside method', list.length);
+
     const today = new Date();
 
     if (list.length < 1) {//if the user has no days on firebase
 
         let actualDay = new Date(mondayOfThisWeek()).toISOString().substring(0, 10);//e.g 2019-12-26
         let ID = 0;
-
+        let daysCount = 0;
+        let week = 0;
         for (let i = 0; i < 7; i++) {//add one week
 
             addDaytoFireBase(ID, actualDay);
+
+            //adding to local list
+            {
+                const delivery = new Deliveries();
+                delivery.dayNumber = ID;
+                delivery.actualDay = actualDay;
+                delivery.deliveroo = 0;
+                delivery.uber = 0;
+                delivery.hours = 0;
+                delivery.total = delivery.deliveroo + delivery.uber;
+                delivery.hours > 0 ? (delivery.per = delivery.total / delivery.hours) : (delivery.per = 0);
+                delivery.week = week;
+                delivery.dayOfWeek = new Date(delivery.actualDay).getDay();
+                list.push(delivery);
+                
+                //logic to define weeks based on days
+                daysCount += 1;
+                if (daysCount === 7) {
+                    daysCount = 0;
+                    week += 1;
+                }
+            }
 
             //incrementing both date and ID for them to be added
             actualDay = nextDay(actualDay);

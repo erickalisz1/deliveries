@@ -14,6 +14,13 @@ export const SMALLER = "<";
 export const SMALLER_EQUAL = "<=";
 export const BETWEEN = "><";
 
+export const ROUTES = {
+    LOGIN:"Login",
+    TABS:"Tabs",
+    REGISTER:"Register",
+    ACCOUNT:"Account"
+};
+
 export const stringVal = (Val) => ' - $' + Val;//works for all generic values, except per
 
 export const stringPer = (Per) => ' - $' + Per + '/h';

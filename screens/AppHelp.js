@@ -6,6 +6,7 @@ import Container from '../components/Container';
 import HelpModal from '../components//modals/HelpModal';
 import HelpItem from '../components/HelpItem';
 import { helpItems } from '../assets/helper/helper';
+import { ROUTES } from '../assets/constants/strings';
 
 const AppHelp = (props) => {
 
@@ -32,7 +33,7 @@ const AppHelp = (props) => {
 
             {displayItems}
 
-            <HelpItem title='My Account' style={{ width: '90%' }} onPress={() => props.navigation.navigate('Account')} />
+            <HelpItem title='My Account' style={{ width: '90%' }} onPress={() => props.navigation.navigate(ROUTES.ACCOUNT)} />
 
         </Container>
     );

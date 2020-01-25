@@ -14,6 +14,7 @@ import Deliveries from '../assets/models/Deliveries';
 import Loading from '../components/Loading';
 import Weeks from '../assets/models/Weeks';
 import DismissKeyboard from '../components/DismissKeyboard';
+import { ROUTES } from '../assets/constants/strings';
 
 const Login = (props) => {
     const [username, setUsername] = useState('');
@@ -113,9 +114,10 @@ const Login = (props) => {
                 let finish = new Date();
                 console.log((finish - start) + 'ms to fetch list on', Platform.OS);
 
-            }).then(() => { 
+            }).then(() => {
+                console.log('before checkIfTodayExists:', localList.length);
                 localList = checkIfTodayExists(localList);
-                console.log('.then => localList', localList);
+                console.log('after checkIfTodayExists:', localList.length);
                 createWeeksListFromDaysList(localList, userName);
             });
     };
@@ -227,14 +229,10 @@ const Login = (props) => {
         setPassword('');
 
         //redirect to main app
-        props.navigation.navigate('Tabs', { title: firebase.auth().currentUser.displayName + '\'s Deliveries' });
+        props.navigation.navigate(ROUTES.TABS);
     };
 
-    // const createUser = (email, password) => {
-    //   firebase.auth().createUserWithEmailAndPassword(email, password).then(userInfo => {
-    //     console.log(userInfo);
-    //   });
-    // };
+    
 
     return (
         isFetchingData ? <Loading /> :
@@ -244,7 +242,9 @@ const Login = (props) => {
                         <TouchableOpacity
                             // onPress={()=> {setUsername('admin@admin.com'); setPassword('adminait')}}
                             style={styles.imageContainer}
-                            onPress={() => { setUsername('eric@ait.com'); setPassword('eric123') }}>
+                            // onPress={() => { setUsername('eric@ait.com'); setPassword('eric123') }}
+                            onPress={() => { setUsername('carol@ait.com'); setPassword('carol1') }}
+                        >
                             <Image
                                 source={require('../assets/login.png')}
                                 resizeMode="cover"
@@ -270,6 +270,11 @@ const Login = (props) => {
                         <MyButton
                             onPress={() => firebaseLogin(username, password)}
                             text='Login'
+                            colour={Colours.success}
+                            textColour={Colours.black} />
+                        <MyButton
+                            onPress={() => props.navigation.navigate(ROUTES.REGISTER)}
+                            text='Register'
                             colour={Colours.success}
                             textColour={Colours.black} />
                     </View>

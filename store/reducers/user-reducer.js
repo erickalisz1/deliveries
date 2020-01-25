@@ -4,6 +4,7 @@ const initialState = {
     username: '',
     userDaysList: [],
     userWeeksList: [],
+    shouldRefresh: false
 };
 
 export default (state = initialState, action) => {
@@ -22,6 +23,11 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 userWeeksList: action.value
+            };
+        case ACTIONS.SHOULD_REFRESH_SUMMARY:
+            return {
+                ...state,
+                shouldRefresh: action.value
             };
         default:
             return state;
