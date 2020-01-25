@@ -15,11 +15,14 @@ import Loading from '../components/Loading';
 import Weeks from '../assets/models/Weeks';
 import DismissKeyboard from '../components/DismissKeyboard';
 import { ROUTES } from '../assets/constants/strings';
+import SmallText from '../components/SmallText';
+import * as myActions from "../store/actions/actions";
 
 const Login = (props) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [isFetchingData, setIsFetchingData] = useState(false);
+    const [isOfflinePressed, setIsOfflinePressed] = useState(false);
 
     const dispatch = useDispatch();//to update store
 
@@ -30,6 +33,85 @@ const Login = (props) => {
     const passwordInput = (input) => {
         setPassword(input);
     };
+
+    const toggleOffline = () => {
+        let current = isOfflinePressed;
+        setIsOfflinePressed(!current);
+    };
+
+    const findMe = () => {
+        const list = dispatch(myActions.loadUserList(username));
+    };
+
+    let mode = null;
+
+    if (isOfflinePressed) {
+        mode = <View>
+            <SmallText between={50}>If you have previously downloaded your list when Logged in, you can view it simply by providing tour email address</SmallText>
+            <TextInput
+                placeholder={'Email'}
+                placeholderTextColor={Colours.placeholder}
+                style={myStyles.login}
+                onChangeText={usernameInput}
+                value={username}
+                keyboardType='email-address'
+            />
+            <MyButton
+                onPress={() => findMe()}
+                text='Find my list'
+                colour={Colours.success}
+                textColour={Colours.black} />
+        </View>
+    }
+    else {
+        mode = <View>
+            <TouchableOpacity
+                // onPress={()=> {setUsername('admin@admin.com'); setPassword('adminait')}}
+                style={styles.imageContainer}
+                // onPress={() => { setUsername('eric@ait.com'); setPassword('eric123') }}
+                onPress={() => { setUsername('carol@ait.com'); setPassword('carol1') }}
+            >
+                <Image
+                    source={require('../assets/login.png')}
+                    resizeMode="cover"
+                    style={styles.image} />
+            </TouchableOpacity>
+            <TextInput
+                placeholder={'Email'}
+                placeholderTextColor={Colours.placeholder}
+                style={myStyles.login}
+                onChangeText={usernameInput}
+                value={username}
+                keyboardType='email-address'
+            />
+            <TextInput
+                placeholder={'Password'}
+                placeholderTextColor={Colours.placeholder}
+                style={myStyles.login}
+                onChangeText={passwordInput}
+                value={password}
+                keyboardType='default'
+                secureTextEntry={true}
+            />
+            <MyButton
+                onPress={() => firebaseLogin(username, password)}
+                text='Login'
+                colour={Colours.success}
+                textColour={Colours.black} />
+
+            <SmallText top={30}>or</SmallText>
+
+            <MyButton
+                onPress={() => props.navigation.navigate(ROUTES.REGISTER)}
+                text='Register'
+                colour={Colours.success}
+                textColour={Colours.black} />
+        </View>;
+    }
+
+    
+
+    
 
     const firebaseLogin = (email, password) => {
         setIsFetchingData(true);
@@ -232,53 +314,21 @@ const Login = (props) => {
         props.navigation.navigate(ROUTES.TABS);
     };
 
-    
 
     return (
         isFetchingData ? <Loading /> :
             <Container>
-                <DismissKeyboard>
-                    <View>
-                        <TouchableOpacity
-                            // onPress={()=> {setUsername('admin@admin.com'); setPassword('adminait')}}
-                            style={styles.imageContainer}
-                            onPress={() => { setUsername('eric@ait.com'); setPassword('eric123') }}
-                            // onPress={() => { setUsername('carol@ait.com'); setPassword('carol1') }}
-                        >
-                            <Image
-                                source={require('../assets/login.png')}
-                                resizeMode="cover"
-                                style={styles.image} />
-                        </TouchableOpacity>
-                        <TextInput
-                            placeholder={'Email'}
-                            placeholderTextColor={Colours.placeholder}
-                            style={myStyles.login}
-                            onChangeText={usernameInput}
-                            value={username}
-                            keyboardType='email-address'
-                        />
-                        <TextInput
-                            placeholder={'Password'}
-                            placeholderTextColor={Colours.placeholder}
-                            style={myStyles.login}
-                            onChangeText={passwordInput}
-                            value={password}
-                            keyboardType='default'
-                            secureTextEntry={true}
-                        />
-                        <MyButton
-                            onPress={() => firebaseLogin(username, password)}
-                            text='Login'
-                            colour={Colours.success}
-                            textColour={Colours.black} />
-                        <MyButton
-                            onPress={() => props.navigation.navigate(ROUTES.REGISTER)}
-                            text='Register'
-                            colour={Colours.success}
-                            textColour={Colours.black} />
-                    </View>
-                </DismissKeyboard>
+
+                <MyButton
+                    style={{ margin: 30 }}
+                    onPress={() => toggleOffline()}
+                    text='Offline Mode'
+                    colour={Colours.primaryText}
+                    textColour={Colours.background} />
+
+                {mode}
+
+
             </Container>
     );
 };

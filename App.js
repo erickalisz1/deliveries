@@ -1,8 +1,8 @@
 import React from 'react';
 import firebase from 'firebase';
-import { createStore } from 'redux'
+import { createStore, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux';
-// import * as DarkMode from 'react-native-dark-mode';
+import ReduxThunk from 'redux-thunk';
 
 //supress firebase warning on android
 import { YellowBox } from 'react-native';
@@ -26,7 +26,7 @@ import { dbInit } from './assets/helper/DB';
 firebase.initializeApp(firebaseConfig);
 
 //create store
-const store = createStore(rootReducer);
+const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
 
 //initialize sqlite DB 
 dbInit().then(() => {
