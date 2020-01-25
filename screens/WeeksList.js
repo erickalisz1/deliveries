@@ -4,7 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useSelector } from 'react-redux';
 
 //assets
-import Colours from '../assets/constants/darkTheme';
+import Colours  from '../assets/constants/Colours';
 import { myStyles } from '../assets/helper/Styles';
 import { setLabelText, sortList, SetPrecision, weekFilters } from '../assets/helper/helper';
 import { SPACE, LARGER, LARGER_EQUAL, SMALLER, SMALLER_EQUAL } from '../assets/constants/strings';
@@ -20,7 +20,6 @@ import FiltersModal from '../components/modals/FiltersModal';
 import SmallText from '../components/SmallText';
 
 const WeeksList = () => {
-
 
     const list = useSelector(state => state.user.userWeeksList);
 

@@ -2,11 +2,38 @@ import React from 'react';
 import { View, Text, StyleSheet, Modal, TouchableOpacity, Platform } from 'react-native';
 
 import { filters, weekFilters } from '../../assets/helper/helper';
-import Colours from '../../assets/constants/darkTheme';
+import Colours from '../../assets/constants/Colours';
 import ModalSpace from '../modals/ModalSpace';
 import MyButton from '../MyButton';
 
 const ColumnsModal = (props) => {
+
+    const styles = StyleSheet.create({
+        container: {
+            flex: 10,
+            padding: Platform.OS === 'ios' ? 25 : 10,
+            backgroundColor: Colours.backgroundLight,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'flex-end'
+        },
+        itemWrapper: {
+
+        },
+        value: {
+            fontSize: 20,
+            color: Colours.primaryText,
+            textAlign: 'center'
+        },
+        modalTitle: {
+            fontSize: 24,
+            color: Colours.primaryText,
+            textAlign: 'center',
+            marginBottom: 15
+        },
+    });
+
 
     let options = props.week ? weekFilters : filters;
 
@@ -53,31 +80,5 @@ const ColumnsModal = (props) => {
         </Modal>
     );
 };
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 10,
-        padding: Platform.OS === 'ios' ? 25 : 10,
-        backgroundColor: Colours.backgroundLight,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'flex-end'
-    },
-    itemWrapper: {
-
-    },
-    value: {
-        fontSize: 20,
-        color: Colours.primaryText,
-        textAlign: 'center'
-    },
-    modalTitle: {
-        fontSize: 24,
-        color: Colours.primaryText,
-        textAlign: 'center',
-        marginBottom: 15
-    },
-});
 
 export default ColumnsModal;

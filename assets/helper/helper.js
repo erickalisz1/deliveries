@@ -370,6 +370,12 @@ export const helpItems = [
         display: 'Filtering your list',
         description: 'To filter your list, simply tap the filter icon at the top right, select the filter you wish to apply and press Set',
         flex: 27
+    },
+    {
+        display: 'Dark Mode',
+        description: 'To enable or disable dark mode, simply tap this switch:\n',
+        flex: 27,
+        isDarkModeOption:true
     }
 ];
 

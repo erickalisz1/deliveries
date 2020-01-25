@@ -1,7 +1,7 @@
 import React from 'react';
-import { Text, View, Modal } from 'react-native';
+import { Text, View, Modal, Switch } from 'react-native';
 
-import Colours from '../../assets/constants/darkTheme';
+import Colours from '../../assets/constants/Colours';
 import LargeText from '../LargeText';
 import ModalContainer from './ModalContainer';
 import ModalSpace from './ModalSpace';
@@ -10,22 +10,25 @@ import { myStyles } from '../../assets/helper/Styles';
 
 const HelpModal = (props) => {
 
-    if (props.item) {
+    const { item } = props;
+
+    if (item) {
+
         return (
 
             <Modal transparent={true} visible={props.visible} animationType='slide'>
 
 
-                <ModalSpace onClose={props.onClose} flex={props.item.flex} />
+                <ModalSpace onClose={props.onClose} flex={item.flex} />
 
                 <ModalContainer dark={false}>
 
                     <View style={myStyles.modalRow}>
-                        <LargeText modal={true}>{props.item.display}</LargeText>
+                        <LargeText modal={true}>{item.display}</LargeText>
                     </View>
 
                     <View style={myStyles.modalRow}>
-                        <Text style={myStyles.modalDescription}>{props.item.description}</Text>
+                        <Text style={myStyles.modalDescription}>{item.description}</Text>
                     </View>
 
                     <MyButton
@@ -37,7 +40,7 @@ const HelpModal = (props) => {
 
                 </ModalContainer>
 
-                <ModalSpace onClose={props.onClose} flex={props.item.flex} />
+                <ModalSpace onClose={props.onClose} flex={item.flex} />
             </Modal>
 
 

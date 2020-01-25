@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import Colours from '../../assets/constants/darkTheme';
+import Colours from '../../assets/constants/Colours';
 
 const ModalContainer = props => {
 

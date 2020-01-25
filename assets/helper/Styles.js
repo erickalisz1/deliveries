@@ -119,13 +119,14 @@ export const myStyles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: Colours.backgroundLight,
         minWidth:'95%',
-        justifyContent:'space-between'
+        justifyContent:'space-between',
+        maxHeight:60
     },
     listItemColumn: {
         marginHorizontal:10
     },
     listItemValueLarge: {
-        fontSize: 20,
+        fontSize: 18,
         color: Colours.primaryText,
     },
     listItemValue: {

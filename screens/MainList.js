@@ -16,7 +16,7 @@ import SortingButton from '../components/SortingButton';
 import { setLabelText, sortList, checkIfTodayExists, assignDay, filters } from '../assets/helper/helper';
 import { SPACE, LARGER, LARGER_EQUAL, SMALLER, SMALLER_EQUAL } from '../assets/constants/strings';
 import { myStyles } from '../assets/helper/Styles';
-import Colours from '../assets/constants/darkTheme';
+import Colours  from '../assets/constants/Colours';
 import FiltersModal from '../components/modals/FiltersModal';
 import SmallText from '../components/SmallText';
 
@@ -24,6 +24,7 @@ import SmallText from '../components/SmallText';
 const MainList = () => {
 
     const list = useSelector(state => state.user.userDaysList);
+    
     console.log('daysList.length',list.length);
 
     //display settings states

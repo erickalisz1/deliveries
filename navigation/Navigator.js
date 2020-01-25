@@ -8,12 +8,11 @@ import { Ionicons } from '@expo/vector-icons';
 
 import MainList from '../screens/MainList';
 import AppHelp from '../screens/AppHelp';
-import Colours from '../assets/constants/darkTheme';
+import Colours  from '../assets/constants/Colours';
 import WeeksList from '../screens/WeeksList';
 import Dashboard from '../screens/Dashboard';
 import Login from '../screens/Login';
-
-// let UserName = useSelector(state => state.user.username);
+import MyAccount from '../screens/MyAccount';
 
 const defaultStackNavOptions =
 {
@@ -22,8 +21,6 @@ const defaultStackNavOptions =
     },
     headerTintColor: Colours.primaryText
 };
-
-
 
 const TabNavigator = createBottomTabNavigator({
     Dashboard: {
@@ -75,13 +72,19 @@ const StackNavigator = createStackNavigator({
     Login: {
         screen: Login,
         navigationOptions:{
-            headerTitle: 'Login'
+            headerTitle: 'Welcome!'
         }
     },
     Tabs:{ 
         screen: TabNavigator,
         navigationOptions:{
             headerTitle: 'Your Deliveries'
+        }
+    },
+    Account:{ 
+        screen: MyAccount,
+        navigationOptions:{
+            headerTitle: 'Your Account'
         }
     },
 },

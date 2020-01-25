@@ -1,6 +1,6 @@
 import React from 'react';
 import { SafeAreaView, StyleSheet } from 'react-native';
-import Colours from '../assets/constants/darkTheme';
+import Colours  from '../assets/constants/Colours';
 
 const Container = props => {
 
@@ -9,13 +9,13 @@ const Container = props => {
             flex: 10,
             backgroundColor: props.dark === true ? Colours.background : Colours.backgroundLight,
             alignItems: 'center',
-            justifyContent: 'center'            
+            justifyContent: 'center'
         }
     });
 
     return (
         <SafeAreaView style={styles.container}>
-                {props.children}
+            {props.children}
         </SafeAreaView>);
 };
 

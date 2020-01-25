@@ -3,7 +3,7 @@ import { Text, View, Modal } from 'react-native';
 
 import { setWeekString, setDateString, setDailyMessage, setWeeklyMessage } from '../../assets/helper/helper';
 import { myStyles } from '../../assets/helper/Styles';
-import Colours from '../../assets/constants/darkTheme';
+import Colours from '../../assets/constants/Colours';
 import LargeText from '../LargeText';
 import ModalContainer from './ModalContainer';
 import ModalSpace from './ModalSpace';
@@ -11,7 +11,6 @@ import MyButton from '../MyButton';
 import Row from '../Row';
 
 const DetailModal = (props) => {
-
 
     if (props.week) {
 

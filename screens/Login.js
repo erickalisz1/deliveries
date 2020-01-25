@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 import firebase from 'firebase';
-import { Alert, Platform, View } from 'react-native';
+import { Alert, Platform, View, Image, StyleSheet } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import Container from '../components/Container';
-import LargeText from '../components/LargeText';
 import { TextInput } from 'react-native';
 import MyButton from '../components/MyButton';
 import { myStyles } from '../assets/helper/Styles';
-import Colours from '../assets/constants/darkTheme';
+import Colours  from '../assets/constants/Colours';
 import { fireRef, deliveriesRef, SetPrecision } from '../assets/helper/helper';
 import { ACTIONS } from '../store/actions/actions';
 import Deliveries from '../assets/models/Deliveries';
@@ -243,10 +242,15 @@ const Login = (props) => {
             <Container>
                 <DismissKeyboard>
                     <View>
-                        <LargeText modal={true}>{'Hello there!\n\nPlease sign in to\nview your Deliveries'}</LargeText>
+                        <View style={styles.imageContainer}>
+                            <Image
+                                source={require('../assets/login.png')}
+                                resizeMode="cover"
+                                style={styles.image} />
+                        </View>
                         <TextInput
                             placeholder={'Email'}
-                            placeholderTextColor={Colours.primaryText + '80'}
+                            placeholderTextColor={Colours.placeholder}
                             style={myStyles.login}
                             onChangeText={usernameInput}
                             value={username}
@@ -254,7 +258,7 @@ const Login = (props) => {
                         />
                         <TextInput
                             placeholder={'Password'}
-                            placeholderTextColor={Colours.primaryText + '80'}
+                            placeholderTextColor={Colours.placeholder}
                             style={myStyles.login}
                             onChangeText={passwordInput}
                             value={password}
@@ -278,5 +282,17 @@ const Login = (props) => {
             </Container>
     );
 };
+
+const styles = StyleSheet.create({
+    image: {
+        width: '100%',
+        height: '100%',
+    },
+    imageContainer: {
+        width: 200,
+        height: 200,
+        marginVertical: 10
+    },
+});
 
 export default Login;

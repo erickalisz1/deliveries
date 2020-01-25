@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, TextInput, Modal, Alert } from 'react-native';
 
-import Colours from '../../assets/constants/darkTheme';
+import Colours from '../../assets/constants/Colours';
 import DismissKeyboard from '../DismissKeyboard';
 import LargeText from '../LargeText';
 import { myStyles } from '../../assets/helper/Styles';

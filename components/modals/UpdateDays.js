@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, TextInput, Modal, TouchableOpacity, Platform } 
 
 import { formatDate } from '../../assets/helper/helper';
 import { updateDeliveroo, updateUber, updateHours } from '../../assets/helper/updates'
-import Colours from '../../assets/constants/darkTheme';
+import Colours from '../../assets/constants/Colours';
 import DismissKeyboard from '../DismissKeyboard';
 import HoursModal from './HoursModal';
 import DeliverooModal from '../modals/DeliverooModal';

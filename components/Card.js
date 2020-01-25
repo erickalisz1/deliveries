@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, Dimensions } from 'react-native';
-import Colours from '../assets/constants/darkTheme';
+import Colours  from '../assets/constants/Colours';
 import SmallText from './SmallText';
 
 const Card = (props) => {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text } from 'react-native';
-import Colours from '../assets/constants/darkTheme';
+import Colours  from '../assets/constants/Colours';
 
 const SmallText = props => {
 

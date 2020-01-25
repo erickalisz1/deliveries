@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import firebase from 'firebase';
 import { createStore } from 'redux'
 import { Provider } from 'react-redux';
+// import * as DarkMode from 'react-native-dark-mode';
 
 //supress firebase warning on android
 import { YellowBox } from 'react-native';
@@ -18,9 +19,7 @@ console.warn = message => {
 //my imports
 import StackNav from './navigation/Navigator';
 import { firebaseConfig } from './assets/helper/helper';
-import Login from './screens/Login';
 import rootReducer from './store';
-import Loading from './components/Loading';
 
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
@@ -30,12 +29,9 @@ const store = createStore(rootReducer);
 
 export default function App() {
 
-  const [isUserSignedIn, setisUserSignedIn] = useState(false);
-
-  const getResult = (result) => {
-    //cant access Store here because it is outside <Provider>
-  setisUserSignedIn(result);
-  };
+  // initialMode = useDarkModeContext();
+  // DarkMode.initialMode = "dark";
+   
 
   return (
     <Provider store={store}>

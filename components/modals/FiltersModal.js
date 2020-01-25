@@ -1,17 +1,15 @@
 import React, { useState } from 'react';
-import { View, Modal, Picker, Platform, TextInput, Switch, Alert } from 'react-native';
+import { View, Modal, Picker, Platform, TextInput, Alert } from 'react-native';
 
-import Colours from '../../assets/constants/darkTheme';
+import Colours from '../../assets/constants/Colours';
 import ModalSpace from '../modals/ModalSpace';
 import MyButton from '../MyButton';
 import ModalContainer from './ModalContainer';
 import { filters, weekDays, conditions, weekFilters } from '../../assets/helper/helper';
 import { myStyles } from '../../assets/helper/Styles';
 import DismissKeyboard from '../DismissKeyboard';
-import SmallText from '../SmallText';
 import Row from '../Row';
-import Column from '../Column';
-import { DAYS, WEEKS, BETWEEN } from '../../assets/constants/strings';
+import { WEEKS, BETWEEN } from '../../assets/constants/strings';
 import SortingButton from '../SortingButton';
 import PickerWrapper from '../PickerWrapper';
 
