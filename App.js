@@ -20,6 +20,7 @@ console.warn = message => {
 import StackNav from './navigation/Navigator';
 import { firebaseConfig } from './assets/helper/helper';
 import rootReducer from './store';
+import { dbInit } from './assets/helper/DB';
 
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
@@ -27,11 +28,14 @@ firebase.initializeApp(firebaseConfig);
 //create store
 const store = createStore(rootReducer);
 
-export default function App() {
+//initialize sqlite DB 
+dbInit().then(() => {
+  console.log('Initialized DB');
+}).catch(error => {
+  console.log('Failed initalizing DB'), error;
+});
 
-  // initialMode = useDarkModeContext();
-  // DarkMode.initialMode = "dark";
-   
+export default function App() {
 
   return (
     <Provider store={store}>

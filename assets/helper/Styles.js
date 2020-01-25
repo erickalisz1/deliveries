@@ -48,7 +48,7 @@ export const myStyles = StyleSheet.create({
         flexDirection:'row',
         justifyContent:'space-between',
         alignItems:'center',
-        marginTop: Platform.OS === 'ios' ? 15 : 35,
+        // marginTop: Platform.OS === 'ios' ? 15 : 35,
         marginBottom: 15,
     },
     activeFilterContainer:{
