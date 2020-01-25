@@ -242,8 +242,8 @@ const Login = (props) => {
                         <TouchableOpacity
                             // onPress={()=> {setUsername('admin@admin.com'); setPassword('adminait')}}
                             style={styles.imageContainer}
-                            // onPress={() => { setUsername('eric@ait.com'); setPassword('eric123') }}
-                            onPress={() => { setUsername('carol@ait.com'); setPassword('carol1') }}
+                            onPress={() => { setUsername('eric@ait.com'); setPassword('eric123') }}
+                            // onPress={() => { setUsername('carol@ait.com'); setPassword('carol1') }}
                         >
                             <Image
                                 source={require('../assets/login.png')}

@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import firebase from 'firebase';
-import { View, FlatList, Alert, Platform, TouchableOpacity } from 'react-native';
+import { View, FlatList, Alert, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useSelector } from 'react-redux';
 
 //assets
 import Colours  from '../assets/constants/Colours';
 import { myStyles } from '../assets/helper/Styles';
-import { setLabelText, sortList, weekFilters } from '../assets/helper/helper';
+import { setLabelText, sortList, weekFilters, fireRef, deliveriesRef, SetPrecision } from '../assets/helper/helper';
 import { SPACE, LARGER, LARGER_EQUAL, SMALLER, SMALLER_EQUAL } from '../assets/constants/strings';
 
 //components
@@ -19,6 +19,8 @@ import DetailModal from '../components/modals/DetailModal';
 import SortingButton from '../components/SortingButton';
 import FiltersModal from '../components/modals/FiltersModal';
 import SmallText from '../components/SmallText';
+import Deliveries from '../assets/models/Deliveries';
+import Weeks from '../assets/models/Weeks';
 
 const WeeksList = () => {
 
@@ -94,9 +96,90 @@ const WeeksList = () => {
 
                 //finished building list
                 let finish = new Date();
-                console.log((finish - start) + 'ms to fetch list on', Platform.OS);
+                console.log((finish - start) + 'ms to fetch list for', name);
 
-            }).then(() => { listLoaded(localList) });
+            }).then(() => { createWeeksListFromDaysList(localList, name) });
+    };
+
+    const createWeeksListFromDaysList = (daysList, userName) => {
+        let weeksList = [];
+
+        let started = new Date();
+
+        //declaring them outside loops to don't loose them after iterations
+        let daysCount = 0;
+        let weekNumber = 0;
+        let delSum = 0, ubSum = 0, hoursSum = 0;
+        let daysWithDel = 0, daysWithUber = 0, daysWithHours = 0;
+        let weekStart = '';
+
+        console.log('Fetching Weeks List for', userName);
+
+        // SELECT * STATEMENT
+        daysList.forEach(day => {
+
+            let week = new Weeks();
+
+            //incrementing sums
+            delSum += day.deliveroo;
+            ubSum += day.uber;
+            hoursSum += day.hours;
+
+            //checkning the days with data
+            daysWithDel = day.deliveroo === 0 ? daysWithDel : daysWithDel += 1;//if its zero, dont increase the count
+            daysWithUber = day.uber === 0 ? daysWithUber : daysWithUber += 1;
+            daysWithHours = day.hours === 0 ? daysWithHours : daysWithHours += 1;
+
+            //because I started on a tuesday
+            if (day.key === '1') {
+                weekStart = day.actualDay;
+            }
+
+            if (daysCount === 0) {
+                weekStart = day.actualDay;
+            }
+
+            daysCount += 1;
+
+            if (daysCount === 7) {//end of week reached
+                daysCount = 0;
+
+                week.week = weekNumber;
+                week.deliveroo = SetPrecision(delSum);
+                week.uber = SetPrecision(ubSum);
+                week.hours = SetPrecision(hoursSum);
+                week.total = SetPrecision(week.deliveroo + week.uber);
+
+                week.hours > 0 ? (week.per = SetPrecision(week.total / week.hours)) : (week.per = 0);
+
+                week.start = weekStart;
+                week.end = day.actualDay;
+
+                //checking if it has accurate data by evaluating if the number of days with all 3 values is the same
+                if (daysWithHours !== daysWithDel && daysWithHours !== daysWithUber) {
+                    week.accurate = false;
+                }
+                else week.accurate = true;
+
+                weeksList.push(week);
+
+                //resetting values for next iteration
+                daysWithHours = 0;
+                daysWithDel = 0;
+                daysWithUber = 0;
+
+                delSum = 0;
+                ubSum = 0;
+                hoursSum = 0;
+                //increment week number
+                weekNumber += 1;
+            }
+        });
+
+        //finished building list
+        let finish = new Date();
+        console.log((finish - started) + 'ms to fetch list for',name);
+        listLoaded(weeksList);
     };
 
     // handling refresh
