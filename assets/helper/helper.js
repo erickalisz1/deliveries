@@ -2,6 +2,7 @@ import { Alert, Platform } from 'react-native';
 import firebase from 'firebase';
 import { DEL, UB, HRS, TOTAL, PER, DAYS, LARGER, LARGER_EQUAL, SMALLER, SMALLER_EQUAL, WEEKS, BETWEEN } from '../constants/strings';
 import Colours from '../constants/darkTheme';
+import Deliveries from '../models/Deliveries';
 
 export const firebaseConfig = {
     apiKey: "AIzaSyBtFpyI8rFywqiHm3rnL2qbS3L4Dl_Y8sk",
@@ -271,10 +272,9 @@ const mondayOfThisWeek = () => {
 };
 
 //method to automatically add the following week in order to prevent errors
-export const checkIfTodayExists = (list, refreshing) => {
+export const checkIfTodayExists = (list) => {
 
     const today = new Date();
-    
 
     if (list.length < 1) {//if the user has no days on firebase
 
@@ -283,7 +283,7 @@ export const checkIfTodayExists = (list, refreshing) => {
 
         for (let i = 0; i < 7; i++) {//add one week
 
-            addDay(ID, actualDay);
+            addDaytoFireBase(ID, actualDay);
 
             //incrementing both date and ID for them to be added
             actualDay = nextDay(actualDay);
@@ -293,41 +293,62 @@ export const checkIfTodayExists = (list, refreshing) => {
     }
     else {//if the user has days
 
-        if (!refreshing) {
-            //boolean to see if the app is being refreshed. if it is, don't execute this block; 
-            //it must only execute upon first opening the app
+        let count = 0;
 
-            let count = 0;
+        let lastDateOnDB = new Date(list[list.length - 1].actualDay);//last sunday on DB
 
-            let lastDateOnDB = new Date(list[list.length - 1].actualDay);//last sunday on DB
+        let lastDayOnDB = list[list.length - 1].dayNumber;//last dayNumber on DB
 
-            let lastDayOnDB = list[list.length - 1].dayNumber;//last dayNumber on DB
+        let daysUntil = today - lastDateOnDB;
 
-            let daysUntil = today - lastDateOnDB;
+        while (daysUntil > 0) {//while the last day on the DB is in the future
+            let daysCount = 0;
+            let week = 0;
+            for (let i = 0; i < 7; i++) {//add one week
 
-            while (daysUntil > 0) {//while the last day on the DB is in the future
-                for (let i = 0; i < 7; i++) {//add one week
+                //incrementing both date and ID for them to be added
+                lastDateOnDB = nextDay(lastDateOnDB);
+                lastDayOnDB++;
 
-                    //incrementing both date and ID for them to be added
-                    lastDateOnDB = nextDay(lastDateOnDB);
-                    lastDayOnDB++;
-
-                    count++;
-                    addDay(lastDayOnDB, lastDateOnDB);
+                count++;
+                //adding to local list
+                {
+                    const delivery = new Deliveries();
+                    delivery.dayNumber = lastDayOnDB;
+                    delivery.actualDay = lastDateOnDB;
+                    delivery.deliveroo = 0;
+                    delivery.uber = 0;
+                    delivery.hours = 0;
+                    delivery.total = delivery.deliveroo + delivery.uber;
+                    delivery.hours > 0 ? (delivery.per = delivery.total / delivery.hours) : (delivery.per = 0);
+                    delivery.week = week;
+                    delivery.dayOfWeek = new Date(delivery.actualDay).getDay();
+                    list.push(delivery);
+                    
+                    //logic to define weeks based on days
+                    daysCount += 1;
+                    if (daysCount === 7) {
+                        daysCount = 0;
+                        week += 1;
+                    }
                 }
-                //performing calculation once again to see if we need to go again
-                daysUntil = today - lastDateOnDB;
 
+                addDaytoFireBase(lastDayOnDB, lastDateOnDB);
             }
-            count === 0 ? null : (Alert.alert('Success', 'The following week has been added to the DB'));
+            //performing calculation once again to see if we need to go again
+            daysUntil = today - lastDateOnDB;
+
         }
+        count < 1 ? null : (Alert.alert('Success', 'The following week has been added to the DB'));
+
     }
 
     //returning false to set the state on the main list and ensure that this doesn't execute again
-    return false;
+    return list;
 };
 
-const addDay = (dayNumber, actualDay) => {//will need the user Ref later on
+
+const addDaytoFireBase = (dayNumber, actualDay) => {//will need the user Ref later on
 
     firebase.database().ref(fireRef + firebase.auth().currentUser.uid + deliveriesRef + "/" + dayNumber).set(
         {
@@ -370,12 +391,6 @@ export const helpItems = [
         display: 'Filtering your list',
         description: 'To filter your list, simply tap the filter icon at the top right, select the filter you wish to apply and press Set',
         flex: 27
-    },
-    {
-        display: 'Dark Mode',
-        description: 'To enable or disable dark mode, simply tap this switch:\n',
-        flex: 27,
-        isDarkModeOption:true
     }
 ];
 

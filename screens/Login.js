@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import firebase from 'firebase';
-import { Alert, Platform, View, Image, StyleSheet } from 'react-native';
+import { Alert, Platform, View, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import Container from '../components/Container';
 import { TextInput } from 'react-native';
 import MyButton from '../components/MyButton';
 import { myStyles } from '../assets/helper/Styles';
-import Colours  from '../assets/constants/Colours';
-import { fireRef, deliveriesRef, SetPrecision } from '../assets/helper/helper';
+import Colours from '../assets/constants/Colours';
+import { fireRef, deliveriesRef, SetPrecision, checkIfTodayExists } from '../assets/helper/helper';
 import { ACTIONS } from '../store/actions/actions';
 import Deliveries from '../assets/models/Deliveries';
 import Loading from '../components/Loading';
@@ -47,26 +47,21 @@ const Login = (props) => {
 
                             if (child.key === userID) {
                                 firebase.auth().currentUser.
-                                    updateProfile({ displayName: child.val().firstName + child.val().lastName }).
-                                    then(() => welcomeUser(firebase.auth().currentUser.displayName, userID));
+                                    updateProfile({ displayName: child.val().firstName }).
+                                    then(() => {
+                                        fetchDaysList(userID, firebase.auth().currentUser.displayName);
+                                    });
                             }
                         });
-                    }).catch(error => console.log(error));
+                    }).catch(error => Alert.alert(error));
 
                 console.log('user found:', userID);
+                Alert.alert('Welcome back!\nWait a moment while we get your information');
 
             }).catch(error => {
-                console.log(error);
+                Alert.alert(error.message);
                 setIsFetchingData(false);
             });
-    };
-
-    const welcomeUser = (name, ID) => {
-
-        Alert.alert('Welcome back, ' + name);
-
-        fetchDaysList(ID, name);
-
     };
 
     const fetchDaysList = (userID, userName) => {
@@ -118,7 +113,11 @@ const Login = (props) => {
                 let finish = new Date();
                 console.log((finish - start) + 'ms to fetch list on', Platform.OS);
 
-            }).then(() => { createWeeksListFromDaysList(localList, userName) });
+            }).then(() => { 
+                localList = checkIfTodayExists(localList);
+                console.log('.then => localList', localList);
+                createWeeksListFromDaysList(localList, userName);
+            });
     };
 
     const createWeeksListFromDaysList = (daysList, userName) => {
@@ -242,12 +241,15 @@ const Login = (props) => {
             <Container>
                 <DismissKeyboard>
                     <View>
-                        <View style={styles.imageContainer}>
+                        <TouchableOpacity
+                            // onPress={()=> {setUsername('admin@admin.com'); setPassword('adminait')}}
+                            style={styles.imageContainer}
+                            onPress={() => { setUsername('eric@ait.com'); setPassword('eric123') }}>
                             <Image
                                 source={require('../assets/login.png')}
                                 resizeMode="cover"
                                 style={styles.image} />
-                        </View>
+                        </TouchableOpacity>
                         <TextInput
                             placeholder={'Email'}
                             placeholderTextColor={Colours.placeholder}
@@ -270,13 +272,6 @@ const Login = (props) => {
                             text='Login'
                             colour={Colours.success}
                             textColour={Colours.black} />
-                        <MyButton
-                            text='Admin'
-                            colour={Colours.success}
-                            textColour={Colours.black}
-                            // onPress={()=> {setUsername('admin@admin.com'); setPassword('adminait')}}
-                            onPress={() => { setUsername('eric@ait.com'); setPassword('eric123') }}
-                        />
                     </View>
                 </DismissKeyboard>
             </Container>

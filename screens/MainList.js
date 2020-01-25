@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { View, FlatList, TouchableOpacity, Alert } from 'react-native';
+import { View, FlatList, TouchableOpacity, Alert, Platform } from 'react-native';
+import firebase from 'firebase';
 import { Ionicons } from '@expo/vector-icons';
 import { useSelector } from 'react-redux';
 
@@ -13,19 +14,19 @@ import DetailModal from '../components/modals/DetailModal';
 import SortingButton from '../components/SortingButton';
 
 // assets
-import { setLabelText, sortList, checkIfTodayExists, assignDay, filters } from '../assets/helper/helper';
+import { setLabelText, sortList, checkIfTodayExists, assignDay, filters, fireRef, deliveriesRef } from '../assets/helper/helper';
 import { SPACE, LARGER, LARGER_EQUAL, SMALLER, SMALLER_EQUAL } from '../assets/constants/strings';
 import { myStyles } from '../assets/helper/Styles';
 import Colours  from '../assets/constants/Colours';
 import FiltersModal from '../components/modals/FiltersModal';
 import SmallText from '../components/SmallText';
+import Deliveries from '../assets/models/Deliveries';
 
 
 const MainList = () => {
 
     const list = useSelector(state => state.user.userDaysList);
-    
-    console.log('daysList.length',list.length);
+    const name = useSelector(state => state.user.username);
 
     //display settings states
     //default list display
@@ -44,7 +45,6 @@ const MainList = () => {
     const [deliveriesList, setDeliveriesList] = useState([]);//the list source, always changing with the filters
     const [firebaseList, setFirebaseList] = useState([]);//the original list
     const [isRefreshing, setIsRefreshing] = useState(false);
-    const [isOpeningApp, setIsOpeningApp] = useState(true);
 
     //filtering
     const [activeFilter, setActiveFilter] = useState('');
@@ -57,7 +57,6 @@ const MainList = () => {
         setDeliveriesList(loadedList);
         setFirebaseList(loadedList);//stock list with no filters
         setIsRefreshing(false);
-        setIsOpeningApp(checkIfTodayExists(loadedList, isRefreshing));
     }
 
     const filterList = (list, column, isRange, value, valueEnd, condition) => {
@@ -170,7 +169,60 @@ const MainList = () => {
         setDisplayColumns(false);
     };
 
+    const refreshList = (userID, userName) => {
+
+        let localList = [];
+
+        let start = new Date();
+        let daysCount = 0;
+        let week = 0;
+
+        console.log('Refreshing Days List for', userName);
+
+        // SELECT * STATEMENT
+        firebase.
+            database().
+            ref(fireRef + userID + deliveriesRef).
+            orderByKey().
+            once('value').
+            then(snapshot => {
+                snapshot.forEach(day => {
+
+                    const delivery = new Deliveries();
+
+                    let id = day.key;
+
+                    delivery.dayNumber = Number(id);
+                    delivery.actualDay = day.val().actualDay;
+                    delivery.deliveroo = day.val().deliveroo;
+                    delivery.uber = day.val().uber;
+                    delivery.hours = day.val().hours;
+                    delivery.total = delivery.deliveroo + delivery.uber;
+
+                    delivery.hours > 0 ? (delivery.per = delivery.total / delivery.hours) : (delivery.per = 0);
+
+                    delivery.week = week;
+                    delivery.dayOfWeek = new Date(delivery.actualDay).getDay();
+
+                    localList.push(delivery);
+
+                    //logic to define weeks based on days
+                    daysCount += 1;
+                    if (daysCount === 7) {
+                        daysCount = 0;
+                        week += 1;
+                    }
+                });
+
+                //finished building list
+                let finish = new Date();
+                console.log((finish - start) + 'ms to fetch list on', Platform.OS);
+
+            }).then(() => { listLoaded(localList) });
+    };
+
     const handleRefresh = () => {
+        refreshList(firebase.auth().currentUser.uid, name);
         setIsRefreshing(true);
         setIsLoading(true);
         setActiveFilter('');

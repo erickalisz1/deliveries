@@ -19,7 +19,8 @@ const defaultStackNavOptions =
     headerStyle: {
         backgroundColor: Colours.background,
     },
-    headerTintColor: Colours.primaryText
+    headerTintColor: Colours.primaryText,
+    headerBackTitle: ''
 };
 
 const TabNavigator = createBottomTabNavigator({

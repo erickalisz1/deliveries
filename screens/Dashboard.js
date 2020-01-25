@@ -13,6 +13,7 @@ import { DAYS } from '../assets/constants/strings';
 const Dashboard = () => {
 
     let list = useSelector(state => state.user.userDaysList);
+    let name = useSelector(state => state.user.username);
 
     let Cards;
     //the columns I want to display
@@ -63,7 +64,7 @@ const Dashboard = () => {
 
     return (
         <Container dark={true}>
-            <LargeText style={{ marginVertical: 5 }}>Your Summary</LargeText>
+            <LargeText style={{ marginVertical: 5 }}>{name}'s Summary</LargeText>
             {Cards}
         </Container> 
     );
