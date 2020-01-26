@@ -16,13 +16,16 @@ import { ACTIONS } from '../store/actions/actions';
 const Dashboard = () => {
 
     let appOffline = useSelector(state => state.user.appOffline);
-    let SQList = useSelector(state => state.user.sqlList);
-    let firebaseList = useSelector(state => state.user.userDaysList);
 
     // if the app is offline, the firebase list hasn't been set
-    let list = appOffline ? SQList : firebaseList;
+    let list = useSelector(state => state.user.userDaysList);
     let name = useSelector(state => state.user.username);
-    let refresh = useSelector(state => state.user.shouldRefresh);
+
+    let refresh = false;
+    
+    if(!appOffline){
+        refresh = useSelector(state => state.user.shouldRefresh);
+    }
     
     const [refreshedList, setRefreshedList] = useState(list);
 
@@ -86,12 +89,12 @@ const Dashboard = () => {
     //the columns I want to display
     let columns = filters.filter(item => item.key !== DAYS);
 
-    const displayCards = (loadedList) => {
+    const displayCards = (list) => {
 
         //creating list
         let listOfCards = [];
         columns.forEach(column => {
-            let cardList = loadedList.filter(item => item[column.value] > 0);
+            let cardList = list.filter(item => item[column.value] > 0);
 
             let min = Number.POSITIVE_INFINITY, max = Number.NEGATIVE_INFINITY, temp;
 
@@ -127,7 +130,7 @@ const Dashboard = () => {
 
     }
 
-    displayCards(refreshedList);
+    !appOffline ? displayCards(refreshedList) : displayCards(list);
 
     return (
         <Container dark={true}>

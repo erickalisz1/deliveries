@@ -3,6 +3,7 @@ import firebase from 'firebase';
 import { DEL, UB, HRS, TOTAL, PER, DAYS, LARGER, LARGER_EQUAL, SMALLER, SMALLER_EQUAL, WEEKS, BETWEEN } from '../constants/strings';
 import Colours from '../constants/darkTheme';
 import Deliveries from '../models/Deliveries';
+import Weeks from '../models/Weeks';
 
 export const firebaseConfig = {
     apiKey: "AIzaSyBtFpyI8rFywqiHm3rnL2qbS3L4Dl_Y8sk",
@@ -299,7 +300,7 @@ export const checkIfTodayExists = (list) => {
                 delivery.week = week;
                 delivery.dayOfWeek = new Date(delivery.actualDay).getDay();
                 list.push(delivery);
-                
+
                 //logic to define weeks based on days
                 daysCount += 1;
                 if (daysCount === 7) {
@@ -347,7 +348,7 @@ export const checkIfTodayExists = (list) => {
                     delivery.week = week;
                     delivery.dayOfWeek = new Date(delivery.actualDay).getDay();
                     list.push(delivery);
-                    
+
                     //logic to define weeks based on days
                     daysCount += 1;
                     if (daysCount === 7) {
@@ -539,4 +540,120 @@ export const SetPrecision = (value) => {
         value = value.toPrecision(6);
     }
     return Number(value);
+};
+
+export const assembleLocalWeeksList = (daysList) => {
+    let weeksList = [];
+
+    //declaring them outside loops to don't loose them after iterations
+    let daysCount = 0;
+    let weekNumber = 0;
+    let delSum = 0, ubSum = 0, hoursSum = 0;
+    let daysWithDel = 0, daysWithUber = 0, daysWithHours = 0;
+    let weekStart = '';
+
+    console.log('Assembling Weeks List for Offline Mode');
+
+    // SELECT * STATEMENT
+    daysList.forEach(day => {
+
+        let week = new Weeks();
+
+        //incrementing sums
+        delSum += day.deliveroo;
+        ubSum += day.uber;
+        hoursSum += day.hours;
+
+        //checkning the days with data
+        daysWithDel = day.deliveroo === 0 ? daysWithDel : daysWithDel += 1;//if its zero, dont increase the count
+        daysWithUber = day.uber === 0 ? daysWithUber : daysWithUber += 1;
+        daysWithHours = day.hours === 0 ? daysWithHours : daysWithHours += 1;
+
+        //because I started on a tuesday
+        if (day.key === '1') {
+            weekStart = day.actualDay;
+        }
+
+        if (daysCount === 0) {
+            weekStart = day.actualDay;
+        }
+
+        daysCount += 1;
+
+        if (daysCount === 7) {//end of week reached
+            daysCount = 0;
+
+            week.week = weekNumber;
+            week.deliveroo = SetPrecision(delSum);
+            week.uber = SetPrecision(ubSum);
+            week.hours = SetPrecision(hoursSum);
+            week.total = SetPrecision(week.deliveroo + week.uber);
+
+            week.hours > 0 ? (week.per = SetPrecision(week.total / week.hours)) : (week.per = 0);
+
+            week.start = weekStart;
+            week.end = day.actualDay;
+
+            //checking if it has accurate data by evaluating if the number of days with all 3 values is the same
+            if (daysWithHours !== daysWithDel && daysWithHours !== daysWithUber) {
+                week.accurate = false;
+            }
+            else week.accurate = true;
+
+            weeksList.push(week);
+
+            //resetting values for next iteration
+            daysWithHours = 0;
+            daysWithDel = 0;
+            daysWithUber = 0;
+
+            delSum = 0;
+            ubSum = 0;
+            hoursSum = 0;
+            //increment week number
+            weekNumber += 1;
+        }
+    });
+
+    return weeksList;
+
+};
+
+export const assembleLocalDaysList = (list) => {
+
+    let localList = [];
+
+    let daysCount = 0;
+    let week = 0;
+
+    console.log('Refreshing Days List for Offline Mode');
+    list.forEach(day => {
+
+        const delivery = new Deliveries();
+
+        let id = day.key;
+
+        delivery.dayNumber = Number(id);
+        delivery.actualDay = day.val().actualDay;
+        delivery.deliveroo = day.val().deliveroo;
+        delivery.uber = day.val().uber;
+        delivery.hours = day.val().hours;
+        delivery.total = delivery.deliveroo + delivery.uber;
+
+        delivery.hours > 0 ? (delivery.per = delivery.total / delivery.hours) : (delivery.per = 0);
+
+        delivery.week = week;
+        delivery.dayOfWeek = new Date(delivery.actualDay).getDay();
+
+        localList.push(delivery);
+
+        //logic to define weeks based on days
+        daysCount += 1;
+        if (daysCount === 7) {
+            daysCount = 0;
+            week += 1;
+        }
+    });
+
+    return localList;
 };

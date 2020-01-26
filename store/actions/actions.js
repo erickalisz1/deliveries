@@ -1,4 +1,4 @@
-import { downloadList, FetchDataForUser } from "../../assets/helper/DB";
+import { downloadList, FetchDataForUser, ClearUserData } from "../../assets/helper/DB";
 
 export const ACTIONS = {
     SET_USER_NAME: "SET_USER_NAME",
@@ -9,12 +9,33 @@ export const ACTIONS = {
     IS_OFFLINE: "IS_OFFLINE"
 };
 
-//Async actions
-export const download = (email, uid, name, list) => {
+//Async dispatched actions (all related to SQLite)
+
+export const DownloadListToDevice = (email, uid, name, list) => {
     return async myRequest => {
         try {
-            const dbResult = await downloadList(email, uid, name, list);
-            console.log(dbResult);
+
+            //when user asks to download list, first check if they already have data
+            const currentList = await FetchDataForUser(email);
+
+            //if they already had data saved, delete it
+            if (currentList.rows.length > 0) {
+                //delete user data
+                console.log('deleting current list');
+                const result = await ClearUserData(email);
+                console.log(result);
+
+                //save again but updated
+                const dbResult = await downloadList(email, uid, name, list);
+                console.log(dbResult);
+                return dbResult;
+            }
+
+            else { //first time saving to device
+                const dbResult = await downloadList(email, uid, name, list);
+                console.log(dbResult);
+                return dbResult;
+            }
 
         } catch (err) {
             console.log(err);
@@ -22,6 +43,7 @@ export const download = (email, uid, name, list) => {
         }
     };
 };
+
 export const GetUserList = (email) => {
     return async dispatch => {
         try {
@@ -32,7 +54,7 @@ export const GetUserList = (email) => {
                 //only set local list if the result returns rows
                 dispatch({
                     type: ACTIONS.SET_SQL_LIST,
-                    value: result.rows
+                    value: result.rows._array
                 });
             }
             return result;
@@ -43,3 +65,20 @@ export const GetUserList = (email) => {
         }
     };
 };
+
+// const DeleteUserList = (email, uid, name, list) => {
+//     return async myResult => {
+//         try {
+//             const result = await ClearUserData(email);
+//             console.log(result);
+//             //by this point, list should be empty
+//             const dbResult = DownloadListToDevice(email, uid, name, list);
+//             console.log(dbResult);
+//             return dbResult;
+//         }
+//         catch (error) {
+//             console.log(err);
+//             throw err;
+//         }
+//     }
+// };

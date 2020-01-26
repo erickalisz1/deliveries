@@ -6,7 +6,8 @@ const STATEMENTS = {
     Create: "CREATE TABLE IF NOT EXISTS Users (entryID INTEGER PRIMARY KEY AUTOINCREMENT, email TEXT NOT NULL, firebaseID TEXT NOT NULL, userName TEXT NOT NULL, dayNumber INTEGER NOT NULL, actualDay TEXT NOT NULL, deliveroo REAL NOT NULL, uber REAL NOT NULL, hours REAL NOT NULL);",
     Insert: "INSERT INTO Users (email, firebaseID, userName, dayNumber, actualDay, deliveroo, uber, hours) VALUES(?,?,?,?,?,?,?,?);",
     Select: "SELECT * FROM Users WHERE email = ? ;",
-    DBInfo: "PRAGMA table_info(Users);"
+    DBInfo: "PRAGMA table_info(Users);",
+    Delete: 'DELETE FROM Users WHERE email = ? ;'
 };
 
 export const dbInit = () => {
@@ -75,6 +76,24 @@ export const ShowDBStructure = () => {
         DB.transaction(tx => {
             tx.executeSql(STATEMENTS.DBInfo,
                 [],
+                (_, result) => {//success scenario
+                    resolve(result);
+                },
+                (_, error) => {//error scenario
+                    reject(error);
+                });
+        });
+    });
+    return promise;
+};
+
+export const ClearUserData = (email) => {
+
+    const promise = new Promise((resolve, reject) => {
+
+        DB.transaction(tx => {
+            tx.executeSql(STATEMENTS.Delete,
+                [email],
                 (_, result) => {//success scenario
                     resolve(result);
                 },

@@ -8,7 +8,7 @@ import { TextInput } from 'react-native';
 import MyButton from '../components/MyButton';
 import { myStyles } from '../assets/helper/Styles';
 import Colours from '../assets/constants/Colours';
-import { fireRef, deliveriesRef, SetPrecision, checkIfTodayExists } from '../assets/helper/helper';
+import { fireRef, deliveriesRef, SetPrecision, checkIfTodayExists, assembleLocalWeeksList, assembleLocalDaysList } from '../assets/helper/helper';
 import { ACTIONS } from '../store/actions/actions';
 import Deliveries from '../assets/models/Deliveries';
 import Loading from '../components/Loading';
@@ -29,13 +29,35 @@ const Login = (props) => {
     //once sql list is set, redirect user to main app
     let SQList = useSelector(state => state.user.sqlList);
 
-    if (SQList.legth > 0) {
-        dispatch({
-            type:ACTIONS.IS_OFFLINE,
-            value: true
-        });
+    const handleLocalListLoaded = () => {
         //redirecting to main app and setting app offline
+        toggleOffline();
         props.navigation.navigate(ROUTES.TABS);
+    };
+
+    if (SQList.length > 0) {
+        dispatch(
+            {//setting app offline
+                type: ACTIONS.IS_OFFLINE,
+                value: true
+            });
+        dispatch(
+            {// setting email
+                type: ACTIONS.SET_USER_NAME,
+                value: SQList[0].userName
+            });
+        dispatch(
+            {//setting days list
+                type: ACTIONS.SET_USER_DAYS_LIST,
+                value: assembleLocalDaysList(SQList)
+            });
+        dispatch(
+            {//setting weeks list
+                type: ACTIONS.SET_USER_WEEKS_LIST,
+                value: assembleLocalWeeksList(SQList)
+            });
+        Alert.alert('Your list was found!', '', [{ text: "Great!", onPress: () => { handleLocalListLoaded(); } }]);
+
     }
 
     const usernameInput = (input) => {
@@ -75,12 +97,13 @@ const Login = (props) => {
                 keyboardType='email-address'
             />
             <MyButton
-                onPress={() => findMe()}
+                onPress={() => { setPassword(''); setEmail(''); findMe() }}
                 text='Find my list'
                 colour={Colours.success}
                 textColour={Colours.black}
                 style={{ marginBottom: 100 }}
             />
+
         </View>
     }
     else {
@@ -130,10 +153,6 @@ const Login = (props) => {
         </View>;
     }
 
-
-
-
-
     const firebaseLogin = (email, password) => {
         setIsFetchingData(true);
         firebase.auth().signInWithEmailAndPassword(email, password).
@@ -150,9 +169,10 @@ const Login = (props) => {
                         snapshot.forEach(child => {
 
                             if (child.key === userID) {
+
                                 firebase.auth().currentUser.
                                     updateProfile({ displayName: child.val().firstName }).
-                                    then(() => {
+                                    then(() => {//  FOUND USER
                                         fetchDaysList(userID, firebase.auth().currentUser.displayName);
                                     });
                             }
@@ -219,6 +239,7 @@ const Login = (props) => {
 
             }).then(() => {
                 localList = checkIfTodayExists(localList);
+                // before moving along our logic, first check if the app needs to add days to the list
                 createWeeksListFromDaysList(localList, userName);
             });
     };
@@ -328,9 +349,7 @@ const Login = (props) => {
         //clear inputs
         setEmail('');
         setPassword('');
-
-        //redirect to main app
-        props.navigation.navigate(ROUTES.TABS);
+        handleLocalListLoaded();
     };
 
 

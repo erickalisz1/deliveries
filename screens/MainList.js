@@ -25,8 +25,15 @@ import Deliveries from '../assets/models/Deliveries';
 
 const MainList = () => {
 
-    const list = useSelector(state => state.user.userDaysList);
-    const name = useSelector(state => state.user.username);
+    let appOffline = useSelector(state => state.user.appOffline);
+    let SQList = useSelector(state => state.user.sqlList);
+    let fireList = useSelector(state => state.user.userDaysList);
+
+    console.log(appOffline);
+
+    // if the app is offline, the firebase list hasn't been set
+    let list = appOffline ? SQList : fireList;
+    let name = useSelector(state => state.user.username);
 
     //display settings states
     //default list display

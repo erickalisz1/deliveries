@@ -28,11 +28,9 @@ const MyAccount = (props) => {
 
     const currentUser = firebase.auth().currentUser;
 
-    // dispatch(placesActions.addPlace(titleValue, selectedImage));
-
     const exportList = () => {
         try {
-            dispatch(myActions.download(currentUser.email, currentUser.uid, currentUser.displayName, list));
+            dispatch(myActions.DownloadListToDevice(currentUser.email, currentUser.uid, currentUser.displayName, list));
         } catch (err) {
             console.log(err);
         }
@@ -86,7 +84,7 @@ const MyAccount = (props) => {
         <Container>
             <LargeText>Settings</LargeText>
             <MyButton
-                text="Enable Offline Mode"
+                text="Download List"
                 colour={Colours.days}
                 textColour={Colours.background}
                 onPress={() => exportList()}
