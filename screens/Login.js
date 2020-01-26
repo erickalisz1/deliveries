@@ -32,11 +32,13 @@ const Login = (props) => {
 
     const handleLocalListLoaded = () => {
         //redirecting to main app and setting app offline
-        // toggleOffline();
         props.navigation.navigate(ROUTES.TABS);
     };
-
+    
+    
+    // dispatching all these actions here because methods to get data from SQLite are async
     if (SQList.length > 0) {
+
         dispatch(
             {//setting app offline
                 type: ACTIONS.IS_OFFLINE,
@@ -57,8 +59,7 @@ const Login = (props) => {
                 type: ACTIONS.SET_USER_WEEKS_LIST,
                 value: assembleLocalWeeksList(SQList)
             });
-        Alert.alert('Your list was found!', '', [{ text: "Great!", onPress: () => { handleLocalListLoaded(); } }]);
-
+        Alert.alert('Your list was found!', '', [{ text: "Lets Go!", onPress: () => { handleLocalListLoaded(); } }]);
     }
 
     const usernameInput = (input) => {
@@ -76,6 +77,7 @@ const Login = (props) => {
 
     const findMe = () => {
         try {
+            //if successful, this will update the SQList length and run the async dispatches block on line 43
             dispatch(myActions.GetUserList(email));
         } catch (error) {
             console.log(error);

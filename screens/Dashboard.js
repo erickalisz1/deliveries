@@ -21,15 +21,23 @@ const Dashboard = () => {
     let list = useSelector(state => state.user.userDaysList);
     let name = useSelector(state => state.user.username);
 
-    let refresh = false;
+    const dispatch = useDispatch();
     
+    let refresh = false;
+
     if(!appOffline){
         refresh = useSelector(state => state.user.shouldRefresh);
+    }
+    else{
+        dispatch({
+            type:ACTIONS.SET_SQL_LIST,
+            value:[]
+        });
     }
     
     const [refreshedList, setRefreshedList] = useState(list);
 
-    const dispatch = useDispatch();
+    
 
     const refreshList = (userID, userName) => {
 
