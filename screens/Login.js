@@ -79,6 +79,7 @@ const Login = (props) => {
         try {
             //if successful, this will update the SQList length and run the async dispatches block on line 43
             dispatch(myActions.GetUserList(email));
+
         } catch (error) {
             console.log(error);
             Alert.alert(error.message);

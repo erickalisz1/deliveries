@@ -13,13 +13,16 @@ import { ACTIONS } from '../store/actions/actions';
 import { ROUTES } from '../assets/constants/strings';
 import { myStyles } from '../assets/helper/Styles';
 import HelpItem from '../components/HelpItem';
+import { fireRef, deliveriesRef } from '../assets/helper/helper';
+import Deliveries from '../assets/models/Deliveries';
+import Loading from '../components/Loading';
 
 const MyAccount = (props) => {
 
     const [isChangeClicked, setIsChangeClicked] = useState(false);
     const [newPassword, setNewPassword] = useState('');
+    const [isFetchingData, setIsFetchingData] = useState(false);
 
-    const list = useSelector(state => state.user.userDaysList);
     let appOffline = useSelector(state => state.user.appOffline);
 
     const dispatch = useDispatch();
@@ -39,7 +42,61 @@ const MyAccount = (props) => {
 
     const exportList = () => {
         try {
-            dispatch(myActions.DownloadListToDevice(currentUser.email, currentUser.uid, currentUser.displayName, list));
+            //if user wishes to save list to SQLite, fetch it again from firebase to ensure it is up to date
+            setIsFetchingData(true);
+
+            let localList = [];
+
+            let start = new Date();
+            let daysCount = 0;
+            let week = 0;
+
+            console.log('Fetching Days List for', currentUser.displayName);
+
+            // SELECT * STATEMENT
+            firebase.
+                database().
+                ref(fireRef + currentUser.uid + deliveriesRef).
+                orderByKey().
+                once('value').
+                then(snapshot => {
+                    snapshot.forEach(day => {
+
+                        const delivery = new Deliveries();
+
+                        let id = day.key;
+
+                        delivery.dayNumber = Number(id);
+                        delivery.actualDay = day.val().actualDay;
+                        delivery.deliveroo = day.val().deliveroo;
+                        delivery.uber = day.val().uber;
+                        delivery.hours = day.val().hours;
+                        delivery.total = delivery.deliveroo + delivery.uber;
+
+                        delivery.hours > 0 ? (delivery.per = delivery.total / delivery.hours) : (delivery.per = 0);
+
+                        delivery.week = week;
+                        delivery.dayOfWeek = new Date(delivery.actualDay).getDay();
+
+                        localList.push(delivery);
+
+                        //logic to define weeks based on days
+                        daysCount += 1;
+                        if (daysCount === 7) {
+                            daysCount = 0;
+                            week += 1;
+                        }
+                    });
+
+                    //finished building list
+                    let finish = new Date();
+                    console.log((finish - start) + 'ms to fetch list. Saving to SQLite...');
+
+                }).then(() => {
+                    console.log('Inserting', localList.length, ' into SQLite');
+                    dispatch(myActions.DownloadListToDevice(currentUser.email, currentUser.uid, currentUser.displayName, localList));
+                    setIsFetchingData(false);
+                });
         } catch (err) {
             console.log(err);
         }
@@ -94,12 +151,12 @@ const MyAccount = (props) => {
 
     let title = !appOffline ? 'Settings' : 'Offline Mode';
 
-    return (
+    return ( isFetchingData ? <Loading /> : 
         <Container>
 
             <LargeText style={{ margin: 20 }}>{title}</LargeText>
             {appOffline ? null :
-                <View style={{width: '90%'}}>
+                <View style={{ width: '90%' }}>
                     <HelpItem title='Setup Offline Browsing' style={{ marginVertical: 3, borderWidth: 1, borderColor: Colours.selected }} onPress={() => promptUser()} />
                     <HelpItem title='Change Password' style={{ marginVertical: 3, borderWidth: 1, borderColor: Colours.selected }} onPress={() => setIsChangeClicked(true)} />
                 </View>

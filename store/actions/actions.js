@@ -1,4 +1,5 @@
 import { downloadList, FetchDataForUser, ClearUserData } from "../../assets/helper/DB";
+import { Alert } from "react-native";
 
 export const ACTIONS = {
     SET_USER_NAME: "SET_USER_NAME",
@@ -56,6 +57,9 @@ export const GetUserList = (email) => {
                     type: ACTIONS.SET_SQL_LIST,
                     value: result.rows._array
                 });
+            }
+            else {
+                Alert.alert('Nothing Found!');
             }
             return result;
         }
