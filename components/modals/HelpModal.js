@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Modal, Switch } from 'react-native';
+import { Text, View, Modal } from 'react-native';
 
 import Colours from '../../assets/constants/Colours';
 import LargeText from '../LargeText';

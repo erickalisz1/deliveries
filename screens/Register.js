@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import firebase from 'firebase';
 import { Alert, View, TextInput } from 'react-native';
-import { useDispatch } from 'react-redux';
 import { fireRef } from '../assets/helper/helper';
 import Container from '../components/Container';
 import DismissKeyboard from '../components/DismissKeyboard';
@@ -16,7 +15,6 @@ const Register = (props) => {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
 
-    const dispatch = useDispatch();//to update store
 
     const usernameInput = (input) => {
         setUsername(input);

@@ -1,22 +1,22 @@
 import React, { useState } from 'react';
 import firebase from 'firebase';
-import { Alert, Platform, View, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { Alert, Platform, View, Image, StyleSheet, TouchableOpacity, TextInput } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Container from '../components/Container';
-import { TextInput } from 'react-native';
-import MyButton from '../components/MyButton';
+import { ACTIONS } from '../store/actions/actions';
+import { ROUTES } from '../assets/constants/strings';
+import * as myActions from "../store/actions/actions";//Async operations
+
+import Deliveries from '../assets/models/Deliveries';
+import Weeks from '../assets/models/Weeks';
 import { myStyles } from '../assets/helper/Styles';
 import Colours from '../assets/constants/Colours';
 import { fireRef, deliveriesRef, SetPrecision, checkIfTodayExists, assembleLocalWeeksList, assembleLocalDaysList } from '../assets/helper/helper';
-import { ACTIONS } from '../store/actions/actions';
-import Deliveries from '../assets/models/Deliveries';
+import Container from '../components/Container';
+import MyButton from '../components/MyButton';
 import Loading from '../components/Loading';
-import Weeks from '../assets/models/Weeks';
 import DismissKeyboard from '../components/DismissKeyboard';
-import { ROUTES } from '../assets/constants/strings';
 import SmallText from '../components/SmallText';
-import * as myActions from "../store/actions/actions";
 import SortingButton from '../components/SortingButton';
 
 const Login = (props) => {
@@ -119,8 +119,8 @@ const Login = (props) => {
             <TouchableOpacity
                 // onPress={() => { setEmail('admin@admin.com'); setPassword('adminait') }}
                 style={styles.imageContainer}
-                // onPress={() => { setEmail('eric@ait.com'); setPassword('eric123') }}
-                onPress={() => { setEmail('carol@ait.com'); setPassword('carol1') }}
+                onPress={() => { setEmail('eric@ait.com'); setPassword('eric123') }}
+                // onPress={() => { setEmail('carol@ait.com'); setPassword('carol1') }}
             >
                 <Image
                     source={require('../assets/login.png')}

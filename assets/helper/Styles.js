@@ -1,5 +1,5 @@
 import { StyleSheet, Platform } from 'react-native';
-import Colours from '../constants/darkTheme';
+import Colours from '../constants/Colours';
 
 export const myStyles = StyleSheet.create({
     //inputs

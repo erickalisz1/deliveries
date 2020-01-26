@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 
-
 import LargeText from '../components/LargeText';
 import Container from '../components/Container';
 import HelpModal from '../components//modals/HelpModal';

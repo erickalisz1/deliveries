@@ -12,14 +12,14 @@ import UpdateDays from '../components/modals/UpdateDays';
 import Container from '../components/Container';
 import DetailModal from '../components/modals/DetailModal';
 import SortingButton from '../components/SortingButton';
+import FiltersModal from '../components/modals/FiltersModal';
+import SmallText from '../components/SmallText';
 
 // assets
 import { setLabelText, sortList, assignDay, filters, fireRef, deliveriesRef } from '../assets/helper/helper';
 import { SPACE, LARGER, LARGER_EQUAL, SMALLER, SMALLER_EQUAL } from '../assets/constants/strings';
 import { myStyles } from '../assets/helper/Styles';
 import Colours from '../assets/constants/Colours';
-import FiltersModal from '../components/modals/FiltersModal';
-import SmallText from '../components/SmallText';
 import Deliveries from '../assets/models/Deliveries';
 
 

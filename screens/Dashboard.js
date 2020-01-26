@@ -5,7 +5,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import Container from '../components/Container';
 import Card from '../components/Card';
 import LargeText from '../components/LargeText';
-
 import { SetPrecision, filters, fireRef, deliveriesRef } from '../assets/helper/helper';
 import { DAYS } from '../assets/constants/strings';
 import Deliveries from '../assets/models/Deliveries';

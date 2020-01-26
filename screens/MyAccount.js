@@ -3,14 +3,14 @@ import { Alert, TextInput, View } from 'react-native';
 import firebase from 'firebase';
 import { useDispatch, useSelector } from "react-redux";
 
-import * as myActions from "../store/actions/actions";
+import * as myActions from "../store/actions/actions";//Async
+import { ACTIONS } from '../store/actions/actions';
+import { ROUTES } from '../assets/constants/strings';
 
 import Container from '../components/Container';
 import MyButton from '../components/MyButton';
 import Colours from '../assets/constants/Colours';
 import LargeText from "../components/LargeText";
-import { ACTIONS } from '../store/actions/actions';
-import { ROUTES } from '../assets/constants/strings';
 import { myStyles } from '../assets/helper/Styles';
 import HelpItem from '../components/HelpItem';
 import { fireRef, deliveriesRef } from '../assets/helper/helper';

@@ -1,7 +1,7 @@
 import { Alert, Platform } from 'react-native';
 import firebase from 'firebase';
 import { DEL, UB, HRS, TOTAL, PER, DAYS, LARGER, LARGER_EQUAL, SMALLER, SMALLER_EQUAL, WEEKS, BETWEEN } from '../constants/strings';
-import Colours from '../constants/darkTheme';
+import Colours from '../constants/Colours';
 import Deliveries from '../models/Deliveries';
 import Weeks from '../models/Weeks';
 
