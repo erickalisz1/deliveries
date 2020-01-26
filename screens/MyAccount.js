@@ -44,7 +44,7 @@ const MyAccount = (props) => {
         else {
             Alert.alert(
                 'Delete Account',
-                'To delete your account, press Delete.\nBeware, this action will permanently erase all of your data from Firebase and from your device!',
+                'Beware, this action will permanently erase all of your data from Firebase and from your device!',
                 [{ text: 'Cancel', style: 'cancel' }, { text: 'Delete', onPress: () => deleteCurrentUser() }]);
         }
     };
@@ -192,7 +192,7 @@ const MyAccount = (props) => {
     return (isFetchingData ? <Loading /> :
         <Container dark={true}>
             <View style={{ flex: 1, margin: 30 }}>
-                
+
                 <LargeText style={{ margin: 20 }}>{title}</LargeText>
                 {/* if on offline mode, just show the logout */}
                 {appOffline ?
