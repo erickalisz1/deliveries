@@ -128,10 +128,6 @@ const MyAccount = (props) => {
 
     const firebaseLogout = () => {
 
-
-        // dispatch(myActions.loadUserList(firebase.auth().currentUser.uid));
-
-
         firebase.auth().signOut().then(() => {
 
             console.log('Dispatch--> userName = \'\' ');
@@ -197,7 +193,7 @@ const MyAccount = (props) => {
         <Container dark={true}>
             <View style={{ flex: 1, margin: 30 }}>
                 <LargeText style={{ margin: 20 }}>{title}</LargeText>
-                {appOffline ? null :
+                {appOffline ? <HelpItem title='Change Password' onPress={() => setIsChangeClicked(true)} /> :
                     <View style={{ flex: 1, alignItems: 'center' }}>
                         <HelpItem title='Setup Offline Browsing' onPress={() => promptUser('Download')} />
                         <HelpItem title='Change Password' onPress={() => setIsChangeClicked(true)} />

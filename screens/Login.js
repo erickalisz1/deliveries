@@ -151,7 +151,7 @@ const Login = (props) => {
                     onPress={() => firebaseLogin(email, password)}
                     text='Login'
                     colour={Colours.success}
-                    textColour={Colours.black}
+                    textColour={Colours.white}
                     style={{ marginBottom: 20 }}
                 />
                 <SortingButton
