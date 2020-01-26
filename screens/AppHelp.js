@@ -18,7 +18,6 @@ const AppHelp = (props) => {
         return (
             <HelpItem
                 title={row.display}
-                style={{ width: '90%', marginVertical: 3 }}
                 key={index}
                 onPress={() => { setItemSelected(row); setDisplayHelpModal(true); }}
             />
@@ -34,7 +33,7 @@ const AppHelp = (props) => {
 
             {displayItems}
 
-            <HelpItem title='My Account' style={{ width: '90%', marginVertical: 3, borderWidth: 1, borderColor: Colours.selected }} onPress={() => props.navigation.navigate(ROUTES.ACCOUNT)} />
+            <HelpItem title='My Account' style={{ borderWidth: 1, borderColor: Colours.selected }} onPress={() => props.navigation.navigate(ROUTES.ACCOUNT)} />
 
         </Container>
     );

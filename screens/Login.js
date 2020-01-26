@@ -36,8 +36,8 @@ const Login = (props) => {
         props.navigation.navigate(ROUTES.TABS);
         setIsOfflinePressed(false);
     };
-    
-    
+
+
     // dispatching all these actions here because methods to get data from SQLite are async
     if (SQList.length > 0) {
 
@@ -119,8 +119,8 @@ const Login = (props) => {
             <TouchableOpacity
                 // onPress={() => { setEmail('admin@admin.com'); setPassword('adminait') }}
                 style={styles.imageContainer}
-            // onPress={() => { setEmail('eric@ait.com'); setPassword('eric123') }}
-            onPress={() => { setEmail('carol@ait.com'); setPassword('carol1') }}
+                // onPress={() => { setEmail('eric@ait.com'); setPassword('eric123') }}
+                onPress={() => { setEmail('carol@ait.com'); setPassword('carol1') }}
             >
                 <Image
                     source={require('../assets/login.png')}
@@ -155,7 +155,6 @@ const Login = (props) => {
                     style={{ marginBottom: 20 }}
                 />
                 <SortingButton
-                    light
                     text='Register'
                     colour={Colours.success}
                     onPress={() => props.navigation.navigate(ROUTES.REGISTER)}
@@ -372,19 +371,18 @@ const Login = (props) => {
 
     return (
         isFetchingData ? <Loading /> :
-            <DismissKeyboard>
-                <Container>
-                    <SortingButton
-                        style={{ margin: 30 }}
-                        light
-                        onPress={() => toggleOffline()}
-                        text='Offline Mode'
-                        colour={Colours.primaryText} />
+            <Container dark={true}>
+                <SortingButton
+                    style={{ margin: 30 }}
+                    onPress={() => toggleOffline()}
+                    text= {isOfflinePressed ? 'Switch to Online Mode' : 'Switch to Offline Mode'}
+                    colour={Colours.primaryText} />
 
+                <DismissKeyboard>
                     {mode}
+                </DismissKeyboard>
 
-                </Container>
-            </DismissKeyboard>
+            </Container>
     );
 };
 
@@ -394,9 +392,12 @@ const styles = StyleSheet.create({
         height: '100%',
     },
     imageContainer: {
-        width: 200,
-        height: 200,
-        marginVertical: 10
+        width: 150,
+        height: 150,
+        marginBottom: 20,
+        marginHorizontal:20,
+        borderRadius:20,
+        overflow:'hidden',
     },
 });
 

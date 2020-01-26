@@ -111,6 +111,10 @@ export const myStyles = StyleSheet.create({
         borderBottomWidth: 1,
         borderBottomColor: Colours.accent,
     },
+    helpItem:{
+        marginVertical:3,
+        width: '90%'
+    },
     listItemRow: {
         padding: 20,
         display: 'flex',

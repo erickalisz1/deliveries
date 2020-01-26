@@ -17,6 +17,7 @@ import { fireRef, deliveriesRef } from '../assets/helper/helper';
 import Deliveries from '../assets/models/Deliveries';
 import Loading from '../components/Loading';
 import SortingButton from '../components/SortingButton';
+import DismissKeyboard from '../components/DismissKeyboard';
 
 const MyAccount = (props) => {
 
@@ -193,50 +194,53 @@ const MyAccount = (props) => {
     let title = !appOffline ? 'Settings' : 'Offline Mode';
 
     return (isFetchingData ? <Loading /> :
-        <Container>
-
-            <LargeText style={{ margin: 20 }}>{title}</LargeText>
-            {appOffline ? null :
-                <View style={{ width: '90%' }}>
-                    <HelpItem title='Setup Offline Browsing' style={{ marginVertical: 3, borderWidth: 1, borderColor: Colours.selected }} onPress={() => promptUser('Download')} />
-                    <HelpItem title='Change Password' style={{ marginVertical: 3, borderWidth: 1, borderColor: Colours.selected }} onPress={() => setIsChangeClicked(true)} />
-                    <HelpItem title='Log Out' style={{ marginVertical: 3, borderWidth: 1, borderColor: Colours.selected }} onPress={() => firebaseLogout()} />
-                </View>
-            }
-
-            {isChangeClicked ?
-                (
-                    <View style={{ marginTop: 20 }}>
-                        <TextInput
-                            value={newPassword}
-                            onChangeText={inputPassword}
-                            secureTextEntry={true}
-                            placeholder={'New Password'}
-                            placeholderTextColor={Colours.placeholder}
-                            style={myStyles.login}
-                        />
-
-                        <MyButton
-                            text="Done"
-                            colour={Colours.success}
-                            textColour={Colours.white}
-                            onPress={() => changePassword()} />
-                        <MyButton
-                            text="Cancel"
-                            colour={Colours.cancel}
-                            textColour={Colours.white}
-                            onPress={() => setIsChangeClicked(false)} />
+        <Container dark={true}>
+            <View style={{ flex: 1, margin: 30 }}>
+                <LargeText style={{ margin: 20 }}>{title}</LargeText>
+                {appOffline ? null :
+                    <View style={{ flex: 1, alignItems: 'center' }}>
+                        <HelpItem title='Setup Offline Browsing' onPress={() => promptUser('Download')} />
+                        <HelpItem title='Change Password' onPress={() => setIsChangeClicked(true)} />
+                        <HelpItem title='Log Out' onPress={() => firebaseLogout()} />
                     </View>
-                )
-                : null}
-            {appOffline ? null :
-                <SortingButton
-                    colour={Colours.cancel}
-                    text='Delete My Account'
-                    onPress={() => promptUser('delete')}
-                />
-            }
+                }
 
+                {isChangeClicked ?
+                    (
+                        <DismissKeyboard>
+                            <View style={{ flex: 1, alignItems: 'center' }}>
+                                <TextInput
+                                    value={newPassword}
+                                    onChangeText={inputPassword}
+                                    secureTextEntry={true}
+                                    placeholder={'New Password'}
+                                    placeholderTextColor={Colours.placeholder}
+                                    style={myStyles.login}
+                                />
+
+                                <MyButton
+                                    text="Done"
+                                    colour={Colours.success}
+                                    textColour={Colours.white}
+                                    onPress={() => changePassword()} />
+                                <MyButton
+                                    text="Cancel"
+                                    colour={Colours.cancel}
+                                    textColour={Colours.white}
+                                    onPress={() => setIsChangeClicked(false)} />
+                            </View>
+                        </DismissKeyboard>
+                    )
+                    : null}
+                {appOffline || isChangeClicked ? null :
+                    <SortingButton
+                        colour={Colours.cancel}
+                        text='Delete My Account'
+                        onPress={() => promptUser('delete')}
+                        style={{ marginHorizontal: 40 }}
+                    />
+                }
+            </View>
         </Container>
     );
 };

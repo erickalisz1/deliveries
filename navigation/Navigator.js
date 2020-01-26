@@ -18,7 +18,7 @@ import Register from '../screens/Register';
 const defaultStackNavOptions =
 {
     headerStyle: {
-        backgroundColor: Colours.background,
+        backgroundColor: Colours.backgroundLight,
     },
     headerTintColor: Colours.primaryText,
     headerBackTitle: ''

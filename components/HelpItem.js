@@ -8,7 +8,7 @@ import { myStyles } from '../assets/helper/Styles';
 const HelpItem = (props) => {
 
     return (
-        <TouchableOpacity style={props.style} onPress={props.onPress}>
+        <TouchableOpacity style={{...myStyles.helpItem, ...props.style}} onPress={props.onPress}>
             <View style={myStyles.listItemRow}>
                 <View style={myStyles.listItemColumn}>
                     <Text style={myStyles.listItemValueLarge}>{props.title}</Text>
