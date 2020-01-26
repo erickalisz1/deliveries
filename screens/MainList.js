@@ -26,13 +26,10 @@ import Deliveries from '../assets/models/Deliveries';
 const MainList = () => {
 
     let appOffline = useSelector(state => state.user.appOffline);
-    let SQList = useSelector(state => state.user.sqlList);
-    let fireList = useSelector(state => state.user.userDaysList);
 
-    console.log(appOffline);
+    console.log('Offline mode:', appOffline);
 
-    // if the app is offline, the firebase list hasn't been set
-    let list = appOffline ? SQList : fireList;
+    let list = useSelector(state => state.user.userDaysList);
     let name = useSelector(state => state.user.username);
 
     //display settings states
@@ -44,6 +41,7 @@ const MainList = () => {
     const [displayUpdate, setDisplayUpdate] = useState(false);
     const [displayDetail, setDisplayDetail] = useState(false);
     const [displayFilters, setDisplayFilters] = useState(false);
+    
     //update / detail
     const [selectedDay, setSelectedDay] = useState(null);
 
@@ -327,8 +325,8 @@ const MainList = () => {
                     <FlatList
                         keyExtractor={item => JSON.stringify(item.dayNumber)}
                         data={sortList(deliveriesList, columnToSort, orientation)}
-                        refreshing={isRefreshing}
-                        onRefresh={handleRefresh}
+                        refreshing={ !appOffline ? isRefreshing : false}
+                        onRefresh={ !appOffline ? handleRefresh : null}
 
                         style={{ maxWidth: activeFilter === '' ? '100%' : '97.5%', marginHorizontal: activeFilter === '' ? 0 : '2.5%' }}
 

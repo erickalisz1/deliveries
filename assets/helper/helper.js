@@ -631,13 +631,11 @@ export const assembleLocalDaysList = (list) => {
 
         const delivery = new Deliveries();
 
-        let id = day.key;
-
-        delivery.dayNumber = Number(id);
-        delivery.actualDay = day.val().actualDay;
-        delivery.deliveroo = day.val().deliveroo;
-        delivery.uber = day.val().uber;
-        delivery.hours = day.val().hours;
+        delivery.dayNumber = day.dayNumber;
+        delivery.actualDay = day.actualDay;
+        delivery.deliveroo = day.deliveroo;
+        delivery.uber = day.uber;
+        delivery.hours = day.hours;
         delivery.total = delivery.deliveroo + delivery.uber;
 
         delivery.hours > 0 ? (delivery.per = delivery.total / delivery.hours) : (delivery.per = 0);

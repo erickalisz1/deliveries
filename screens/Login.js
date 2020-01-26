@@ -31,7 +31,7 @@ const Login = (props) => {
 
     const handleLocalListLoaded = () => {
         //redirecting to main app and setting app offline
-        toggleOffline();
+        // toggleOffline();
         props.navigation.navigate(ROUTES.TABS);
     };
 

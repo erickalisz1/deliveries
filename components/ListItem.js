@@ -4,8 +4,11 @@ import { formatDate, SetPrecision } from '../assets/helper/helper';
 import { myStyles } from '../assets/helper/Styles';
 import { stringPer, stringUber, stringTotal, stringVal } from '../assets/constants/strings';
 import { Ionicons } from '@expo/vector-icons';
+import { useSelector } from "react-redux";
 
 const ListItem = (props) => {
+
+    let appOffline = useSelector(state => state.user.appOffline);
 
     const { columnToSort, selectedDay } = props;
 
@@ -79,11 +82,13 @@ const ListItem = (props) => {
 
     return text === '-1' ? (null) : (
         <View style={myStyles.listItem}>
-                <TouchableOpacity onPress={handleUpdate} style={{paddingLeft:5, paddingRight:10}}>
+            {appOffline ? null :
+                <TouchableOpacity onPress={handleUpdate} style={{ paddingLeft: 5, paddingRight: 10 }}>
                     <Ionicons name='ios-create' size={20} color={props.buttonColour} />
-                </TouchableOpacity>
-                <Text style={myStyles.listItemValue}>{text}</Text>
-            
+                </TouchableOpacity>}
+
+            <Text style={myStyles.listItemValue}>{text}</Text>
+
         </View>
     );
 }
