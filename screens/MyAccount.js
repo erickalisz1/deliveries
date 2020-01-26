@@ -192,8 +192,12 @@ const MyAccount = (props) => {
     return (isFetchingData ? <Loading /> :
         <Container dark={true}>
             <View style={{ flex: 1, margin: 30 }}>
+                
                 <LargeText style={{ margin: 20 }}>{title}</LargeText>
-                {appOffline ? <HelpItem title='Change Password' onPress={() => setIsChangeClicked(true)} /> :
+                {/* if on offline mode, just show the logout */}
+                {appOffline ?
+                    <HelpItem title='Log Out' onPress={() => firebaseLogout()} />
+                    :
                     <View style={{ flex: 1, alignItems: 'center' }}>
                         <HelpItem title='Setup Offline Browsing' onPress={() => promptUser('Download')} />
                         <HelpItem title='Change Password' onPress={() => setIsChangeClicked(true)} />
