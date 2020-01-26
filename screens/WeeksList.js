@@ -27,6 +27,8 @@ const WeeksList = () => {
     const list = useSelector(state => state.user.userWeeksList);
     const name = useSelector(state => state.user.username);
 
+    let appOffline = useSelector(state => state.user.appOffline);
+
     //display settings states
     //default list display
     const [orientation, setOrientation] = useState('Desc');
@@ -349,8 +351,8 @@ const WeeksList = () => {
                     <FlatList
                         keyExtractor={item => JSON.stringify(item.week)}
                         data={sortList(deliveriesList, columnToSort, orientation)}
-                        refreshing={isRefreshing}
-                        onRefresh={handleRefresh}
+                        refreshing={ !appOffline ? isRefreshing : false}
+                        onRefresh={ !appOffline ? handleRefresh : null}
 
                         style={{ maxWidth: activeFilter === '' ? '100%' : '97.5%', marginHorizontal: activeFilter === '' ? 0 : '2.5%' }}
 

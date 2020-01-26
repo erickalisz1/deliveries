@@ -27,8 +27,6 @@ const MainList = () => {
 
     let appOffline = useSelector(state => state.user.appOffline);
 
-    console.log('Offline mode:', appOffline);
-
     let list = useSelector(state => state.user.userDaysList);
     let name = useSelector(state => state.user.username);
 

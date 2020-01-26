@@ -7,17 +7,18 @@ import HelpModal from '../components//modals/HelpModal';
 import HelpItem from '../components/HelpItem';
 import { helpItems } from '../assets/helper/helper';
 import { ROUTES } from '../assets/constants/strings';
+import Colours from '../assets/constants/Colours';
 
 const AppHelp = (props) => {
 
     const [displayHelpModal, setDisplayHelpModal] = useState(false);
     const [itemSelected, setItemSelected] = useState(null);
-    
+
     let displayItems = helpItems.map((row, index) => {//function to better display items
         return (
             <HelpItem
                 title={row.display}
-                style={{ width: '90%' }}
+                style={{ width: '90%', marginVertical: 3 }}
                 key={index}
                 onPress={() => { setItemSelected(row); setDisplayHelpModal(true); }}
             />
@@ -33,7 +34,7 @@ const AppHelp = (props) => {
 
             {displayItems}
 
-            <HelpItem title='My Account' style={{ width: '90%' }} onPress={() => props.navigation.navigate(ROUTES.ACCOUNT)} />
+            <HelpItem title='My Account' style={{ width: '90%', marginVertical: 3, borderWidth: 1, borderColor: Colours.selected }} onPress={() => props.navigation.navigate(ROUTES.ACCOUNT)} />
 
         </Container>
     );

@@ -12,6 +12,7 @@ import LargeText from "../components/LargeText";
 import { ACTIONS } from '../store/actions/actions';
 import { ROUTES } from '../assets/constants/strings';
 import { myStyles } from '../assets/helper/Styles';
+import HelpItem from '../components/HelpItem';
 
 const MyAccount = (props) => {
 
@@ -19,6 +20,7 @@ const MyAccount = (props) => {
     const [newPassword, setNewPassword] = useState('');
 
     const list = useSelector(state => state.user.userDaysList);
+    let appOffline = useSelector(state => state.user.appOffline);
 
     const dispatch = useDispatch();
 
@@ -27,6 +29,13 @@ const MyAccount = (props) => {
     };
 
     const currentUser = firebase.auth().currentUser;
+
+    const promptUser = () => {
+        Alert.alert(
+            'Offline Browsing',
+            'To have access to your data without internet connection, simply press Download and the next time you login, you will be able to browse offline by providing your email address',
+            [{ text: 'Cancel', style: 'cancel' }, { text: 'Download', onPress: () => exportList() }]);
+    };
 
     const exportList = () => {
         try {
@@ -74,30 +83,31 @@ const MyAccount = (props) => {
                 type: ACTIONS.SET_USER_WEEKS_LIST,
                 value: []
             });
+            console.log('Dispatch--> SQList = \'\' ');
+            dispatch({
+                type: ACTIONS.SET_SQL_LIST,
+                value: []
+            });
             props.navigation.navigate(ROUTES.LOGIN);
         });
     };
 
-
+    let title = !appOffline ? 'Settings' : 'Offline Mode';
 
     return (
         <Container>
-            <LargeText>Settings</LargeText>
-            <MyButton
-                text="Download List"
-                colour={Colours.days}
-                textColour={Colours.background}
-                onPress={() => exportList()}
-            />
-            <MyButton
-                text="Change Password"
-                colour={Colours.accent}
-                textColour={Colours.black}
-                onPress={() => setIsChangeClicked(true)}
-            />
+
+            <LargeText style={{ margin: 20 }}>{title}</LargeText>
+            {appOffline ? null :
+                <View style={{width: '90%'}}>
+                    <HelpItem title='Setup Offline Browsing' style={{ marginVertical: 3, borderWidth: 1, borderColor: Colours.selected }} onPress={() => promptUser()} />
+                    <HelpItem title='Change Password' style={{ marginVertical: 3, borderWidth: 1, borderColor: Colours.selected }} onPress={() => setIsChangeClicked(true)} />
+                </View>
+            }
+
             {isChangeClicked ?
                 (
-                    <View>
+                    <View style={{ marginTop: 20 }}>
                         <TextInput
                             value={newPassword}
                             onChangeText={inputPassword}
@@ -125,6 +135,7 @@ const MyAccount = (props) => {
                     colour={Colours.cancel}
                     textColour={Colours.white}
                     onPress={() => firebaseLogout()}
+                    style={{ marginTop: 30 }}
                 />}
 
         </Container>

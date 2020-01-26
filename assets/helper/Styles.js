@@ -48,7 +48,7 @@ export const myStyles = StyleSheet.create({
         flexDirection:'row',
         justifyContent:'space-between',
         alignItems:'center',
-        // marginTop: Platform.OS === 'ios' ? 15 : 35,
+        marginTop: 15,
         marginBottom: 15,
     },
     activeFilterContainer:{
@@ -112,7 +112,6 @@ export const myStyles = StyleSheet.create({
         borderBottomColor: Colours.accent,
     },
     listItemRow: {
-        marginVertical: 3,
         padding: 20,
         display: 'flex',
         flexDirection: 'row',

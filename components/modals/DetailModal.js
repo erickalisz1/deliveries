@@ -1,5 +1,6 @@
 import React from 'react';
 import { Text, View, Modal } from 'react-native';
+import { useSelector } from "react-redux";
 
 import { setWeekString, setDateString, setDailyMessage, setWeeklyMessage } from '../../assets/helper/helper';
 import { myStyles } from '../../assets/helper/Styles';
@@ -11,6 +12,8 @@ import MyButton from '../MyButton';
 import Row from '../Row';
 
 const DetailModal = (props) => {
+
+    let appOffline = useSelector(state => state.user.appOffline);
 
     if (props.week) {
 
@@ -90,22 +93,23 @@ const DetailModal = (props) => {
                     </View>
 
                     <Row>
+                        {appOffline ? null :
+                            <MyButton
+                                text='Update'
+                                colour={Colours.selected}
+                                textColour={Colours.black}
+                                onPress={props.edit}
+                                style={{ marginHorizontal: 10 }}
+                            />}
 
-                        <MyButton
-                            text='Update'
-                            colour={Colours.selected}
-                            textColour={Colours.black}
-                            onPress={props.edit} 
-                            style={{marginHorizontal:10}}
-                            />                        
 
                         <MyButton
                             text='Got it'
                             colour={Colours.success}
                             textColour={Colours.black}
-                            onPress={props.onClose} 
-                            style={{marginHorizontal:10}}
-                            />
+                            onPress={props.onClose}
+                            style={{ marginHorizontal: 10 }}
+                        />
 
                     </Row>
                 </ModalContainer>

@@ -17,6 +17,7 @@ import DismissKeyboard from '../components/DismissKeyboard';
 import { ROUTES } from '../assets/constants/strings';
 import SmallText from '../components/SmallText';
 import * as myActions from "../store/actions/actions";
+import SortingButton from '../components/SortingButton';
 
 const Login = (props) => {
     const [email, setEmail] = useState('');
@@ -86,8 +87,8 @@ const Login = (props) => {
     let mode;
 
     if (isOfflinePressed) {
-        mode = <View style={{ marginHorizontal: '15%' }}>
-            <SmallText style={{ marginBottom: 30 }}>If you have previously downloaded your list when Logged in this device, you can browse it simply by providing your email address</SmallText>
+        mode = <View style={{ marginHorizontal: '15%', flex: 5 }}>
+            <SmallText style={{ marginBottom: 30, minHeight: 120 }}>If you have previously downloaded your list when Logged in this device, you can browse it simply by providing your email address</SmallText>
             <TextInput
                 placeholder={'Email'}
                 placeholderTextColor={Colours.placeholder}
@@ -96,30 +97,32 @@ const Login = (props) => {
                 value={email}
                 keyboardType='email-address'
             />
-            <MyButton
-                onPress={() => { setPassword(''); setEmail(''); findMe() }}
-                text='Find my list'
-                colour={Colours.success}
-                textColour={Colours.black}
-                style={{ marginBottom: 100 }}
-            />
+            {email.length < 4 ? null :
+                <MyButton
+                    onPress={() => { setPassword(''); setEmail(''); findMe() }}
+                    text='Find my list'
+                    colour={Colours.success}
+                    textColour={Colours.black}
+                    style={{ marginBottom: 100 }}
+                />}
+
 
         </View>
     }
     else {
-        mode = <View>
+        mode = <View style={{ flex: 5 }}>
             <TouchableOpacity
                 onPress={() => { setEmail('admin@admin.com'); setPassword('adminait') }}
                 style={styles.imageContainer}
             // onPress={() => { setEmail('eric@ait.com'); setPassword('eric123') }}
             // onPress={() => { setEmail('carol@ait.com'); setPassword('carol1') }}
-
             >
                 <Image
                     source={require('../assets/login.png')}
                     resizeMode="cover"
                     style={styles.image} />
             </TouchableOpacity>
+
             <TextInput
                 placeholder={'Email'}
                 placeholderTextColor={Colours.placeholder}
@@ -137,19 +140,23 @@ const Login = (props) => {
                 keyboardType='default'
                 secureTextEntry={true}
             />
-            <MyButton
-                onPress={() => firebaseLogin(email, password)}
-                text='Login'
-                colour={Colours.success}
-                textColour={Colours.black} />
+            <View style={{ marginHorizontal: 30 }}>
 
-            <SmallText top={30}>or</SmallText>
+                <MyButton
+                    onPress={() => firebaseLogin(email, password)}
+                    text='Login'
+                    colour={Colours.success}
+                    textColour={Colours.black}
+                    style={{ marginBottom: 20 }}
+                />
+                <SortingButton
+                    light
+                    text='Register'
+                    colour={Colours.success}
+                    onPress={() => props.navigation.navigate(ROUTES.REGISTER)}
+                />
 
-            <MyButton
-                onPress={() => props.navigation.navigate(ROUTES.REGISTER)}
-                text='Register'
-                colour={Colours.success}
-                textColour={Colours.black} />
+            </View>
         </View>;
     }
 
@@ -344,6 +351,11 @@ const Login = (props) => {
                 type: ACTIONS.SET_USER_WEEKS_LIST,
                 value: weeksList
             });
+        dispatch(
+            {//setting weeks list
+                type: ACTIONS.IS_OFFLINE,
+                value: false
+            });
         //finished building user
         setIsFetchingData(false);
         //clear inputs
@@ -357,12 +369,12 @@ const Login = (props) => {
         isFetchingData ? <Loading /> :
             <DismissKeyboard>
                 <Container>
-                    <MyButton
+                    <SortingButton
                         style={{ margin: 30 }}
+                        light
                         onPress={() => toggleOffline()}
                         text='Offline Mode'
-                        colour={Colours.primaryText}
-                        textColour={Colours.background} />
+                        colour={Colours.primaryText} />
 
                     {mode}
 
