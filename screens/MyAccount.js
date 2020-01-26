@@ -16,6 +16,7 @@ import HelpItem from '../components/HelpItem';
 import { fireRef, deliveriesRef } from '../assets/helper/helper';
 import Deliveries from '../assets/models/Deliveries';
 import Loading from '../components/Loading';
+import SortingButton from '../components/SortingButton';
 
 const MyAccount = (props) => {
 
@@ -33,11 +34,18 @@ const MyAccount = (props) => {
 
     const currentUser = firebase.auth().currentUser;
 
-    const promptUser = () => {
-        Alert.alert(
-            'Offline Browsing',
-            'To have access to your data without internet connection, simply press Download and the next time you login, you will be able to browse offline by providing your email address',
-            [{ text: 'Cancel', style: 'cancel' }, { text: 'Download', onPress: () => exportList() }]);
+    const promptUser = (type) => {
+        if (type === 'Download')
+            Alert.alert(
+                'Offline Browsing',
+                'To have access to your data without internet connection, simply press Download and the next time you login, you will be able to browse offline by providing your email address',
+                [{ text: 'Cancel', style: 'cancel' }, { text: 'Download', onPress: () => exportList() }]);
+        else {
+            Alert.alert(
+                'Delete Account',
+                'To delete your account, press Delete.\nBeware, this action will permanently erase all of your data from Firebase and from your device!',
+                [{ text: 'Cancel', style: 'cancel' }, { text: 'Delete', onPress: () => deleteCurrentUser() }]);
+        }
     };
 
     const exportList = () => {
@@ -93,9 +101,10 @@ const MyAccount = (props) => {
                     console.log((finish - start) + 'ms to fetch list. Saving to SQLite...');
 
                 }).then(() => {
-                    console.log('Inserting', localList.length, ' into SQLite');
+                    console.log('Inserting', localList.length, 'days into SQLite');
                     dispatch(myActions.DownloadListToDevice(currentUser.email, currentUser.uid, currentUser.displayName, localList));
                     setIsFetchingData(false);
+                    Alert.alert('You can now Browse your data offline!');
                 });
         } catch (err) {
             console.log(err);
@@ -116,7 +125,6 @@ const MyAccount = (props) => {
                 });
     };
 
-    //onSignedOut
     const firebaseLogout = () => {
 
 
@@ -149,16 +157,50 @@ const MyAccount = (props) => {
         });
     };
 
+    const deleteCurrentUser = () => {
+
+        dispatch(myActions.DeleteUserList(currentUser.email));
+
+        firebase.database().ref(fireRef + currentUser.uid).remove().then(() => {
+
+            firebase.auth().currentUser.delete().then(() => {
+                Alert.alert('Your account has been deleted');
+                console.log('Dispatch--> userName = \'\' ');
+                dispatch({
+                    type: ACTIONS.SET_USER_NAME,
+                    value: ''
+                });
+                console.log('Dispatch--> daysList = \'\' ');
+                dispatch({
+                    type: ACTIONS.SET_USER_DAYS_LIST,
+                    value: []
+                });
+                console.log('Dispatch--> weeksList = \'\' ');
+                dispatch({
+                    type: ACTIONS.SET_USER_WEEKS_LIST,
+                    value: []
+                });
+                console.log('Dispatch--> SQList = \'\' ');
+                dispatch({
+                    type: ACTIONS.SET_SQL_LIST,
+                    value: []
+                });
+                props.navigation.navigate(ROUTES.LOGIN);
+            });
+        });
+    };
+
     let title = !appOffline ? 'Settings' : 'Offline Mode';
 
-    return ( isFetchingData ? <Loading /> : 
+    return (isFetchingData ? <Loading /> :
         <Container>
 
             <LargeText style={{ margin: 20 }}>{title}</LargeText>
             {appOffline ? null :
                 <View style={{ width: '90%' }}>
-                    <HelpItem title='Setup Offline Browsing' style={{ marginVertical: 3, borderWidth: 1, borderColor: Colours.selected }} onPress={() => promptUser()} />
+                    <HelpItem title='Setup Offline Browsing' style={{ marginVertical: 3, borderWidth: 1, borderColor: Colours.selected }} onPress={() => promptUser('Download')} />
                     <HelpItem title='Change Password' style={{ marginVertical: 3, borderWidth: 1, borderColor: Colours.selected }} onPress={() => setIsChangeClicked(true)} />
+                    <HelpItem title='Log Out' style={{ marginVertical: 3, borderWidth: 1, borderColor: Colours.selected }} onPress={() => firebaseLogout()} />
                 </View>
             }
 
@@ -186,14 +228,14 @@ const MyAccount = (props) => {
                             onPress={() => setIsChangeClicked(false)} />
                     </View>
                 )
-                :
-                <MyButton
-                    text="Log out"
+                : null}
+            {appOffline ? null :
+                <SortingButton
                     colour={Colours.cancel}
-                    textColour={Colours.white}
-                    onPress={() => firebaseLogout()}
-                    style={{ marginTop: 30 }}
-                />}
+                    text='Delete My Account'
+                    onPress={() => promptUser('delete')}
+                />
+            }
 
         </Container>
     );

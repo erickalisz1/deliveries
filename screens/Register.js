@@ -7,8 +7,9 @@ import Container from '../components/Container';
 import DismissKeyboard from '../components/DismissKeyboard';
 import { myStyles } from '../assets/helper/Styles';
 import MyButton from '../components/MyButton';
+import { ROUTES } from '../assets/constants/strings';
 
-const Register = () => {
+const Register = (props) => {
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -43,8 +44,8 @@ const Register = () => {
 
                 firebase.database().ref(fireRef + userInfo.user.uid).set(
                     {
-                        firstName:firstName,
-                        lastName:lastName
+                        firstName: firstName,
+                        lastName: lastName
                     }
                 ).then(() => {
                     console.log('Added new user to database', userInfo.user.uid);
@@ -55,6 +56,7 @@ const Register = () => {
                 });
                 //success
                 Alert.alert('Welcome to your new Deliveries Manager');
+                props.navigation.navigate(ROUTES.LOGIN, { email: email, password: password });
                 //error adding
             }).catch(error => Alert.alert(error.message));
         }
@@ -64,7 +66,7 @@ const Register = () => {
     return (
         <Container>
             <DismissKeyboard>
-                <View>
+                <View style={{ flex: 1, marginTop: 30 }}>
                     <TextInput
                         placeholder={'Email'}
                         placeholderTextColor={Colours.placeholder}

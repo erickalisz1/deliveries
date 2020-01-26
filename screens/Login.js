@@ -20,6 +20,7 @@ import * as myActions from "../store/actions/actions";
 import SortingButton from '../components/SortingButton';
 
 const Login = (props) => {
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isFetchingData, setIsFetchingData] = useState(false);
@@ -33,6 +34,7 @@ const Login = (props) => {
     const handleLocalListLoaded = () => {
         //redirecting to main app and setting app offline
         props.navigation.navigate(ROUTES.TABS);
+        setIsOfflinePressed(false);
     };
     
     
@@ -115,10 +117,10 @@ const Login = (props) => {
     else {
         mode = <View style={{ flex: 5 }}>
             <TouchableOpacity
-                onPress={() => { setEmail('admin@admin.com'); setPassword('adminait') }}
+                // onPress={() => { setEmail('admin@admin.com'); setPassword('adminait') }}
                 style={styles.imageContainer}
             // onPress={() => { setEmail('eric@ait.com'); setPassword('eric123') }}
-            // onPress={() => { setEmail('carol@ait.com'); setPassword('carol1') }}
+            onPress={() => { setEmail('carol@ait.com'); setPassword('carol1') }}
             >
                 <Image
                     source={require('../assets/login.png')}

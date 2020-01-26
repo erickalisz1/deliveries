@@ -70,19 +70,16 @@ export const GetUserList = (email) => {
     };
 };
 
-// const DeleteUserList = (email, uid, name, list) => {
-//     return async myResult => {
-//         try {
-//             const result = await ClearUserData(email);
-//             console.log(result);
-//             //by this point, list should be empty
-//             const dbResult = DownloadListToDevice(email, uid, name, list);
-//             console.log(dbResult);
-//             return dbResult;
-//         }
-//         catch (error) {
-//             console.log(err);
-//             throw err;
-//         }
-//     }
-// };
+export const DeleteUserList = email => {
+    return async myResult => {
+        try {
+            const result = await ClearUserData(email);
+            console.log(result);
+            return result;
+        }
+        catch (error) {
+            console.log(err);
+            throw err;
+        }
+    }
+};
