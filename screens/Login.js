@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import firebase from 'firebase';
 import { Alert, Platform, View, Image, StyleSheet, TouchableOpacity } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Container from '../components/Container';
 import { TextInput } from 'react-native';
@@ -19,15 +19,27 @@ import SmallText from '../components/SmallText';
 import * as myActions from "../store/actions/actions";
 
 const Login = (props) => {
-    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isFetchingData, setIsFetchingData] = useState(false);
     const [isOfflinePressed, setIsOfflinePressed] = useState(false);
 
     const dispatch = useDispatch();//to update store
 
+    //once sql list is set, redirect user to main app
+    let SQList = useSelector(state => state.user.sqlList);
+
+    if (SQList.legth > 0) {
+        dispatch({
+            type:ACTIONS.IS_OFFLINE,
+            value: true
+        });
+        //redirecting to main app and setting app offline
+        props.navigation.navigate(ROUTES.TABS);
+    }
+
     const usernameInput = (input) => {
-        setUsername(input);
+        setEmail(input);
     };
 
     const passwordInput = (input) => {
@@ -40,36 +52,45 @@ const Login = (props) => {
     };
 
     const findMe = () => {
-        const list = dispatch(myActions.loadUserList(username));
+        try {
+            dispatch(myActions.GetUserList(email));
+        } catch (error) {
+            console.log(error);
+            Alert.alert(error.message);
+        }
+        //send list to next screen
     };
 
-    let mode = null;
+    let mode;
 
     if (isOfflinePressed) {
-        mode = <View>
-            <SmallText between={50}>If you have previously downloaded your list when Logged in, you can view it simply by providing tour email address</SmallText>
+        mode = <View style={{ marginHorizontal: '15%' }}>
+            <SmallText style={{ marginBottom: 30 }}>If you have previously downloaded your list when Logged in this device, you can browse it simply by providing your email address</SmallText>
             <TextInput
                 placeholder={'Email'}
                 placeholderTextColor={Colours.placeholder}
                 style={myStyles.login}
                 onChangeText={usernameInput}
-                value={username}
+                value={email}
                 keyboardType='email-address'
             />
             <MyButton
                 onPress={() => findMe()}
                 text='Find my list'
                 colour={Colours.success}
-                textColour={Colours.black} />
+                textColour={Colours.black}
+                style={{ marginBottom: 100 }}
+            />
         </View>
     }
     else {
         mode = <View>
             <TouchableOpacity
-                // onPress={()=> {setUsername('admin@admin.com'); setPassword('adminait')}}
+                onPress={() => { setEmail('admin@admin.com'); setPassword('adminait') }}
                 style={styles.imageContainer}
-                // onPress={() => { setUsername('eric@ait.com'); setPassword('eric123') }}
-                onPress={() => { setUsername('carol@ait.com'); setPassword('carol1') }}
+            // onPress={() => { setEmail('eric@ait.com'); setPassword('eric123') }}
+            // onPress={() => { setEmail('carol@ait.com'); setPassword('carol1') }}
+
             >
                 <Image
                     source={require('../assets/login.png')}
@@ -81,7 +102,7 @@ const Login = (props) => {
                 placeholderTextColor={Colours.placeholder}
                 style={myStyles.login}
                 onChangeText={usernameInput}
-                value={username}
+                value={email}
                 keyboardType='email-address'
             />
             <TextInput
@@ -94,7 +115,7 @@ const Login = (props) => {
                 secureTextEntry={true}
             />
             <MyButton
-                onPress={() => firebaseLogin(username, password)}
+                onPress={() => firebaseLogin(email, password)}
                 text='Login'
                 colour={Colours.success}
                 textColour={Colours.black} />
@@ -109,9 +130,9 @@ const Login = (props) => {
         </View>;
     }
 
-    
 
-    
+
+
 
     const firebaseLogin = (email, password) => {
         setIsFetchingData(true);
@@ -197,9 +218,7 @@ const Login = (props) => {
                 console.log((finish - start) + 'ms to fetch list on', Platform.OS);
 
             }).then(() => {
-                console.log('before checkIfTodayExists:', localList.length);
                 localList = checkIfTodayExists(localList);
-                console.log('after checkIfTodayExists:', localList.length);
                 createWeeksListFromDaysList(localList, userName);
             });
     };
@@ -216,7 +235,7 @@ const Login = (props) => {
         let daysWithDel = 0, daysWithUber = 0, daysWithHours = 0;
         let weekStart = '';
 
-        console.log('Fetching Weeks List for', userName);
+        console.log('Assembling Weeks List for', userName);
 
         // SELECT * STATEMENT
         daysList.forEach(day => {
@@ -290,7 +309,7 @@ const Login = (props) => {
         console.log('Dispatching actions--> user signed in');
 
         dispatch(
-            {// setting username
+            {// setting email
                 type: ACTIONS.SET_USER_NAME,
                 value: userName
             });
@@ -307,7 +326,7 @@ const Login = (props) => {
         //finished building user
         setIsFetchingData(false);
         //clear inputs
-        setUsername('');
+        setEmail('');
         setPassword('');
 
         //redirect to main app
@@ -317,19 +336,19 @@ const Login = (props) => {
 
     return (
         isFetchingData ? <Loading /> :
-            <Container>
+            <DismissKeyboard>
+                <Container>
+                    <MyButton
+                        style={{ margin: 30 }}
+                        onPress={() => toggleOffline()}
+                        text='Offline Mode'
+                        colour={Colours.primaryText}
+                        textColour={Colours.background} />
 
-                <MyButton
-                    style={{ margin: 30 }}
-                    onPress={() => toggleOffline()}
-                    text='Offline Mode'
-                    colour={Colours.primaryText}
-                    textColour={Colours.background} />
+                    {mode}
 
-                {mode}
-
-
-            </Container>
+                </Container>
+            </DismissKeyboard>
     );
 };
 

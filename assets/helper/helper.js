@@ -274,8 +274,6 @@ const mondayOfThisWeek = () => {
 //method to automatically add the following week in order to prevent errors
 export const checkIfTodayExists = (list) => {
 
-    console.log('inside method', list.length);
-
     const today = new Date();
 
     if (list.length < 1) {//if the user has no days on firebase

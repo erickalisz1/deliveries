@@ -15,7 +15,12 @@ import { ACTIONS } from '../store/actions/actions';
 
 const Dashboard = () => {
 
-    let list = useSelector(state => state.user.userDaysList);
+    let appOffline = useSelector(state => state.user.appOffline);
+    let SQList = useSelector(state => state.user.sqlList);
+    let firebaseList = useSelector(state => state.user.userDaysList);
+
+    // if the app is offline, the firebase list hasn't been set
+    let list = appOffline ? SQList : firebaseList;
     let name = useSelector(state => state.user.username);
     let refresh = useSelector(state => state.user.shouldRefresh);
     

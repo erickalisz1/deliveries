@@ -31,6 +31,7 @@ const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
 //initialize sqlite DB 
 dbInit().then(() => {
   console.log('Initialized DB');
+  
 }).catch(error => {
   console.log('Failed initalizing DB'), error;
 });

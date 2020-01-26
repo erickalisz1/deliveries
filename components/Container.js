@@ -9,7 +9,8 @@ const Container = props => {
             flex: 10,
             backgroundColor: props.dark === true ? Colours.background : Colours.backgroundLight,
             alignItems: 'center',
-            justifyContent: 'center'
+            justifyContent: 'center',
+            width:'100%'
         }
     });
 

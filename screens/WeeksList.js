@@ -113,7 +113,7 @@ const WeeksList = () => {
         let daysWithDel = 0, daysWithUber = 0, daysWithHours = 0;
         let weekStart = '';
 
-        console.log('Fetching Weeks List for', userName);
+        console.log('Assembling Weeks List for', userName);
 
         // SELECT * STATEMENT
         daysList.forEach(day => {

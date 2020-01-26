@@ -4,7 +4,9 @@ const initialState = {
     username: '',
     userDaysList: [],
     userWeeksList: [],
-    shouldRefresh: false
+    shouldRefresh: false,
+    sqlList: [],
+    appOffline: false
 };
 
 export default (state = initialState, action) => {
@@ -28,6 +30,16 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 shouldRefresh: action.value
+            };
+        case ACTIONS.SET_SQL_LIST:
+            return {
+                ...state,
+                sqlList: action.value
+            };
+        case ACTIONS.IS_OFFLINE:
+            return {
+                ...state,
+                appOffline: action.value
             };
         default:
             return state;
