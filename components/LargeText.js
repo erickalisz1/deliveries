@@ -8,7 +8,7 @@ const LargeText = props => {
         text: {
             fontSize: props.modal === true ? 24 : 36,
             margin: props.modal === true ? 20 : 0,
-            color: Colours.primaryText,
+            color: props.colour ? props.colour : Colours.primaryText,
             textAlign: 'center',
             marginTop: props.moreMargin === true ? (Platform.OS === 'ios' ? 15 : 45) : 0 
         }

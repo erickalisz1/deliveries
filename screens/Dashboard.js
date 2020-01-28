@@ -10,6 +10,7 @@ import { DAYS } from '../assets/constants/strings';
 import Deliveries from '../assets/models/Deliveries';
 import { ACTIONS } from '../store/actions/actions';
 import { Alert } from 'react-native';
+import CardDetail from '../components/modals/CardDetail';
 
 
 
@@ -37,8 +38,8 @@ const Dashboard = () => {
     }
 
     const [refreshedList, setRefreshedList] = useState(list);
-
-
+    const [selectedItem, setSelectedItem] = useState(null);
+    const [displayVisible, setDisplayVisible] = useState(false);
 
     const refreshList = (userID, userName) => {
 
@@ -160,14 +161,16 @@ const Dashboard = () => {
     }
 
     const displayInfo = cardInfo => {
-        Alert.alert(cardInfo.column,'Days on left, Weeks on right');
+        setDisplayVisible(true);
+        setSelectedItem(cardInfo);
     };
 
     !appOffline ? displayCards(refreshedList, weeksList) : displayCards(list, weeksList);
 
     return (
         <Container dark={true}>
-            <LargeText style={{ marginVertical: 5 }}>{name}'s Summary</LargeText>
+            <CardDetail item={selectedItem} visible={displayVisible} onClose={() => setDisplayVisible(false)} />
+            <LargeText style={{ marginVertical: 15 }}>{name}'s Summary</LargeText>
             {Cards}
         </Container>
     );

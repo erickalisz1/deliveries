@@ -12,7 +12,7 @@ const ModalContainer = props => {
             justifyContent: 'center',
             borderRadius:50,
             borderWidth:  2,
-            borderColor: Colours.primaryText,
+            borderColor: props.colour ? props.colour : Colours.primaryText,
             marginHorizontal: props.marginHorizontal ? props.marginHorizontal : 20,
             minHeight: props.minHeight ? props.minHeight : 210,
         }

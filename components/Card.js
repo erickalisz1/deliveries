@@ -35,13 +35,12 @@ const Card = (props) => {
             alignItems: 'center',
             backgroundColor: Colours.backgroundLight,
             borderRadius: 15,
+            padding:10
         },
         contentColumn: {
-            marginVertical: 5,
             flex: 5
         },
         contentColumnWeeks:{
-            marginVertical: 5,
             flex: 3
         },
         title: {

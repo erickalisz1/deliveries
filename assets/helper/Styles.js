@@ -1,20 +1,20 @@
-import { StyleSheet, Platform } from 'react-native';
+import { StyleSheet, Platform, Dimensions } from 'react-native';
 import Colours from '../constants/Colours';
 
 export const myStyles = StyleSheet.create({
     //inputs
-    login:{
+    login: {
         borderBottomColor: Colours.accent,
         borderBottomWidth: 1,
         marginHorizontal: 5,
-        marginVertical:10,
+        marginVertical: 10,
         padding: 5,
         textAlign: "center",
         fontSize: 18,
         color: Colours.primaryText,
-        minWidth:'45%',
+        minWidth: '45%',
     },
-    input:{
+    input: {
         borderBottomColor: Colours.accent,
         borderBottomWidth: 1,
         marginHorizontal: 5,
@@ -22,42 +22,42 @@ export const myStyles = StyleSheet.create({
         textAlign: "center",
         fontSize: 18,
         color: Colours.primaryText,
-        minWidth:60,
-        maxWidth:120
+        minWidth: 60,
+        maxWidth: 120
     },
-    inputVertical:{
+    inputVertical: {
         borderBottomColor: Colours.accent,
         borderBottomWidth: 1,
         padding: 5,
         textAlign: "center",
         fontSize: 17,
         color: Colours.primaryText,
-        minWidth:60,
-        maxWidth:120,
-        marginBottom:40
+        minWidth: 60,
+        maxWidth: 120,
+        marginBottom: 40
     },
     //main list
     sortLabel: {
         textAlign: 'center',
         fontSize: 20,
-        marginHorizontal:10,
+        marginHorizontal: 10,
         color: Colours.primaryText
     },
-    topContainer:{
-        display:'flex',
-        flexDirection:'row',
-        justifyContent:'space-between',
-        alignItems:'center',
+    topContainer: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
         marginTop: 15,
         marginBottom: 15,
     },
-    activeFilterContainer:{
-        display:'flex',
-        flexDirection:'row',
-        justifyContent:'center',
-        alignItems:'center',
+    activeFilterContainer: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
         marginVertical: 15,
-        marginHorizontal:15
+        marginHorizontal: 15
     },
     //filter modal
     horizontalContainer: {
@@ -95,25 +95,25 @@ export const myStyles = StyleSheet.create({
         marginTop: Platform.OS === 'ios' ? -50 : 0,
         marginHorizontal: 10
     },
-    pickerItem:{
+    pickerItem: {
         color: Colours.primaryText
     },
     //lists
     listItem: {
-        display:'flex',
-        flexDirection:'row',
-        justifyContent:'flex-start',
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
         marginVertical: 1,
         minWidth: '95%',
-        maxWidth:'99%',
-        marginHorizontal:'1%',
+        maxWidth: '99%',
+        marginHorizontal: '1%',
         padding: 10,
         borderBottomWidth: 1,
         borderBottomColor: Colours.accent,
     },
-    helpItem:{
-        marginVertical:3,
-        width: '90%'
+    helpItem: {
+        marginVertical: 3,
+        width: '95%'
     },
     listItemRow: {
         padding: 20,
@@ -121,12 +121,12 @@ export const myStyles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         backgroundColor: Colours.backgroundLight,
-        minWidth:'95%',
-        justifyContent:'space-between',
-        maxHeight:60
+        minWidth: '95%',
+        justifyContent: 'space-between',
+        maxHeight: 60
     },
     listItemColumn: {
-        marginHorizontal:10
+        marginHorizontal: 10
     },
     listItemValueLarge: {
         fontSize: 18,
@@ -148,7 +148,7 @@ export const myStyles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'column',
         flex: 1,
-        marginHorizontal:20
+        marginHorizontal: 20
     },
     modalRow: {
         paddingHorizontal: 25,
@@ -163,5 +163,26 @@ export const myStyles = StyleSheet.create({
         color: Colours.primaryText,
         fontSize: 20,
         textAlign: 'center'
+    },
+    contentRow:{
+        display:'flex',
+        flexDirection:'row',
+        justifyContent:'center',
+        maxWidth:'80%'
+    },
+    cardContent: {
+        textAlign: 'left',
+        fontSize: Dimensions.get('window').height > 700 ? 18 : 15,
+        color: Colours.primaryText,
+        marginVertical: 2,
+    },
+    cardContentCenter: {
+        textAlign:'center',
+        fontSize: Dimensions.get('window').height > 700 ? 18 : 15,
+        color: Colours.primaryText,
+        marginVertical: 2,
+    },
+    contentColumn: {
+        flex: 4
     }
-  });
+});
