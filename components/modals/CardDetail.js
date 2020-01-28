@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Modal } from 'react-native';
+import { Text, View, Modal, Dimensions, Platform } from 'react-native';
 
 import Colours from '../../assets/constants/Colours';
 import LargeText from '../LargeText';
@@ -17,6 +17,7 @@ const CardDetail = (props) => {
 
         let beforeText = '', afterText = '';//need these variables because values displayed can be dollars, hours or dollars per hour
 
+        const height = Dimensions.get('window').height;
 
         if (item.type === 'number') {
             beforeText = '$'
@@ -35,7 +36,7 @@ const CardDetail = (props) => {
 
                 <ModalSpace onClose={props.onClose} flex={20} />
 
-                <ModalContainer colour={item.colour} minHeight={150} dark={false}>
+                <ModalContainer colour={item.colour} minHeight={height < 700 || Platform.OS === 'android' ? 190 : 150} dark={false}>
 
                     <View style={myStyles.modalRow}>
                         <LargeText colour={item.colour} modal={true}>{item.column}</LargeText>

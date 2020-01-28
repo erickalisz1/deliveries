@@ -191,7 +191,7 @@ const Login = (props) => {
                     }).catch(error => Alert.alert(error));
 
                 console.log('user found:', userID);
-                Alert.alert('Welcome back!\nWait a moment while we get your information');
+                Alert.alert('Welcome back!','Wait a moment while we get your information', [{text:'Let\'s Go', style:'default'}]);
 
             }).catch(error => {
                 Alert.alert(error.message);
