@@ -1,11 +1,11 @@
 import React from 'react';
-import { View, Text, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
 import Colours  from '../assets/constants/Colours';
 import SmallText from './SmallText';
 
 const Card = (props) => {
 
-    const { title, average, max, min, colour, type } = props;
+    const { title, average, max, min, averageWeeks, maxWeeks, minWeeks, colour, type } = props;
 
     const availableDeviceHeight = Dimensions.get('window').height;
 
@@ -28,7 +28,7 @@ const Card = (props) => {
             margin: 5,
             borderColor: colour,
             borderWidth: 2,
-            minWidth: '80%',
+            minWidth: '90%',
             display: 'flex',
             flexDirection: 'row',
             justifyContent: 'center',
@@ -37,22 +37,26 @@ const Card = (props) => {
             borderRadius: 15,
         },
         contentColumn: {
-            marginVertical: 10,
+            marginVertical: 5,
+            flex: 5
+        },
+        contentColumnWeeks:{
+            marginVertical: 5,
             flex: 3
         },
         title: {
-            flex: 2
+            flex: 5
         },
         content: {
             textAlign: 'left',
             fontSize: availableDeviceHeight > 700 ? 18 : 15,
             color: Colours.primaryText,
-            marginVertical: 2
-        }
+            marginVertical: 2,
+        },
     });
 
     return (
-        <View style={styles.cardWrapper}>
+        <TouchableOpacity style={styles.cardWrapper} onPress={props.onPress}>
 
             <View style={styles.title}>
                 <SmallText style={{ color: colour }} >{title}</SmallText>
@@ -62,8 +66,13 @@ const Card = (props) => {
                 <Text style={styles.content}>Avg: {beforeText}{average}{afterText}</Text>
                 <Text style={styles.content}>Max: {beforeText}{max}{afterText}</Text>
             </View>
+            <View style={styles.contentColumnWeeks}>
+                <Text style={styles.content}>{beforeText}{minWeeks}{afterText}</Text>
+                <Text style={styles.content}>{beforeText}{averageWeeks}{afterText}</Text>
+                <Text style={styles.content}>{beforeText}{maxWeeks}{afterText}</Text>
+            </View>
 
-        </View>
+        </TouchableOpacity>
     );
 };
 

@@ -196,7 +196,9 @@ const MyAccount = (props) => {
                 <LargeText style={{ margin: 20 }}>{title}</LargeText>
                 {/* if on offline mode, just show the logout */}
                 {appOffline ?
-                    <HelpItem title='Log Out' onPress={() => firebaseLogout()} />
+                    <View style={{ marginHorizontal:10,flex: 1, alignItems: 'center'  }}>
+                        <HelpItem title='Log Out' onPress={() => firebaseLogout()} />
+                    </View>
                     :
                     <View style={{ flex: 1, alignItems: 'center' }}>
                         <HelpItem title='Setup Offline Browsing' onPress={() => promptUser('Download')} />
