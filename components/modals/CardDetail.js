@@ -35,7 +35,7 @@ const CardDetail = (props) => {
 
                 <ModalSpace onClose={props.onClose} flex={20} />
 
-                <ModalContainer colour={item.colour} minHeight={130} dark={false}>
+                <ModalContainer colour={item.colour} minHeight={150} dark={false}>
 
                     <View style={myStyles.modalRow}>
                         <LargeText colour={item.colour} modal={true}>{item.column}</LargeText>
@@ -60,7 +60,7 @@ const CardDetail = (props) => {
 
                         </View>
                         <View style={myStyles.contentColumn}>
-                            
+
                             <Text style={myStyles.cardContent}>Weeks{'\n'}</Text>
                             <Text style={myStyles.cardContent}>{beforeText}{SetPrecision(item.weeksMin)}{afterText}</Text>
                             <Text style={myStyles.cardContent}>{beforeText}{SetPrecision(item.weekAvg)}{afterText}</Text>

@@ -35,7 +35,8 @@ const Card = (props) => {
             alignItems: 'center',
             backgroundColor: Colours.backgroundLight,
             borderRadius: 15,
-            padding:10
+            padding:10,
+            maxHeight:'15%'
         },
         contentColumn: {
             flex: 5
@@ -50,7 +51,7 @@ const Card = (props) => {
             textAlign: 'left',
             fontSize: availableDeviceHeight > 700 ? 18 : 15,
             color: Colours.primaryText,
-            marginVertical: 2,
+            marginVertical:availableDeviceHeight > 700 ? 2 : 1,
         },
     });
 
