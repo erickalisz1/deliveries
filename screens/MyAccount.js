@@ -44,7 +44,7 @@ const MyAccount = (props) => {
         else {
             Alert.alert(
                 'Delete Account',
-                'Beware, this action will permanently erase all of your data from Firebase and from your device!',
+                'Beware, this action will permanently erase all of your data from our systems and your device!',
                 [{ text: 'Cancel', style: 'cancel' }, { text: 'Delete', onPress: () => deleteCurrentUser() }]);
         }
     };
@@ -210,7 +210,7 @@ const MyAccount = (props) => {
                 {isChangeClicked ?
                     (
                         <DismissKeyboard>
-                            <View style={{ alignItems: 'center' }}>
+                            <View style={{ alignItems: 'center', flex: 1, justifyContent:'flex-start', marginTop:10}}>
                                 <TextInput
                                     value={newPassword}
                                     onChangeText={inputPassword}

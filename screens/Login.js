@@ -115,12 +115,12 @@ const Login = (props) => {
         </View>
     }
     else {
-        mode = <View style={{ flex: 5 }}>
+        mode = <View style={{ flex: 5, alignItems:'center' }}>
             <TouchableOpacity
                 // onPress={() => { setEmail('admin@admin.com'); setPassword('adminait') }}
                 style={styles.imageContainer}
-                // onPress={() => { setEmail('eric@ait.com'); setPassword('eric123') }}
-                onPress={() => { setEmail('carol@ait.com'); setPassword('carol1') }}
+                onPress={() => { setEmail('eric@ait.com'); setPassword('eric123') }}
+                // onPress={() => { setEmail('carol@ait.com'); setPassword('carol1') }}
             >
                 <Image
                     source={require('../assets/login.png')}

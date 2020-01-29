@@ -47,14 +47,14 @@ const CardDetail = (props) => {
                         <View style={myStyles.contentColumn}>
 
                             <Text style={myStyles.cardContentCenter}>{'\n'}</Text>
-                            <Text style={myStyles.cardContentCenter}>Min:</Text>
-                            <Text style={myStyles.cardContentCenter}>Avg:</Text>
-                            <Text style={myStyles.cardContentCenter}>Max:</Text>
+                            <Text style={myStyles.cardContent}>Minimum:</Text>
+                            <Text style={myStyles.cardContent}>Average:</Text>
+                            <Text style={myStyles.cardContent}>Maximum:</Text>
 
                         </View>
                         <View style={myStyles.contentColumn}>
 
-                            <Text style={myStyles.cardContent}>Days{'\n'}</Text>
+                            <Text style={myStyles.cardContent}>on a Day{'\n'}</Text>
                             <Text style={myStyles.cardContent}>{beforeText}{SetPrecision(item.min)}{afterText}</Text>
                             <Text style={myStyles.cardContent}>{beforeText}{SetPrecision(item.avg)}{afterText}</Text>
                             <Text style={myStyles.cardContent}>{beforeText}{SetPrecision(item.max)}{afterText}</Text>
@@ -62,7 +62,7 @@ const CardDetail = (props) => {
                         </View>
                         <View style={myStyles.contentColumn}>
 
-                            <Text style={myStyles.cardContent}>Weeks{'\n'}</Text>
+                            <Text style={myStyles.cardContent}>on a Week{'\n'}</Text>
                             <Text style={myStyles.cardContent}>{beforeText}{SetPrecision(item.weeksMin)}{afterText}</Text>
                             <Text style={myStyles.cardContent}>{beforeText}{SetPrecision(item.weekAvg)}{afterText}</Text>
                             <Text style={myStyles.cardContent}>{beforeText}{SetPrecision(item.weeksMax)}{afterText}</Text>

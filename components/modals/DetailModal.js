@@ -72,9 +72,7 @@ const DetailModal = (props) => {
 
         //the more lines I have, the less space I will need outside my ModalContainer
         let space = 17 - count;
-
-        console.log(space)
-
+        
         //fixing space
         space = space === 2 ? space = 4 : space;
 
