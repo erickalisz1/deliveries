@@ -24,15 +24,21 @@ const HoursModal = props => {
 
     const setHours = () => {
 
-        enteredMinutes === '' ? setEnteredMinutes(0) : '';
+        enteredMinutes === '' ? setEnteredMinutes('0') : '';
+        enteredHours === '' ? setEnteredHours('0') : '';
 
-        if (enteredHours !== '') {//if the provided data is ok
+        if (enteredHours !== '0' && enteredHours !== '0') {//if the provided data is ok
             let hours = Number(enteredHours);
             let minutes = Number(enteredMinutes) / .6;
 
             minutes = minutes > 10 ? minutes.toPrecision(2) : minutes.toPrecision(1);
 
-            props.setHours(hours, minutes);
+            enteredMinutes < 60 ? //cannot put more than 60 minutes
+            props.setHours(hours, minutes)
+            :
+            Alert.alert('Provide Accurate Data');
+
+            //clear inputs
             setEnteredHours('');
             setEnteredMinutes('');
         }
@@ -49,7 +55,7 @@ const HoursModal = props => {
                 <View style={{ flex: 1 }} >
                     <ModalSpace onClose={props.onClose} flex={20} />
 
-                    <ModalContainer marginHorizontal={40} minHeight={110} dark={true}>
+                    <ModalContainer marginHorizontal={40} minHeight={170} dark={true}>
 
                         <LargeText modal={true} >Hours Converter</LargeText>
 

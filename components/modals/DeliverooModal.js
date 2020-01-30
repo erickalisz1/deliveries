@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TextInput, Modal } from 'react-native';
+import { View, TextInput, Modal, Alert } from 'react-native';
 
 import { myStyles } from '../../assets/helper/Styles';
 import Colours from '../../assets/constants/Colours';
@@ -25,7 +25,7 @@ const DeliverooModal = props => {
 
     const setDel = () => {
 
-        let feeRate = new Date() > new Date('2019-12-15') ? .96 : .95;//they changed the fee this december
+        const feeRate = .96;//they changed the fee this december
 
         enteredExtras === '' ? setEnteredExtras(0) : '';
         enteredFees === '' ? setEnteredFees(0) : '';
@@ -37,7 +37,10 @@ const DeliverooModal = props => {
 
         total = total > 100 ? total.toPrecision(5) : total.toPrecision(4);
 
-        props.setDel(total);
+        enteredFees >= 0 && enteredExtras >= 0 ?
+        props.setDel(total)
+        :
+        Alert.alert('Provide Accurate Data');
 
         setEnteredFees('');
         setEnteredExtras('');
@@ -54,7 +57,7 @@ const DeliverooModal = props => {
 
                     <ModalSpace onClose={props.onClose} flex={20} />
 
-                    <ModalContainer marginHorizontal={40} minHeight={110} dark={true}>
+                    <ModalContainer marginHorizontal={40} minHeight={170} dark={true}>
 
                         <LargeText modal={true} >Deliveroo Calculator</LargeText>
 
@@ -69,10 +72,10 @@ const DeliverooModal = props => {
                                     keyboardType='decimal-pad' />
 
                                 <MyButton
-                                    text='Done'
-                                    colour={Colours.success}
-                                    textColour={Colours.primaryText}
-                                    onPress={() => setDel()} />
+                                    text='Cancel'
+                                    colour={Colours.cancel}
+                                    textColour={Colours.white}
+                                    onPress={props.onClose} />
 
                             </View>
                             <View style={myStyles.modalColumn}>
@@ -85,10 +88,10 @@ const DeliverooModal = props => {
                                     keyboardType='decimal-pad' />
 
                                 <MyButton
-                                    text='Cancel'
-                                    colour={Colours.cancel}
-                                    textColour={Colours.white}
-                                    onPress={props.onClose} />
+                                    text='Done'
+                                    colour={Colours.success}
+                                    textColour={Colours.primaryText}
+                                    onPress={() => setDel()} />
                             </View>
 
 

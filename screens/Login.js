@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import firebase from 'firebase';
-import { Alert, Platform, View, Image, StyleSheet, TouchableOpacity, TextInput } from 'react-native';
+import { Alert, Platform, View, Image, StyleSheet, TextInput } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { ACTIONS } from '../store/actions/actions';
@@ -116,17 +116,13 @@ const Login = (props) => {
     }
     else {
         mode = <View style={{ flex: 5, alignItems:'center' }}>
-            <TouchableOpacity
-                // onPress={() => { setEmail('admin@admin.com'); setPassword('adminait') }}
-                style={styles.imageContainer}
-                onPress={() => { setEmail('eric@ait.com'); setPassword('eric123') }}
-                // onPress={() => { setEmail('carol@ait.com'); setPassword('carol1') }}
-            >
+
+            <View style={styles.imageContainer}>
                 <Image
                     source={require('../assets/login.png')}
                     resizeMode="cover"
                     style={styles.image} />
-            </TouchableOpacity>
+            </View>
 
             <TextInput
                 placeholder={'Email'}

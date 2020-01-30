@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { View } from 'react-native';
 
 import LargeText from '../components/LargeText';
 import Container from '../components/Container';

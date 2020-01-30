@@ -62,7 +62,7 @@ const Register = (props) => {
         else Alert.alert('Provide data on all fields');
     };
     return (
-        <Container>
+        <Container dark={true}>
             <DismissKeyboard>
                 <View style={{ flex: 1, marginTop: 30 }}>
                     <TextInput

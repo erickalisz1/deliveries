@@ -85,7 +85,7 @@ const UpdateDays = (props) => {
 
             <ModalSpace onClose={props.onClose} flex={Platform.OS === 'ios' ? 20 : 15} />
 
-            <ModalContainer marginHorizontal={20} minHeight={165} >
+            <ModalContainer marginHorizontal={20} minHeight={215} >
 
               <View style={styles.row}>
                 <TouchableOpacity onPress={() => showPrevious()} style={{ marginHorizontal: 10, padding: 20 }}>
@@ -123,6 +123,7 @@ const UpdateDays = (props) => {
                     placeholderTextColor={Colours.placeholder}
                     style={myStyles.input}
                     onChangeText={deliverooInput}
+                    contextMenuHidden={true}
                     value={delValue}
                     keyboardType='decimal-pad'
                   />
@@ -148,6 +149,7 @@ const UpdateDays = (props) => {
                     placeholderTextColor={Colours.placeholder}
                     style={myStyles.input}
                     onChangeText={uberInput}
+                    contextMenuHidden={true}
                     value={uberValue}
                     keyboardType='decimal-pad' />
 
@@ -172,6 +174,7 @@ const UpdateDays = (props) => {
                     placeholderTextColor={Colours.placeholder}
                     style={myStyles.input}
                     onChangeText={hoursInput}
+                    contextMenuHidden={true}
                     value={hoursValue}
                     keyboardType='decimal-pad'
                   />
