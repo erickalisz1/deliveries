@@ -21,9 +21,6 @@ export const ROUTES = {
     ACCOUNT:"Account"
 };
 
-export const stringVal = (Val) => ' - $' + Val;//works for all generic values, except per
+export const stringVal = (Val) => '$' + Val;//works for all generic values, except per
 
-export const stringPer = (Per) => ' - $' + Per + '/h';
-export const stringDel = (Del) => ' - Deliveroo: $' + Del;//these need the names
-export const stringUber = (Uber) => ' - Uber: $' + Uber;
-export const stringTotal = (Total) => ' - Total: $' + Total;
+export const stringPer = (Per) => '$' + Per + '/h';

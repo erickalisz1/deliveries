@@ -2,13 +2,13 @@ import React from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
 import { formatDate, SetPrecision } from '../assets/helper/helper';
 import { myStyles } from '../assets/helper/Styles';
-import { stringPer, stringUber, stringTotal, stringVal } from '../assets/constants/strings';
+import { stringPer, stringVal } from '../assets/constants/strings';
 import { Ionicons } from '@expo/vector-icons';
 import { useSelector } from "react-redux";
 
 const ListItem = (props) => {
 
-    let appOffline = useSelector(state => state.user.appOffline);
+    const appOffline = useSelector(state => state.user.appOffline);
 
     const { columnToSort, selectedDay } = props;
 
@@ -16,78 +16,118 @@ const ListItem = (props) => {
         props.onPress(selectedDay);
     };
 
-    let ActualDay = selectedDay.actualDay;
-    let Del = SetPrecision(selectedDay.deliveroo);
-    let Uber = SetPrecision(selectedDay.uber);
-    let Hours = SetPrecision(selectedDay.hours);
-    let Total = SetPrecision(selectedDay.total);
-    let Per = SetPrecision(selectedDay.per);
+    const ActualDay = selectedDay.actualDay;
 
-    let weekday = new Date(ActualDay).toDateString().substr(0, 3);// 'Mon'
-    let day = formatDate(ActualDay);
+    //Number values
 
-    let text = weekday + ', ' + day;// 'Mon, 23/09/2018'
+    const Del = SetPrecision(selectedDay.deliveroo);
+    const Uber = SetPrecision(selectedDay.uber);
+    const Hours = SetPrecision(selectedDay.hours);
+    const Total = SetPrecision(selectedDay.total);
+    const Per = SetPrecision(selectedDay.per);
+
+    //Formatted string values
+
+    const sDel = stringVal(Del);
+    const sUber = stringVal(Uber);
+    const sTotal = stringVal(Total);
+    const sPer = stringPer(Per);
+
+    const weekday = new Date(ActualDay).toDateString().substr(0, 3);// 'Mon'
+    const day = formatDate(ActualDay);
+
+    const date = weekday + ', ' + day;// 'Mon, 23/09/2018'
+
+    let firstValue = '-', secondValue = '-';
+    let shouldDisplay = true;
 
     if (columnToSort === 'dayNumber') {//default sorting
-        if (Hours === 0 && Total < 1) {//not worked
-
-            text += ' - N/W'
+        if (Hours <= 0 && Total <= 0) {// not worked
+            //do nothing
+        }
+        else if (Hours <= 0 && Total > 0) {//worked but don't know the hours
+            firstValue = sTotal;
         }
 
-        else if (Hours === 0 && Total > 0) {//worked but don't know the hours
-            text += stringVal(Total);
-        }
-
-        else {
-            text += stringVal(Total) + stringPer(Per);
+        else { //all data valid
+            firstValue = sTotal;
+            secondValue = sPer;
         }
     }
 
     else if (columnToSort === 'deliveroo') {//sorting by deliveroo
-        if (Hours > 0 && Del > 0) {
-            text += stringVal(Del) + stringPer(Per);
+        if (Hours > 0 && Del > 0) { //all data valid
+            firstValue = sDel;
+            secondValue = sPer;
         }
-        else if (Hours < 1 && Del > 0) {
-            text += stringVal(Del);
+        else if (Hours <= 0 && Del > 0) { //worked but dunno hours
+            firstValue = sDel;
         }
-        else text = '-1';
+        else shouldDisplay = false;
     }
 
     else if (columnToSort === 'uber') {//sorting by uber
-        if (Hours > 0 && Uber > 0) {
-            text += stringUber(Uber) + stringPer(Per);
+        if (Hours > 0 && Uber > 0) {//all data valid
+            firstValue = sUber;
+            secondValue = sPer;
         }
-        else if (Hours < 1 && Uber > 0) {
-            text += stringUber(Uber);
+        else if (Hours <= 0 && Uber > 0) {//worked but dunno hours
+            firstValue = sUber;
         }
-        else text = '-1';
+        else shouldDisplay = false;
     }
+
     else if (columnToSort === 'total') {//sorting by total
-        if (Hours > 0 && Total > 0) {
-            text += stringTotal(Total) + stringPer(Per);
+        if (Hours > 0 && Total > 0) {//all data valid
+            firstValue = sTotal;
+            secondValue = sPer;
         }
-        else if (Hours < 1 && Total > 0) {
-            text += stringTotal(Total);
+        else if (Hours < 1 && Total > 0) {//worked but dunno hours
+            firstValue = sTotal;
         }
-        else text = '-1';
+        else shouldDisplay = false;
     }
+
     else if (columnToSort === 'per') {//sorting by per
-        if (Hours > 0 && Per > 0) {
-            text += stringTotal(Total) + stringPer(Per);
+        if (Hours > 0 && Per > 0) {//all data valid
+            firstValue = sTotal;
+            secondValue = sPer;
         }
-        else text = '-1';
+        else shouldDisplay = false;
     }
 
-    else text = '-1';
+    else shouldDisplay = false;
 
-    return text === '-1' ? (null) : (
+    return !shouldDisplay ? (null) : (
         <View style={myStyles.listItem}>
             {appOffline ? null :
-                <TouchableOpacity onPress={handleUpdate} style={{ paddingLeft: 5, paddingRight: 10 }}>
-                    <Ionicons name='ios-create' size={20} color={props.buttonColour} />
-                </TouchableOpacity>}
+                <View style={{ flex: 1 }}>
+                    <TouchableOpacity onPress={handleUpdate} style={{ paddingLeft: 5, paddingRight: 10 }}>
+                        <Ionicons name='ios-create' size={20} color={props.buttonColour} />
+                    </TouchableOpacity>
+                </View>}
 
-            <Text style={myStyles.listItemValue}>{text}</Text>
+            <View style={{ flex: 9, display: 'flex', flexDirection: 'row' }}>
+
+                <View style={{ flex: 3 }}>
+                    <Text style={myStyles.listItemValue}>
+                        {date}
+                    </Text>
+                </View>
+
+                <View style={{ flex: 2 }}>
+                    <Text style={myStyles.listItemValue}>
+                        {firstValue}
+                    </Text>
+                </View>
+
+                <View style={{ flex: 2 }}>
+                    <Text style={myStyles.listItemValue}>
+                        {secondValue}
+                    </Text>
+                </View>
+
+            </View>
 
         </View>
     );
@@ -95,3 +135,5 @@ const ListItem = (props) => {
 
 
 export default ListItem;
+
+

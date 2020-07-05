@@ -79,7 +79,8 @@ const Login = (props) => {
 
     const findMe = () => {
         try {
-            //if successful, this will update the SQList length and run the async dispatches block on line 43
+            //if successful, this will update the SQList length 
+            //and run the async dispatches block on line 43
             dispatch(myActions.GetUserList(email));
 
         } catch (error) {

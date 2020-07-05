@@ -135,7 +135,7 @@ export const myStyles = StyleSheet.create({
     listItemValue: {
         fontSize: 15,
         color: Colours.primaryText,
-        textAlign: 'left',
+        textAlign: 'center',
 
     },
     //modals
